@@ -11,11 +11,6 @@ Course materials (lecture notes, tutorials, and hints) for the **Introduction to
 - [About](#about)
 - [Course Content](#course-content)
 - [Repository Structure](#repository-structure)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Building the Documents](#building-the-documents)
-- [Usage](#usage)
-- [Contributing](#contributing)
 - [Authors](#authors)
 - [License](#license)
 
