@@ -60,12 +60,14 @@ Each tutorial includes a `\ifcorrection` toggle in the LaTeX source, allowing in
 
 ## Authors
 
-- **U. Aiounou** — dimitri.aiounou [at] univ-amu.fr
-- **E. Gallic** — ewen.gallic [at] univ-amu.fr
-- **K. Kouadio** — kla.kouadio [at] univ-amu.fr
-- **M. Raux** — morgan.raux [at] univ-amu.fr
+- **Ulrich Aiounou** — dimitri.aiounou [at] univ-amu.fr — <https://research.ulrichaiounou.com/fr>
+- **Ewen Gallic** — ewen.gallic [at] univ-amu.fr — <https://egallic.fr/>
+- **Pierre Michel** — pierre.michel [at] univ-amu.fr — <https://www.amse-aixmarseille.fr/fr/membres/michel>
+- **M. Raux** — morgan.raux [at] univ-amu.fr — <https://www.morganraux.com/>
 
 *Master in Economics, 1st Year — Semester 1, Aix-Marseille Université*
+
+The first version of the slides were prepared by Morgan Raux and Pierre Michel who kindly shared their teaching materials.
 
 ## License
 
