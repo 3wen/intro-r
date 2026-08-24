@@ -1,0 +1,796 @@
+---
+title: "Introduction to programming for data analysis"
+subtitle: "Session 3 — Data Visualization"
+author:
+  - name: Ulrich Aiounou
+    email: dimitri.aiounou@univ-amu.fr
+    url: https://research.ulrichaiounou.com/fr
+    affiliations:
+      - name: AMSE, Aix Marseille University
+  - name: Ewen Gallic
+    email: ewen.gallic@univ-amu.fr
+    url: https://egallic.fr
+    affiliations:
+      - name: AMSE, Aix Marseille University
+  - name: Pierre Michel
+    email: pierre.michel@univ-amu.fr
+    url: https://www.amse-aixmarseille.fr/fr/membres/michel
+    affiliations:
+      - name: AMSE, Aix Marseille University
+bibliography: ../references.bib
+format:
+  revealjs:
+    theme: [simple, ../assets/custom.scss]
+    logo: "figs/logo_AMSE_noir_RVB.png"
+    slide-number: true
+    transition: fade
+    preview-links: true
+    footer: "Introduction to programming for data analysis — Session 3"
+    code-copy: true
+    code-line-numbers: true
+    highlight-style: github
+    smaller: false
+    include-in-header:
+      - ../assets/_homepage-link.html
+      - text: |
+          <link rel="stylesheet"
+                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+execute:
+  echo: true
+  warning: false
+  message: false
+  fig-width: 9
+  fig-height: 5.5
+  fig-align: "center"
+  dev: "svg" # Clean vector output for ggplot2 plots
+# quarto add quarto-ext/fontawesome
+---
+
+## Disclaimer {background-color="#F5F6F0"}
+
+* The slides were adapted from those of Pierre Michel and Morgan Raux, both researchers at AMSE, who kindly shared their work.
+
+* This slide deck was made with Quarto and reveal.js, it is translated by Claude Sonnet 5 from a LaTex presentation previously made with beamer.
+
+
+
+## The 4 steps in any data analysis
+
+1. Finding data
+2. Cleaning data to combine several data sources
+3. **Producing knowledge out from data (summary statistics, regression analysis summarised via tables and graphs)**
+4. Interpreting the results (writing)
+
+## Example of a graph made with `R` {#sec-ex-graph-ggplot2}
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-cap: "Monthly number of deaths in France (2020–2025). Source: [Insee](https://www.insee.fr/en/statistiques/serie/000436394) (ref.: 000436394). ([R Codes](#sec-appendix-codes-graph))"
+library(tidyverse)
+
+# Source: https://www.insee.fr/en/statistiques/serie/000436394
+file <- "../data/deces_france_insee/monthly_values.csv"
+deces <- read_csv2(file, skip = 4, col_names = c("period", "deaths", "codes"))
+
+deces <-
+  deces |>
+  mutate(
+    date = ym(period),
+    month = month(date, label = TRUE),
+    year = year(date)
+  )
+
+data_plot_deaths <- deces |>
+  mutate(
+    year_excess = case_when(
+      year == 2003 ~ "2003 (Drought)",
+      year == 2020 ~ "2020 (Covid-19)",
+      TRUE ~ "Other"
+    ),
+    year_excess = factor(
+      year_excess,
+      levels = c("2003 (Drought)", "2020 (Covid-19)", "Other")
+    )
+  )
+
+p_deaths <- ggplot(
+  data = data_plot_deaths,
+  mapping = aes(x = month, y = deaths, group = year, colour = year_excess)
+) +
+  geom_line(alpha = .8) +
+  scale_colour_manual(
+    NULL, values = c(
+      "2003 (Drought)" = "blue",
+      "2020 (Covid-19)" = "red",
+      "Other" = "darkgray"
+    )
+  ) +
+  labs(x = NULL, y = "Deaths") +
+  scale_y_continuous(
+    labels = scales::label_number(suffix = "", scale = 1, big.mark = ",")
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+p_deaths
+```
+
+
+<!-- ![Monthly number of deaths in France (2020–2025). Source: [Insee](https://www.insee.fr/en/statistiques/serie/000436394) (ref.: 000436394)](figs/seance_3/p_deaths.pdf) -->
+
+# A grammar of graphics {.part}
+
+## Visualization with `{ggplot2}`
+
+- There are multiple packages to produce graphs in `R`.
+  - The `{base}` and `{ggplot2}` packages offer plot functions I rely on the most.
+- Here, we will introduce only functions from `{ggplot2}`.
+- With this package, plots are created following a "[g]{.gras-firstCol}rammar of [g]{.gras-firstCol}raphics" and are constructed by adding <span class="hl-blue">layers</span> to one another.
+- The (awesome) official documentation: [https://ggplot2.tidyverse.org/reference/](https://ggplot2.tidyverse.org/reference/)
+
+```r
+library(ggplot2)
+```
+
+::: {.warning}
+<span class="box-title">Disclaimer</span>
+The slides are strongly inspired by the [🌐 introduction](https://stats.oarc.ucla.edu/r/seminars/ggplot2_intro/) provided by de @bruin_2024.
+:::
+
+## What is a grammar of graphics?
+
+:::: {.columns}
+::: {.column width="40%"}
+[![](figs/seance_3/cover-ggplot2.jpg)](https://ggplot2-book.org/)
+:::
+::: {.column width="60%"}
+- A grammar of a **language** defines the rules of structuring words and phrases into meaningful expressions.
+- Similarly, a grammar of **graphics** defines the rules of structuring mathematical and aesthetic elements into a meaningful graph.
+- @wilkinson2005grammar designed the grammar upon which `{ggplot2}` is based.
+- To learn with a book: @wickham2016ggplot2.
+:::
+::::
+
+## The main elements in a `ggplot2` graph
+
+- <span class="hl-blue">Data</span>: variables mapped to aesthetic features of the graph.
+- <span class="hl-blue">Geoms</span>: objects/shapes on the graph.
+- <span class="hl-blue">Stats</span>: statistical transformations that summarize data (e.g. mean, confidence intervals).
+- <span class="hl-blue">Scales</span>: mappings of aesthetic values to data values. Legends and axes visualize scales.
+- <span class="hl-blue">Coordinate systems</span>: the plane on which data are mapped on the graphic.
+- <span class="hl-blue">Faceting</span>: splitting the data into subsets to create multiple variations of the same graph.
+
+## The base layer
+
+- The base layer of a `{ggplot2}` graph is created with the `ggplot()`{.R} function.
+- We need to specify **two arguments**:
+  - `data`: the dataset
+  - `mapping`: a set of aesthetic mappings between variables in the data and visual properties
+- Then, we need to provide at least <span class="hl-blue">one layer which describes how to render each observation</span> (usually created with a `geom` function).
+
+:::: {.columns}
+::: {.column width="70%"}
+```r
+ggplot(
+  data = txhousing, 
+  mapping = aes(x = volume, y = sales)
+) +
+  geom_point()
+```
+:::
+::: {.column width="30%"}
+- Each layer is added using the `+`{.R} operator.
+:::
+::::
+
+## Our first graph with `{ggplot2}`
+
+
+```{r}
+p_txhousing <- ggplot(
+  data = txhousing,
+  mapping = aes(x = volume, y = sales)
+) +
+  geom_point()
+
+p_txhousing
+```
+
+<!-- ![](figs/seance_3/txhousing.pdf) -->
+
+# Aesthetics {.part}
+
+## Geom layers and overriding aesthetics (1/2)
+
+- The layers inherit aesthetics from `ggplot()`{.R}.
+- If provided, new aesthetics will override those inherited from `ggplot()`{.R}.
+
+```r
+ggplot(
+  data = txhousing, 
+  mapping = aes(x = volume, y = sales)
+) +
+  geom_point(mapping = aes(colour = listings))
+```
+
+- `colour = listings`{.R} causes the colour of objects to vary with values of the variable `listings`.
+
+## Geom layers and overriding aesthetics (2/2)
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+#| eval: false
+ggplot(
+  data = txhousing, 
+  mapping = aes(
+    x = volume, 
+    y = sales
+  )
+) +
+  geom_point(
+    mapping = aes(colour = listings)
+  )
+```
+
+:::
+::: {.column width="50%"}
+<!-- ![](figs/seance_3/txhousing_colours.pdf) -->
+```{r}
+#| echo: false
+ggplot(
+  data = txhousing, 
+  mapping = aes(
+    x = volume, 
+    y = sales
+  )
+) +
+  geom_point(
+    mapping = aes(colour = listings)
+  )
+```
+
+:::
+::::
+
+## Aesthetic attributes
+
+- Multiple attributes are available, depending on the geom used, the most common are:
+  - `x`, `y`: positioning along x-axis and y-axis, resp.,
+  - `colour`: colour of objects,
+  - `fill`: fill colour of objects (name or hexadecimal code),
+  - `linetype`: how lines should be drawn (solid, dashed, dotted, …),
+  - `shape`: shape of markers,
+  - `size`: area of markers (for points), font size (for text),
+  - `linesize`: thickness of the lines,
+  - `alpha`: transparency (between 0 (transparent) and 1 (opaque)).
+
+## Geoms and aesthetics
+
+- Each geom has its required aesthetics.
+  - E.g., `geom_point()`{.R} requires both `x` and `y`.
+- Some aesthetics are not possible for some geoms.
+  - E.g., while the `shape` aesthetic is used by `geom_point()`{.R}, it is not accepted by the `geom_bar()`{.R} function.
+- Check the help pages or the online documentation, or even the [🎨 gallery](https://exts.ggplot2.tidyverse.org/gallery/).
+
+# Usual visualizations {.part}
+
+## Histogram
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+#| eval: false
+ggplot(
+  data = txhousing,
+  mapping = aes(x = median)
+) +
+  geom_histogram(colour = "white")
+```
+
+A continuous variable (here: `median`) is cut into bins (default to 30). The number of observations (count) in each bin is reported.
+:::
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| fig-cap: "Distribution of the median housing sales in Texas between 2000 and 2015"
+ggplot(
+  data = txhousing,
+  mapping = aes(x = median)
+) +
+  geom_histogram(colour = "white")
+```
+
+:::
+::::
+
+## Density plot
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+#| eval: false
+ggplot(
+  data = txhousing,
+  mapping = aes(x = median)
+) +
+  geom_density(colour = "blue")
+```
+
+This type of representation can be viewed as a smoothed version of histograms.
+:::
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| fig-cap: "Density of the median housing sales in Texas between 2000 and 2015 (kernel estimation)"
+ggplot(
+  data = txhousing,
+  mapping = aes(x = median)
+) +
+  geom_density(colour = "blue")
+```
+
+
+:::
+::::
+
+## Bar plot
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+#| eval: false
+ggplot(
+  data = diamonds,
+  mapping = aes(y = cut)
+) +
+  geom_bar(
+    colour = "blue", fill = "grey"
+  )
+```
+
+The width of the bar plot reflects the counts of each y-value.
+:::
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| fig-cap: "Number of observation per quality of the cut in the `diamonds` dataset."
+ggplot(
+  data = diamonds,
+  mapping = aes(y = cut)
+) +
+  geom_bar(
+    colour = "blue", fill = "grey"
+  )
+```
+
+
+:::
+::::
+
+## Scatter plot
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+#| eval: false
+ggplot(
+  data = txhousing,
+  mapping = aes(
+    x = volume, y = sales, 
+    colour = listings,
+    alpha = median,
+    size = inventory
+    )
+) +
+  geom_point() +
+  theme(legend.position = "bottom")
+```
+
+Useful to represent covariation between two continuous variables.
+:::
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| fig-cap: "Number of housing sales vs. total values of sales in Texas"
+ggplot(
+  data = txhousing,
+  mapping = aes(
+    x = volume, y = sales, 
+    colour = listings,
+    alpha = median,
+    size = inventory
+    )
+) +
+  geom_point() +
+  theme(legend.position = "bottom")
+```
+
+
+:::
+::::
+
+## Line plot
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+#| eval: false
+ggplot(
+  data = txhousing,
+  mapping = aes(
+    x = date, y = sales, 
+    group = city
+    )
+) +
+  geom_line(
+    colour = "blue", alpha = .3
+  )
+```
+
+Useful to represent covariation between a continuous variable (y-axis) and an ordered variable (x-axis).
+:::
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| fig-cap: "Evolution of the number of housing sales in Texas. Each line represents a city."
+ggplot(
+  data = txhousing,
+  mapping = aes(
+    x = date, y = sales, 
+    group = city
+    )
+) +
+  geom_line(
+    colour = "blue", alpha = .3
+  )
+```
+
+:::
+::::
+
+# Labels {.part}
+
+## Labels
+
+:::: {.columns}
+::: {.column width="60%"}
+The `labs()`{.R} function allows to change axis, legend, and plot labels.
+
+```{r}
+#| eval: false
+ggplot(
+  data = txhousing, 
+  mapping = aes(
+    x = volume, y = sales,
+    colour = listings
+  )) +
+  geom_point() +
+  labs(
+    title = "No. housing sales vs. tot. volume",
+    subtitle = "Texas, 2000 – 2015",
+    x = "Total value of sales",
+    y = "Number of sales",
+    colour = "Total active listings"
+  )
+```
+
+:::
+::: {.column width="40%"}
+```{r}
+#| echo: false
+#| fig-cap: "Number of housing sales vs. total values of sales in Texas."
+ggplot(
+  data = txhousing, 
+  mapping = aes(
+    x = volume, y = sales,
+    colour = listings
+  )) +
+  geom_point() +
+  labs(
+    title = "No. housing sales vs. tot. volume",
+    subtitle = "Texas, 2000 – 2015",
+    x = "Total value of sales",
+    y = "Number of sales",
+    colour = "Total active listings"
+  )
+```
+
+
+:::
+::::
+
+# Exporting Graphs {.part}
+
+## The `ggsave()`{.R} function
+
+- The `ggsave()`{.R} function saves the last displayed plot (or a specific ggplot object if provided as argument).
+- It supports many formats: **PNG** (good for presentations and web), **PDF** (for print and publications, i.e., your reports), JPEG, TIFF, SVG, EPS.
+- Unless specified, in RStudio, the plot size and resolution of the 'Plots' tab is used (in inches).
+
+```r
+# Assuming p contains a ggplot2 graph:
+ggsave(file = "figs/plot.pdf", p, width = 5, height = 3)
+```
+
+## Output quality
+
+- When exporting a scatterplot, if the number of points is large, producing a PDF might not be a good idea: the file will be huge.
+- To export a plot in PNG with a good resolution, the number of dots per inch (DPI) can be specified.
+
+```r
+# Assuming p contains a ggplot2 graph:
+ggsave(
+   file = "figs/plot.pdf", p, width = 5, height = 3,
+   dpi = 300
+)
+```
+
+## Scales
+
+- Every aesthetic (colour, size, shape, x/y position, etc.) has a corresponding <span class="hl-blue">scale function</span>.
+- Default scales are chosen automatically, but can be customized with a `scale_*` function.
+- The type of scale depends on the data type of the variable:
+  - **Continuous variables**: gradients, continuous axes, size scales,
+  - **Discrete variables**: categorical palettes, shapes, breaks.
+
+## Scales with a numeric variable
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+#| eval: false
+ggplot(
+  data = txhousing,
+  mapping = aes(
+    x = volume, y = sales
+  )
+) +
+  geom_point(
+    mapping = aes(colour = listings)
+  ) +
+  scale_colour_gradient(
+    "Total active listings",
+    low = "yellow", high = "red"
+  )
+```
+
+:::
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| fig-cap: "The `listing` variable is numeric."
+ggplot(
+  data = txhousing,
+  mapping = aes(
+    x = volume, y = sales
+  )
+) +
+  geom_point(
+    mapping = aes(colour = listings)
+  ) +
+  scale_colour_gradient(
+    "Total active listings",
+    low = "yellow", high = "red"
+  )
+```
+
+
+:::
+::::
+
+## Scales with a discrete variable
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+#| eval: false
+ggplot(
+  data = sample_n(diamonds, size = 1000),
+  mapping = aes(
+    x = carat, y = price, colour = cut
+  )
+) +
+  geom_point() +
+  scale_colour_manual(
+    "Cut",
+    values = c(
+      "Fair" = "black", 
+      "Good" = "blue", 
+      "Very Good" = "darkgreen", 
+      "Premium" = "palegreen", 
+      "Ideal" = "yellow"
+    )
+  )
+```
+
+:::
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| fig-cap: "The `cut` variable is discrete."
+ggplot(
+  data = sample_n(diamonds, size = 1000),
+  mapping = aes(
+    x = carat, y = price, colour = cut
+  )
+) +
+  geom_point() +
+  scale_colour_manual(
+    "Cut",
+    values = c(
+      "Fair" = "black", 
+      "Good" = "blue", 
+      "Very Good" = "darkgreen", 
+      "Premium" = "palegreen", 
+      "Ideal" = "yellow"
+    )
+  )
+```
+
+:::
+::::
+
+# Facetting {.part}
+
+## Facetting
+
+- Facetting corresponds to creating small subplots for subsets of data.
+- Each panel shows the same plot for a different level of a variable.
+- It makes it easier to compare patterns across groups.
+- There are two main functions:
+  - `facet_wrap()`{.R}: 1D wrapping of panels,
+  - `facet_grid()`{.R}: 2D grid of panels.
+
+## Facetting with `facet_wrap()`{.R}
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+#| eval: false
+ggplot(
+  data = sample_n(diamonds, size = 5000),
+  mapping = aes(
+    x = carat, y = price
+  )
+) +
+  geom_point(size = .5, alpha = .1) +
+  facet_wrap(~ cut)
+```
+
+:::
+::: {.column width="50%"}
+```{r}
+#| echo: false
+#| fig-cap: "Diamonds prices vs. their weights depending on the quality of the cut."
+ggplot(
+  data = sample_n(diamonds, size = 5000),
+  mapping = aes(
+    x = carat, y = price
+  )
+) +
+  geom_point(size = .5, alpha = .1) +
+  facet_wrap(~ cut)
+```
+
+:::
+::::
+
+## Facetting with `facet_grid()`{.R}
+
+:::: {.columns}
+::: {.column width="45%"}
+```{r}
+#| eval: false
+ggplot(
+  data = sample_n(
+    diamonds, 
+    size = 5000
+  ),
+  mapping = aes(
+    x = carat, y = price
+  )
+) +
+  geom_point(size = .5, alpha = .1) +
+  facet_grid(clarity ~ cut)
+```
+
+:::
+::: {.column width="55%"}
+```{r}
+#| echo: false
+#| fig-cap: "Diamonds prices vs. their weights depending on the quality of the cut and the clarity of the diamond."
+ggplot(
+  data = sample_n(
+    diamonds, 
+    size = 5000
+  ),
+  mapping = aes(
+    x = carat, y = price
+  )
+) +
+  geom_point(size = .5, alpha = .1) +
+  facet_grid(clarity ~ cut)
+```
+
+:::
+::::
+
+## To go further
+
+- This presentation only showed a glimpse of what `ggplot2` has to offer.
+- To go further: [🌐 https://ggplot2-book.org/](https://ggplot2-book.org/)
+
+## Exercises {.exercise}
+
+Practice with [the second tutorial](tutorial-2.html)!
+
+
+# Appendix {.part}
+
+## References
+
+::: {#refs}
+:::
+
+
+## Codes for the graph showing the number of deaths in France (1/3) {#sec-appendix-codes-graph}
+
+```r
+# Source: https://www.insee.fr/en/statistiques/serie/000436394
+file <- "data/deces_france_insee/monthly_values.csv"
+deces <- read_csv2(
+    file, skip = 4, 
+    col_names = c("period", "deaths", "codes")
+)
+
+deces <- 
+  deces |> 
+  mutate(
+    date = ym(period),
+    month = month(date, label = TRUE),
+    year = year(date)
+  )
+```
+
+## Codes for the graph showing the number of deaths in France (2/3)
+
+```r
+# Prepare data for the plot: highlight 2003 and 2021
+data_plot_deaths <- deces |> 
+  mutate(
+    year_excess = case_when(
+      year == 2003 ~ "2003 (Drought)",
+      year == 2020 ~ "2020 (Covid-19)",
+      TRUE ~ "Other"
+    ),
+    year_excess = factor(
+      year_excess, 
+      levels = c("2003 (Drought)", "2020 (Covid-19)", "Other")
+    )
+  )
+```
+
+## Codes for the graph showing the number of deaths in France (3/3)
+
+```r
+p_deaths <- ggplot(
+  data = data_plot_deaths,
+  mapping = aes(x = month, y = deaths, group = year, colour = year_excess)
+) +
+  geom_line(alpha = .8) +
+  scale_colour_manual(
+    NULL, values = c(
+      "2003 (Drought)" = "blue",  "2020 (Covid-19)" = "red", 
+      "Other" = "darkgray"
+  )) +
+  labs(x = NULL, y = "Deaths") +
+  scale_y_continuous(
+    labels = scales::label_number(suffix = "", scale = 1, big.mark = ",")
+  ) + theme_minimal() + theme(legend.position = "bottom")
+```
+
+[⏮ Go back](#sec-ex-graph-ggplot2)
+

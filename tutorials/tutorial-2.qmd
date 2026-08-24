@@ -1,0 +1,673 @@
+---
+title: "Tutorial #2. Data visualization and summary statistics"
+subtitle: "Introduction to programming for data analysis"
+author:
+  - name: Ulrich Aiounou
+    email: dimitri.aiounou@univ-amu.fr
+    affiliations:
+      - name: AMSE, Aix Marseille University
+  - name: Ewen Gallic
+    email: ewen.gallic@univ-amu.fr
+    affiliations:
+      - name: AMSE, Aix Marseille University
+  - name: Kla Kouadio
+    email: kla.kouadio@univ-amu.fr
+    affiliations:
+      - name: AMSE, Aix Marseille University
+  - name: Pierre Michel
+    email: pierre.michel@univ-amu.fr
+    affiliations:
+      - name: AMSE, Aix Marseille University
+format:
+  html:
+    css: styles.css
+    include-in-header: _fonts.html
+    include-before-body: _topbar.html
+    include-after-body: _hints-script.html
+    toc: true
+    toc-location: left
+    toc-title: "On this page"
+    number-sections: false
+    page-layout: article
+    anchor-sections: true
+    code-line-numbers: true
+    highlight-style: github
+---
+
+
+::: {.path-crumb}
+M1 Economics / Intro to Programming / <span class="here">tutorial-2</span>
+:::
+
+::: {.hero-tree}
+tutorial-2/<br>
+&nbsp;&nbsp;<span class="dir">data/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">out/</span> <span class="file">gdp-lifesat.csv</span><br>
+&nbsp;&nbsp;<span class="dir">scripts/</span><span class="cursor"></span>
+:::
+
+::: {.warning}
+
+## Disclaimer
+
+This HTML page was generated with Claude Sonnet 5 based on exercises we developed from a LaTeX document.
+
+If you would prefer to work with a more traditional PDF version, you can download it here: [Download the PDF](tutorial-2.pdf).
+
+Part of the content was created by Pierre Michel (AMSE) and Morgan Raux (AMSE) who kindly shared their work.
+
+:::
+
+
+In the previous tutorial, you downloaded datasets from Eurostat, merged them into a single dataset in R, and exported the result as a CSV file.
+
+::: {.objective}
+#### Objectives of the tutorial
+
+In this tutorial, you will work with the dataset from the second exercise of Tutorial #1 to:
+
+1. explore it through basic summary statistics,
+2. create your first data visualizations in R using `ggplot2`.
+:::
+
+::: {.tip}
+
+#### Did not finish tutorial 1?
+
+Didn't get to finish combining the data in Tutorial 1? Grab the ready-to-use file below and save it to the `data/out/` folder of your project.
+
+- <a href="data/out/gdp_lifesat.csv" class="btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" download>{{< fa download >}} gdp_lifesat.csv</a>
+
+:::
+
+
+::: {.tip}
+#### 💡 Clean session
+
+If you need to have a clean session in RStudio, first remove all the objects in memory by evaluating the following instruction:
+
+```{r}
+#| eval: false
+rm(list = ls())
+```
+
+Then, on the menu "Session", click on "Restart R".
+:::
+
+## Setup
+
+Prepare a project for the second tutorial. Adopt the tree structure presented below. Note that launching your session via `project.Rproj` sets your active working directory to `tutorial-2/`.
+
+::: {.hero-tree style="display:block;"}
+tutorial-2/<br>
+&nbsp;&nbsp;<span class="dir">data/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">raw/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">tmp/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">out/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">gdp-lifesat.csv</span><br>
+&nbsp;&nbsp;<span class="dir">scripts/</span><br>
+&nbsp;&nbsp;<span class="dir">figs/</span><br>
+&nbsp;&nbsp;<span class="dir">tables/</span><br>
+&nbsp;&nbsp;<span class="dir">references/</span><br>
+&nbsp;&nbsp;<span class="file">README.md</span><br>
+&nbsp;&nbsp;<span class="file">project.Rproj</span>
+:::
+
+```{r}
+#| include: false
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+::: {.qcard}
+**Q1.** Import the dataset you exported at the end of Tutorial #1 (`gdp-lifesat.csv`, assumed to be copied into your data entry structure).
+
+```{r}
+#| eval: false
+tb <- read_csv(...)
+```
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+The file lives in your `data/out/` folder — build the relative path from your project root (`tutorial-2/`).
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+```{r}
+library(readr)
+# Assuming the file was moved to the data output folder of the project root
+tb <- read_csv("data/out/gdp-lifesat.csv")
+tb
+```
+:::
+:::
+
+## Plot Distributions
+
+::: {.qcard}
+**Q2.** Read the following code, evaluate it, and explain what it does.
+
+```{r}
+#| output: false
+p_density <- ggplot(
+  data = tb, 
+  mapping = aes(x = gdp)
+) +
+  geom_density(fill = "blue", alpha = 0.1) +
+  labs(
+    x = "GDP", 
+    y = "Density",
+    title = "Density Plot of GDP"
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank()
+  )
+p_density
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+This block initialises a graphic via `ggplot2` using the `tb` dataset. It maps the continuous metric `gdp` to the x-axis and draws an empirical density distribution via `geom_density()`, filled with light blue (10% opacity). It adds clean labels and applies a minimal theme. The background grid lines are removed.
+```{r}
+#| echo: false
+p_density
+```
+
+:::
+:::
+
+::: {.qcard}
+**Q3.** Using the `ggsave()` function, export this graph as a PDF file in the `figs` folder of your project environment.
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+```{r}
+ggsave("figs/density_plot_gdp.pdf", plot = p_density, width = 7, height = 5)
+```
+:::
+:::
+
+::: {.qcard}
+**Q4.** Plot the distribution of the variable measuring life satisfaction using a histogram:
+
+- Label the x-axis as "Overall life satisfaction".
+- Remove the y-axis title.
+- Add the plot title "Histogram of Overall life satisfaction".
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Use `geom_histogram()`, and set `y = NULL` inside `labs()` to remove an axis title.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+```{r}
+ggplot(data = tb, mapping = aes(x = life_satisf)) +
+  geom_histogram(bins = 15, fill = "darkgray", color = "white") +
+  labs(
+    x = "Overall life satisfaction",
+    y = NULL, # Removes the y-axis title
+    title = "Histogram of Overall life satisfaction"
+  ) +
+  theme_minimal()
+```
+:::
+:::
+
+## Summary Statistics
+
+::: {.qcard}
+**Q5.** Examine and evaluate the following instructions. Then, explain what they do.
+
+```{r}
+#| output: false
+summary_stats_base <- tb |>
+  select(gdp, life_satisf) |>
+  summary()
+
+print(summary_stats_base)
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+This pipeline of instructions extracts the features `gdp` and `life_satisf` from the data frame `tb` and passes them directly into R's base summary function `summary()`. This returns the descriptive quantities (Minimum, 1st Quartile, Median, Mean, 3rd Quartile, Maximum) alongside missing item flags (`NA`s) per variable.
+```{r}
+#| echo: false
+print(summary_stats_base)
+```
+
+:::
+:::
+
+::: {.qcard}
+**Q6.** Create a table of summary statistics for the variables `gdp` and `life_satisf`. The table should include the following statistics: mean, standard deviation, minimum, maximum. Round all values to two decimal places. The resulting table must have two rows (one for `gdp`, one for `life_satisf`). Name this table `summary_stats`.
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn hint" data-step="2" disabled><span class="dot"></span>Hint 2</button>
+<button class="step-btn sol" data-step="3" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+To get one row per variable, first reshape the two columns into a long format with `pivot_longer()`.
+:::
+
+::: {.reveal .hint-box data-reveal="2"}
+Then `group_by(var)` and `summarise()` with `mean()`, `sd()`, `min()`, `max()`, each wrapped in `round(..., 2)`.
+:::
+
+::: {.reveal .sol-box data-reveal="3"}
+Using tidyverse strategies to explicitly construct long summaries:
+
+```{r}
+library(tidyr)
+
+summary_stats <- tb |>
+  select(gdp, life_satisf) |>
+  pivot_longer(
+    cols = everything(), names_to = "var", values_to = "val"
+  ) |>
+  group_by(var) |>
+  summarise(
+    mean = round(mean(val, na.rm = TRUE), 2),
+    sd   = round(sd(val, na.rm = TRUE), 2),
+    min  = round(min(val, na.rm = TRUE), 2),
+    max  = round(max(val, na.rm = TRUE), 2)
+  )
+summary_stats
+```
+:::
+:::
+
+::: {.qcard}
+**Q7.** Examine and evaluate the following instruction. Then, explain what it does.
+
+```{r}
+#| output: false
+names(summary_stats) <- c("var", "mean", "sd", "min", "max")
+summary_stats
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+It replaces the names of the columns in the `summary_stats` summary table with those provided in the vector (`c()`). Here the names happen to already match, so the table is unchanged — but this instruction is what you would use to rename columns coming out of a pipeline with less convenient default names.
+```{r}
+#| echo: false
+summary_stats
+```
+
+:::
+:::
+
+::: {.qcard}
+**Q8.** Print the content of the object `summary_stats` as a LaTeX-formatted table. To do so, use the `{stargazer}` package. Adapt the following code:
+
+```{r}
+#| eval: false
+install.packages("stargazer")
+library(stargazer)
+?stargazer
+summary_stats_latex <- stargazer(...)
+```
+
+Save the LaTeX table into a file named `summary_stats.tex` inside your output data subfolder.
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+
+::: {.reveal .sol-box data-reveal="2"}
+```{r}
+#| eval: true
+library(stargazer)
+
+stargazer(
+  summary_stats,
+  summary = FALSE, 
+  type = "latex", 
+  out = "data/out/summary_stats.tex"
+)
+```
+
+
+:::
+:::
+
+## Rank countries by GDP in 2023
+
+::: {.qcard}
+**Q9.** Create an object called `tb_2023` that contains only the rows of the dataset where the year is 2023.
+
+```{r}
+#| eval: false
+tb_2023 <- tb |>
+    ...
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+```{r}
+tb_2023 <- tb |> 
+  filter(year == 2023)
+tb_2023
+```
+:::
+:::
+
+::: {.qcard}
+**Q10.** Examine and evaluate the following instruction. Then, explain what it does.
+
+```{r}
+#| output: false
+p <- ggplot(
+  data = tb_2023, 
+  mapping = aes(x = reorder(country, gdp), y = gdp)
+) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(
+    title = "GDP by Country in 2023",
+    x = "Country",
+    y = "GDP"
+  ) +
+  theme_minimal()
+p
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+This instruction prints a sorted horizontal bar chart. `reorder(country, gdp)` orders the categorical country axis sequentially by their corresponding value metric (that of variable `gdp`). `geom_bar(stat = "identity")` maps raw values directly to lengths, and `coord_flip()` rotates the layout by 90 degrees, swapping the x- and y-axes.
+```{r}
+#| echo: false
+p
+```
+:::
+:::
+
+::: {.qcard}
+**Q11.** Create an object called `data_filtered` that contains only the rows of the dataset where the year is either 2014 or 2023.
+
+```{r}
+#| eval: false
+data_filtered <- ...
+```
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Use `%in%` with a two-element vector, rather than two chained `==` conditions.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+```{r}
+data_filtered <- tb |> 
+  filter(year %in% c(2014, 2023))
+data_filtered
+```
+:::
+:::
+
+::: {.qcard}
+**Q12.** Examine and evaluate the following instruction. Then, explain what it does.
+
+```{r}
+#| eval: false
+data_filtered |>
+  arrange(year, desc(gdp))
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+It sorts rows first chronologically by `year`, then sorts the observations in descending order of cross-sectional `gdp` within each temporal block.
+```{r}
+#| echo: false
+data_filtered |>
+  arrange(year, desc(gdp))
+```
+:::
+:::
+
+::: {.qcard}
+**Q13.** Create a barplot ranking countries in decreasing order of GDP, with two panels: the left panel for year 2014, the right panel for year 2023. The plot should have:
+
+1. the x-axis titled "GDP",
+2. no y-axis title,
+3. the main title "GDP by Country in 2014 and 2023".
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Use `facet_wrap(~year)` on top of the same bar chart recipe as Q10, then swap which axis gets the `NULL` label.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+```{r}
+ggplot(data = data_filtered, mapping = aes(x = reorder(country, gdp), y = gdp)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  facet_wrap(~year) + # Splitting into panels by year
+  labs(
+    x = NULL,
+    y = "GDP",
+    title = "GDP by Country in 2014 and 2023"
+  ) +
+  theme_minimal()
+```
+:::
+:::
+
+## Rank countries by change in GDP between 2014 and 2023
+
+::: {.qcard}
+**Q14.** Create a new variable called `change_gdp` that measures the within-country change in GDP between 2014 and 2023.
+
+```{r}
+#| eval: false
+tb <- tb |> ...
+```
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn hint" data-step="2" disabled><span class="dot"></span>Hint 2</button>
+<button class="step-btn sol" data-step="3" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+This is a within-country comparison across years, so you need one row per country: reshape the data with `pivot_wider()` so that each year's GDP becomes its own column.
+:::
+
+::: {.reveal .hint-box data-reveal="2"}
+`pivot_wider(names_from = year, values_from = gdp, names_prefix = "gdp_")` gives you columns `gdp_2014` and `gdp_2023`. Then simply subtract them with `mutate()`.
+:::
+
+::: {.reveal .sol-box data-reveal="3"}
+To extract delta values properly across years from wide or long frames:
+
+```{r}
+tb_change <- tb |>
+  filter(year %in% c(2014, 2023)) |>
+  select(country, year, gdp) |>
+  pivot_wider(names_from = year, values_from = gdp, names_prefix = "gdp_") |>
+  mutate(change_gdp = gdp_2023 - gdp_2014)
+tb_change
+```
+:::
+:::
+
+::: {.qcard}
+**Q15.** Examine and evaluate the following instruction. Then, explain what it does.
+
+```{r}
+#| output: false
+tb_2023 <- tb |> filter(year == 2023)
+tb_2023
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+It isolates cross-sectional observations from 2023 from the data frame `tb` and assigns the resulting data frame in an object named `tb_2023`.
+```{r}
+#| echo: false
+tb_2023
+```
+:::
+:::
+
+::: {.qcard}
+**Q16.** Create a barplot ranking countries in decreasing order of their change in GDP (between 2014 and 2023). The plot should have:
+
+- the x-axis titled "Change in GDP",
+- no y-axis title,
+- the main title "Change in GDP by Country between 2014 and 2023".
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+```{r}
+ggplot(data = tb_change, mapping = aes(x = reorder(country, change_gdp), y = change_gdp)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  labs(
+    x = NULL,
+    y = "Change in GDP",
+    title = "Change in GDP by Country between 2014 and 2023"
+  ) +
+  theme_minimal()
+```
+:::
+:::
+
+## Evolution of GDP in France and Italy
+
+::: {.qcard}
+**Q17.** Create an object called `tb_france_italy` that contains rows of the dataset `tb` where the country is either "France" or "Italy".
+
+```{r}
+#| eval: false
+tb_france_italy <- tb |> ...
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+```{r}
+tb_france_italy <- tb |> 
+  filter(country %in% c("FR", "IT"))
+tb_france_italy
+```
+:::
+:::
+
+::: {.qcard}
+**Q18.** Using the dataset `tb_france_italy`, create a line plot showing the year-by-year evolution of GDP for France and Italy (one line per country). Include a legend to indicate which line corresponds to each country.
+
+Bonus: use blue (`#0055A4`) for France and green (`#009246`) for Italy. Place the legend below the graph. Title the y-axis "GDP".
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn hint" data-step="2" disabled><span class="dot"></span>Hint 2</button>
+<button class="step-btn sol" data-step="3" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Map `color = country` (and `group = country`) inside `aes()` so `ggplot2` draws one line per country and builds the legend automatically.
+:::
+
+::: {.reveal .hint-box data-reveal="2"}
+For custom colors, use `scale_color_manual(values = c("FR" = ..., "IT" = ...))`. For the legend position, set `theme(legend.position = "bottom")`.
+:::
+
+::: {.reveal .sol-box data-reveal="3"}
+```{r}
+ggplot(data = tb_france_italy, mapping = aes(x = year, y = gdp, color = country, group = country)) +
+  geom_line(linewidth = 1) +
+  geom_point() +
+  scale_color_manual(values = c("FR" = "#0055A4", "IT" = "#009246")) +
+  labs(
+    x = "Year",
+    y = "GDP",
+    title = "Evolution of GDP in France and Italy"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+:::
+:::
+
+<div class="text-center">
+  <a href="tutorial-1.html" class="btn btn-success">
+    {{< fa arrow-left >}} Tutorial 1
+  </a>
+  <a href="tutorial-3.html" class="btn btn-success">
+    {{< fa arrow-right >}} Tutorial 3
+  </a>
+</div>
+
+---
+
+*Introduction to Programming for Data Analysis — Master 1 in Economics*

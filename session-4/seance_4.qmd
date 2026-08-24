@@ -1,0 +1,879 @@
+---
+title: "Introduction to programming for data analysis"
+subtitle: "Session 4 — Statistical Tests and Regressions"
+author:
+  - name: Ulrich Aiounou
+    email: dimitri.aiounou@univ-amu.fr
+    url: https://research.ulrichaiounou.com/fr
+    affiliations:
+      - name: AMSE, Aix Marseille University
+  - name: Ewen Gallic
+    email: ewen.gallic@univ-amu.fr
+    url: https://egallic.fr
+    affiliations:
+      - name: AMSE, Aix Marseille University
+  - name: Pierre Michel
+    email: pierre.michel@univ-amu.fr
+    url: https://www.amse-aixmarseille.fr/fr/membres/michel
+    affiliations:
+      - name: AMSE, Aix Marseille University
+format:
+  revealjs:
+    theme: [simple, ../assets/custom.scss]
+    logo: "figs/logo_AMSE_noir_RVB.png"
+    slide-number: true
+    transition: fade
+    preview-links: true
+    footer: "Introduction to programming for data analysis — Session 2"
+    code-copy: true
+    code-line-numbers: true
+    highlight-style: github
+    smaller: false
+    html-math-method: mathjax
+    include-in-header:
+      - file: ../assets/mathjax-color.html
+      - file: ../assets/_homepage-link.html
+      - text: |
+          <link rel="stylesheet"
+                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+execute:
+  echo: true
+  warning: false
+  message: false
+  fig-width: 9
+  fig-height: 5.5
+  fig-align: "center"
+  dev: "svg" # Clean vector output for ggplot2 plots
+---
+
+
+
+## Disclaimer {background-color="#F5F6F0"}
+
+$$
+\definecolor{wongBlack}{RGB}{0,0,0}
+\definecolor{wongGold}{RGB}{230, 159, 0}
+\definecolor{wongLightBlue}{RGB}{86, 180, 233}
+\definecolor{wongGreen}{RGB}{0, 158, 115}
+\definecolor{wongYellow}{RGB}{240, 228, 66}
+\definecolor{wongBlue}{RGB}{0, 114, 178}
+\definecolor{wongOrange}{RGB}{213, 94, 0}
+\definecolor{wongPurple}{RGB}{204, 121, 167}
+\definecolor{colA}{RGB}{255, 221, 85}
+\definecolor{colB}{RGB}{148, 78, 223}
+\definecolor{colC}{RGB}{63, 179, 178}
+\definecolor{colGpeZero}{RGB}{127, 23, 14}
+\definecolor{colGpeUn}{RGB}{27, 149, 224}
+$$
+
+* The slides were adapted from those of Pierre Michel and Morgan Raux, both researchers at AMSE, who kindly shared their work.
+
+* This slide deck was made with Quarto and reveal.js, it is translated by Claude Sonnet 5 from a LaTex presentation previously made with beamer.
+
+
+
+## The 4 steps in any data analysis
+
+1. Finding data
+2. Cleaning data to combine several data sources
+3. **Producing knowledge out from data (summary statistics, regression analysis summarised via tables and graphs)**
+4. Interpreting the results (writing)
+
+```{r}
+#| include: false
+library(dplyr)
+library(ggplot2)
+library(modelr)
+library(forcats)
+library(tidyverse)
+```
+
+# Statistical Hypothesis Tests {.part}
+
+## What is a statistical hypothesis test?
+
+- A <span class="hl-blue">statistical hypothesis test</span> is a statistical method for deciding between two hypotheses.
+- It consists in rejecting (or not) a statistical hypothesis, called the <span class="hl-purple">null hypothesis</span>.
+- The statistic of the test is assumed to follow a specific distribution under the null hypothesis.
+- Using <span class="hl-blue">historical data</span>, an <span class="hl-purple">observed value</span> for that statistic is computed.
+- Then, a comparison with what we would expect if the null were true is made, based on the p-value:
+  - this comparison allows us to decide whether the difference is likely due to chance (in this case, the null is not rejected) or not.
+
+## Example: Student's t-Test
+
+A common hypothesis test is the <span class="hl-blue">Student's t-Test</span>, used to compare the means of two independent samples.
+
+- Consider two random samples of observations from two distributions $P_1$ and $P_2$, with population means $\mu_1$ and $\mu_2$.
+- Let $\overline{X}_1$ and $\overline{X}_2$ be the sample means (with observed values $\overline{x}_1$ and $\overline{x}_2$).
+- We test whether the observed difference $\overline{x}_1 - \overline{x}_2$ is statistically distinguishable from 0 to infer whether $\mu_1 = \mu_2$.
+- In other words, the t-test is about testing the null hypothesis:
+$$\text{H}_0: \mu_1 = \mu_2$$
+using the observed difference $\overline{x}_1 - \overline{x}_2$, while accounting for sample variability.
+
+## Example: Student's t-Test
+
+- The T-statistic is
+$$
+T = \frac{\overline{X}_1 - \overline{X}_2}{\sqrt{\tfrac{s_1^2}{n_1} + \tfrac{s_2^2}{n_2}}},
+$$
+where $s_1^2, s_2^2$ are the sample variances and $n_1, n_2$ the sample sizes.
+- Under $\text{H}_0$, $T$ approximately follows a Student's $t$-distribution with $n-1$ degrees of freedom.
+
+## Example: Student's t-Test
+
+- The <span class="hl-blue">decision rule</span> for the t-Test (two-sided test) is as follows:
+  - We reject $\text{H}_0$ if $|T| > t_{1-\alpha/2, \, \nu}$,
+  - where $t_{1-\alpha/2, \, \nu}$ is the critical value of the $t$-distribution with $\nu$ degrees of freedom,
+  - and where $\alpha$ is the significance level (usually $5\%$).
+- Equivalently, we reject $\text{H}_0$ if the p-value $< \alpha$
+  - The p-value is the probability, under $H_0$, of observing a test statistic at least as extreme as the one computed from the data, under the null:
+$$
+p = \mathbb{P}\big[ \mid T_\nu \mid \geq \mid t_{\text{obs}}\mid \big] = 2 \times \mathbb{P}\big[ T_\nu \geq \mid t_{\text{obs}}\mid\big],
+$$
+
+## Application to GDP and life satisfaction
+
+- [We want to test whether the average GDP of 'happy' countries differs significantly from the average GDP of 'unhappy' countries (in 2018).]{.gras-secondCol}
+- We assume that:
+  - we have independent observations across countries,
+  - each group's sampling distribution of the mean is approximately normal (if $n>30$ for example, which is not the case here...).
+
+## Application to GDP and life satisfaction
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+#| eval: false
+tb <- read_csv("data/out/gdp_lifesatisf.csv")
+happy <- filter(tb, 
+  life_satisf >= 7, year == 2018
+  )
+unhappy <- filter(
+  tb, life_satisf < 7, year == 2018
+  )
+t.test(happy$gdp, unhappy$gdp)
+```
+:::
+::: {.column width="50%"}
+```{r}
+#| echo: false
+tb <- read_csv("../tutorials/data/out/gdp-lifesat.csv")
+happy <- filter(tb, 
+  life_satisf >= 7, year == 2018
+  )
+unhappy <- filter(
+  tb, life_satisf < 7, year == 2018
+  )
+t.test(happy$gdp, unhappy$gdp)
+```
+
+
+- What do you conclude?
+:::
+::::
+
+# Linear Regression {.part}
+
+## Linear Regression
+
+- Recall that a linear regression is used to model the relationship between a <span class="hl-blue">dependent variable</span> (usually denoted <span class="hl-blue">$Y$</span>) and one or more <span class="hl-purple">explanatory variables</span> (usually denoted by <span class="hl-purple">$X_1, X_2, \ldots, X_p$</span>).
+- Here, let us focus on the simple linear regression, with only one variable $X\in \mathcal{X}$.
+- We assume that the relationship between the <span class="hl-blue">dependent variable $Y$</span> and the <span class="hl-purple">independent variable $X$</span> is linear:
+$$
+{\color{blue}Y} = a + b{\color{purple}X}
+$$
+
+## Example
+
+- Going back to our GDP/Life satisfaction example, assume that the <span class="hl-blue">response variable $Y$</span> is life satisfaction and the <span class="hl-purple">explanatory variable $X$</span> is GDP.
+- $Y = a + bX$, where:
+  - $a$ is the <span class="hl-green">intercept (constant)</span>,
+  - $b$ is the <span class="hl-purple">slope</span> of the line.
+- The values $a$ and $b$ are not known beforehand.
+
+## Example
+
+:::: {.columns}
+::: {.column width="60%"}
+```{r}
+#| eval: false
+ggplot(
+  data = tb |> filter(year == 2018),
+  mapping = aes(x = gdp, y = life_satisf)
+) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    x = "Real per capita GDP in 2013 (2020 Euro)",
+    y = "Life satisfaction"
+  ) +
+  scale_x_continuous(
+    labels = scales::label_number(
+      suffix = "", scale = 1, big.mark = ","
+    )
+  )
+```
+:::
+::: {.column width="40%"}
+```{r}
+#| echo: false
+#| fig-cap: "Relationship between life satisfaction and per capita GDP, with OLS regression line (in blue)."
+ggplot(
+  data = tb |> filter(year == 2018),
+  mapping = aes(x = gdp, y = life_satisf)
+) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    x = "Real per capita GDP in 2013 (2020 Euro)",
+    y = "Life satisfaction"
+  ) +
+  scale_x_continuous(
+    labels = scales::label_number(
+      suffix = "", scale = 1, big.mark = ","
+    )
+  )
+```
+
+:::
+::::
+
+## The Regression Model
+
+- In the previous slide, we assumed the following model:
+$$
+{\color{blue}Y_i} = {\color{green}\beta_0} + {\color{orange}\beta_1} {\color{purple}X_i} +\varepsilon_i,
+$$
+where
+
+  - $i=1,\ldots,n$ represent the individual, where $n$ is the total number of individuals,
+  - <span class="hl-blue">$Y_i$</span> is the <span class="hl-blue">dependent variable</span>,
+  - <span class="hl-purple">$X_i$</span> is the <span class="hl-purple">independent variable</span>,
+  - <span class="hl-green">$\beta_0$</span> is the <span class="hl-green">intercept</span> of the regression line,
+  - <span class="hl-orange">$\beta_1$</span> is the <span class="hl-orange">slope</span> of the regression line,
+  - $\varepsilon_i$ is the error, where we assume $\varepsilon \sim \mathcal{N}\big(0, \sigma^2\big)$.
+
+## The OLS Estimator
+
+- The coefficients <span class="hl-green">$\beta_0$</span> and <span class="hl-orange">$\beta_1$</span> can be estimated so as to minimize the sum of squared residuals (ordinary least squares (OLS) estimator):
+$$
+(\hat{\beta}_0, \hat{\beta}_1)= \text{arg}\min_{\beta_0, \beta_1} \sum_{i=1}^{n}(Y_i - \beta_0 - \beta_1 X_i)^2
+$$
+- Graphically speaking, this corresponds to finding the values of $\beta_0$ and $\beta_1$ that will produce a line that is "as close as possible to the observations."
+- You saw in your regression class that in the case of simple linear regression, we have:
+  - $\hat{\beta}_0 = \overline{Y}-\hat{\beta}_1 \overline{X}$
+  - $\hat{\beta}_1 = \frac{\sum_{i=1}^{n} (X_i - \overline{X})(Y_i - \overline{Y})}{\sum_{i=1}^{n}(X_i-\overline{X})^2}$
+
+## Predicted Values and Residuals
+
+- The predicted values using the OLS estimator, denoted $\hat{y}_i$, are computed as:
+$$
+\hat{y}_i =\hat{\beta}_0 + \hat{\beta}_1 X_i
+$$
+- The distance between the observed value $Y_i$ and the predicted value $\hat{y}_i$ is named the residual, denoted $\hat{\varepsilon}$:
+$$
+\hat{\varepsilon}_i = Y_i - \hat{y}_i
+$$
+
+::: {.tip}
+<span class="box-title">Interactive Application</span>
+A cool interactive online graphical application to understand the mechanisms of OLS can be accessed at the following URL: [https://www.econometrics-with-r.org/SimpleRegression.html](https://www.econometrics-with-r.org/SimpleRegression.html)
+:::
+
+## A Linear Regression with R
+
+- In `R`, the OLS estimators of a linear model can be easily obtained, using the `lm()`{.R} function:
+  - we provide the `lm()`{.R} function with a formula of the relationship we want to model,
+  - and a dataset.
+- For example, in the dataset `sim1` included in the `modelr` package, there are two variables, `y` and `x`. If we want to explain the variations of `y` by the variations of `x`, we write:
+
+```{r}
+mod_sim1 <- lm(formula = y ~ x, data = modelr::sim1)
+```
+
+## The Estimated Model
+
+- When we print the object returned by `lm()`{.R} in the console, we have:
+
+```{r}
+mod_sim1
+```
+
+Hence, the estimated model writes:
+$$
+\hat{y}_i = 4.221 + 2.05 \times x_i
+$$
+
+## A Linear Regression with R: Estimates
+
+- The coefficients of the model, estimated with OLS, can be accessed using the `coef()`{.R} function.
+
+```{r}
+coef(mod_sim1)
+coef(mod_sim1)["(Intercept)"]
+coef(mod_sim1)["x"]
+```
+
+## A Linear Regression with R: Predictions
+
+Instead of computing the predicted values using the extracted values of the coefficients and the matrix of explanatory variables, `R` offers the function `predict()`{.R}:
+
+```{r}
+predict(mod_sim1)
+```
+
+## A Linear Regression with R: Residuals
+
+Similarly, for the residuals, `R` provides the `residuals()`{.R} function:
+
+```{r}
+residuals(mod_sim1)
+```
+
+## A Linear Regression with R: Summary
+
+The `summary()`{.R} function applied to a linear regression model provides a lot of useful information on model fit:
+
+```{r}
+summary(mod_sim1)
+```
+
+## Export Your Regression Table {.smaller}
+
+- Please do not make a screenshot of a regression table from your statistical software.
+- In `R`, there is a convenient package called `{stargazer}` which provides a function with the same name that allows you to export your summary table as a nice table in HTML or LaTeX format.
+  - If you write your report using Google Docs, MS Word, OpenOffice, or Pages, export your table in HTML. You will then be able to copy/paste the table from your browser into your document (change the `type` argument).
+
+:::{.columns}
+
+:::{.column width="50%"}
+```{r}
+#| eval: false
+library(stargazer)
+stargazer(mod_sim1, type = "text")
+stargazer(mod_sim1, type = "html")
+stargazer(mod_sim1, type = "latex")
+```
+
+Using `type = "text"`{.R} (as shown on the right-hand side) is convenient for looking at your results in the console. However, in a report, prefer another format.
+
+:::
+
+:::{.column width="50%"}
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library(stargazer)
+stargazer(mod_sim1, type = "text")
+```
+:::
+
+:::
+
+# Visualize Predicted Values {.part}
+
+## Predictions
+
+:::: {.columns}
+::: {.column width="60%"}
+```{r}
+#| eval: false
+ggplot(
+  data = sim1 |> mutate(
+    pred = predict(
+      mod_sim1, newdata = sim1
+    )
+  )
+) +
+  geom_point(mapping = aes(x = x, y = y)) +
+  geom_line(
+    mapping = aes(x = x, y = pred),
+    colour= "dodgerblue", 
+    linewidth = 1
+  )
+```
+
+The blue line traces the predicted values from `mod_sim1` across the range of `x`.
+:::
+::: {.column width="40%"}
+```{r}
+#| echo: false
+ggplot(
+  data = sim1 |> mutate(
+    pred = predict(
+      mod_sim1, newdata = sim1
+    )
+  )
+) +
+  geom_point(mapping = aes(x = x, y = y)) +
+  geom_line(
+    mapping = aes(x = x, y = pred),
+    colour= "dodgerblue", 
+    linewidth = 1
+  )
+```
+:::
+::::
+
+## Residuals
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+ggplot(
+  data = sim1 |> mutate(
+    resid = residuals(mod_sim1)
+  )
+) +
+  geom_histogram(
+    mapping = aes(x = resid),
+    binwidth = 0.5, colour = "white"
+  ) +
+  labs(x = "Residuals", y = "Count")
+```
+:::
+::: {.column width="50%"}
+The distribution of residuals should look roughly symmetric and centered around 0 if the model fits well.
+:::
+::::
+
+## Quantile-Quantile Plot
+
+- A <span class="hl-purple">QQ plot</span> (<span class="hl-purple">quantile–quantile plot</span>) in linear regression compares the sorted residuals from the model to the <span class="hl-blue">theoretical quantiles of a normal distribution</span>.
+- This provides a visualization to <span class="hl-blue">check the normality assumption of residuals</span>.
+  - If the residuals are normally distributed, they will roughly lie on the bisector.
+  - If we observe an S-shape pattern, this points to a skewness of the distribution of the residuals.
+  - If we observe curved tails, it implies heavy or light tails for the distribution of the residuals.
+  - If we observe isolated endpoints, this is a hint that there may be outliers.
+
+## Residuals: Quantile-Quantile Plot
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+ggplot(
+  data = sim1 |> mutate(
+    resid = residuals(mod_sim1)
+  ),
+  mapping = aes(sample = y)
+) + stat_qq() + stat_qq_line() +
+  labs(title = "Normal QQ plot")
+```
+:::
+::: {.column width="50%"}
+Points close to the diagonal line indicate residuals consistent with a normal distribution.
+:::
+::::
+
+## Residuals: Relationship with $X$?
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+ggplot(
+  data = sim1 |> mutate(
+    resid = residuals(mod_sim1)
+  )
+) +
+  geom_ref_line(h = 0) +
+  geom_point(
+    mapping = aes(x = x, y = resid),
+  ) +
+  labs(y = "Residuals")
+```
+:::
+::: {.column width="50%"}
+No clear pattern between `x` and the residuals is a good sign. A visible trend would suggest a missing non-linear term.
+:::
+::::
+
+# Regression with categorical features {.part}
+
+## Reference Class
+
+- A character variable included in a regression will be transformed into a `factor` in `R`.
+- By default, the reference class is the first level in alphanumerical order.
+- To choose a different reference category:
+  - specify the order manually with the `levels` argument of the `factor()`{.R} function,
+  - or use `fct_relevel()`{.R} from the `{forcats}` package to directly set the reference level.
+- The reference level determines the baseline against which other categories are compared in the regression.
+
+## Reference Class: Benchmark
+
+- Benchmark situation: the variable `x` is a character variable which contains the following unique values: `"a"`{.R}, `"b"`{.R}, `"c"`{.R}, `"d"`{.R}.
+- The reference category will thus be `"a"`{.R}.
+
+```{r}
+lm(y ~ x, data = sim2)
+```
+
+## Changing the Reference Class
+
+Using the `factor()`{.R} function or the `fct_relevel()`{.R} function from `{forcats}`:
+
+:::{.panel-tabset}
+
+### `factor()`{.R}
+
+```{r}
+lm(
+  y ~ x,
+  data = sim2 |> 
+    mutate(x = factor(x, levels = c("c", "a", "b", "d"))),
+)
+```
+
+### `fct_relevel()`{.R}
+
+```{r}
+lm(
+  y ~ x,
+  data = sim2 |> 
+    mutate(x = fct_relevel(x, "c"))
+)
+```
+:::
+
+
+
+## Bivariate Graph for Residuals
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+mod_sim2 <- lm(y ~ x, data = sim2)
+ggplot(
+  data = sim2 |> 
+    mutate(pred = predict(mod_sim2)),
+  mapping = aes(x = x)
+)+
+  geom_point(mapping = aes(y = y)) +
+  geom_point(
+    mapping = aes(y = pred),
+    colour = "red"
+  )
+```
+:::
+::: {.column width="50%"}
+`R` automatically converts categorical variables included in a model.
+:::
+::::
+
+# Interaction Terms {.part}
+
+## Interaction in a Model
+
+We may believe the effect of a variable ($x_1$) depends on the value of another ($x_2$).
+
+:::: {.columns}
+::: {.column width="50%"}
+```{r}
+# the sim3 dataset is from {modelr}
+ggplot(
+  data = sim3, 
+  mapping = aes(
+    x = x1, y = y, colour = x2)
+  ) +
+  geom_point() +
+  geom_smooth()
+```
+:::
+::: {.column width="50%"}
+The slope of `y` with respect to `x1` appears to differ across levels of `x2`.
+:::
+::::
+
+## Interaction in a Model
+
+- Benchmark model without interactions:
+$$
+y_i = \beta_0 + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \varepsilon_i, 
+\quad \varepsilon_i \sim \mathcal{N}(0, \sigma^2).
+$$
+- To test whether the effect of $x_1$ depends on the value of $x_2$, we add an interaction term:
+$$
+y_i = \gamma_0 + \gamma_1 x_{1,i} + \gamma_2 x_{2,i} 
+      + \gamma_3 (x_{1,i} \times x_{2,i}) + \varepsilon_i, 
+\quad \varepsilon_i \sim \mathcal{N}(0, \sigma^2).
+$$
+- With this specification, the marginal effect of $x_1$ is
+$$
+\frac{\partial y_i}{\partial x_{1,i}} = \gamma_1 + \gamma_3 x_{2,i},
+$$
+Hence, the slope of $x_1$ changes with $x_2$.
+
+## Interaction in a Model
+
+We will consider two cases:
+
+1. a continuous variable interacted with a <span class="hl-blue">categorical variable</span>,
+2. a continuous variable interacted with a <span class="hl-blue">continuous variable</span>.
+
+## Interaction Between Continuous and Categorical Variables
+
+```{r}
+(mod_bench <- lm(y ~ x1 + x2, data = sim3))
+
+(mod_interact <- lm(y ~ x1 * x2, data = sim3))
+```
+
+## Visualize the Slopes in a Graph
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "3,13,14,15,16,17,18"
+ggplot(
+  data = sim3 |> 
+    modelr::gather_predictions(mod_bench, mod_interact) |> 
+    mutate(
+      model = factor(
+        model, 
+        levels = c("mod_bench", "mod_interact"), 
+        labels = c("Benchmark", "Interaction~between~x[1]~and~x[2]"))
+    ),
+  mapping = aes(x = x1, y = y, colour = x2)
+) +
+  geom_point() +
+  geom_line(aes(y = pred)) +
+  facet_wrap(
+    ~ model, 
+    labeller = labeller(
+      model = label_parsed
+    )
+)
+```
+
+## A Quick Glance at the Residuals
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "10"
+ggplot(
+  data = sim3 |> 
+    modelr::gather_residuals(mod_bench, mod_interact) |> 
+    mutate(
+      model = factor(
+        model, 
+        levels = c("mod_bench", "mod_interact"), 
+        labels = c("Benchmark", "Interaction~between~x[1]~and~x[2]"))
+    ),
+  mapping = aes(x = x1, y = resid, colour = x2)
+) +
+  geom_point() +
+  facet_grid(
+    model ~ x2,
+    labeller = labeller(
+      model = label_parsed
+    )
+  ) +
+  labs(y = "residuals")
+```
+
+## Interaction Between Two Continuous Variables
+
+```{r}
+(mod1 <- lm(y ~ x1 + x2, data = sim4))
+
+(mod2 <- lm(y ~ x1 * x2, data = sim4))
+```
+
+## Interaction Between Two Continuous Variables
+
+```{r}
+modelr::gather_predictions(data = sim4, mod1, mod2)
+```
+
+## Interaction Between Two Continuous Variables
+
+```{r}
+#| output-location: slide
+ggplot(
+  data = sim4 |> 
+    modelr::gather_predictions(mod1, mod2) |> 
+    mutate(
+      model = factor(
+        model, 
+        levels = c("mod1", "mod2"), 
+        labels = c("Benchmark", "Interaction~between~x[1]~and~x[2]"))
+    ),
+  mapping = aes(x = x1, y = pred, color = x2, group = x2)
+) +
+  geom_line() + 
+  facet_wrap( ~ model)
+```
+
+# Non-Linear Terms in a Linear Regression Model {.part}
+
+## Non-Linear Terms
+
+- The relationship with an explanatory variable and the response variable may be non-linear.
+- Introducing transformed variables into the model allows us to take these non-linearities into account.
+  - log, squared value, power
+- In an `R` formula, if the transformation involves one of the following signs, the transformation must appear inside the ``I()``{.R} function when writing the formula:
+  - `+`{.R}, `*`{.R}, `^`{.R}, `-`{.R}.
+
+## Example
+
+- For example, assume we want to fit the following model:
+$$
+y_i = \beta_0 + \beta_1 x_i + \beta_2x_i^2 + \varepsilon_i, \quad \varepsilon_i \sim \mathcal{N}(0,1).
+$$
+- The following <span class="hl-blue">formula</span> will be used:
+
+```{r}
+y ~ x + I(x^2)
+```
+
+- Alternatively, one can use the `poly()`{.R} function (polynomials):
+
+```{r}
+y ~ poly(x, 2, raw = TRUE)
+```
+
+# Regression with Panel Data {.part}
+
+## Panel Data
+
+- In session 1, we mentioned panel data.
+- Recall that <span class="hl-purple">cross-sectional data</span> contain observations that are collected at a single point in time across multiple units.
+- In contrast, <span class="hl-purple">panel data</span> contain observations for multiple units followed over two or more time periods.
+- A panel dataset will be denoted as follows:
+$$\{ (\boldsymbol{X}_{it}, y_{it}) \}_{i=1,\dots,n;\; t=1,\dots,T},$$
+where $i=1,\ldots n$ refers to **individuals** and $t=1,\ldots$ refers to the **time period**.
+
+## Example
+
+The dataset containing real per capita GDP merged with the dataset giving life satisfaction, both downloaded from Eurostat (see [tutorial 1](tutorial-1.html)) contains annual values (from 2010 to 2023) for multiple countries (6).
+```{r}
+tb
+```
+
+## Panel Data Setup
+
+- We have a panel dataset: $N=6$ countries observed over $T=14$ years (even if it is not perfectly balanced).
+- The variables:
+  - $gdp_{it}$: per capita GDP,
+  - $life_{it}$: life satisfaction (response variable).
+- Our regression model of interest:
+$$
+\text{life\_satisf}_{it} = \beta_0 + {\color{wongGreen}\beta_1} \text{gdp}_{it} + \varepsilon_{it}.
+$$
+- How can we account for <span class="hl-orange">shocks common to all countries in the same year</span> (e.g., financial crisis, pandemic)?
+
+## Why Time Fixed Effects?
+
+- The <span class="hl-orange">events</span> mentioned previously (global recessions, pandemics, or geopolitical crises) affect all countries simultaneously.
+- Ignoring these can bias $\color{wongGreen}\beta_1$ if GDP and <span class="hl-orange">these shocks</span> are correlated.
+- To tackle this issue, we add **time dummies** ${\color{wongOrange}\delta_t}$ to capture common <span class="hl-orange">year-specific effects</span>.
+
+## Panel Regression with Time Fixed Effects
+
+- Extended specification:
+$$
+\text{life\_satisf}_{it} = \beta_0 + {\color{wongGreen}\beta_1} \text{gdp}_{it} + \sum_{t\in\mathcal{T}} {\color{wongOrange}\delta_t} D_t + u_{it},
+$$
+where $D_t$ is a dummy variable equal to 1 if year = $t$, and $\mathcal{T} = \{2013, 2018, 2021, 2022, 2023, 2024\}$.
+- We interpret the coefficients as follows:
+  - ${\color{wongGreen}\beta_1}$: marginal effect of per capita GDP on life satisfaction, <span class="hl-blue">net of year-specific shocks</span>.
+  - $\color{wongOrange}\delta_t$: average shift in life satisfaction in year $t$ relative to the baseline year.
+
+## Implementation in R: Pooled OLS
+
+The FE model estimated with the `lm()`{.R} function:
+
+```{r}
+#| eval: false
+mod_fe <- lm(
+  life ~ gdp + factor(year),
+  data = panel_data
+)
+```
+
+Using the `{plm}` package:
+
+```{r}
+#| eval: false
+library(plm)
+tb_pdata <- pdata.frame(tb, index = c("country", "year"))
+mod_fe_plm <- plm(
+  life_satisf ~ gdp + factor(year),
+  data = tb_pdata,
+  model = "pooling"
+)
+```
+
+
+## With Country Fixed Effects
+
+- So far, we controlled for <span class="hl-orange">time fixed effects</span> $\delta_t$ (global shocks common to all countries).
+- But countries also differ in <span class="hl-gold">time-invariant characteristics</span>, for example:
+  - culture, geography, history,
+  - institutions, long-run policies, etc.
+- These may be correlated with per capita GDP and life satisfaction.
+- Hence, to account for this, we can also control for <span class="hl-gold">country fixed effects</span> $\alpha_i$.
+
+## Two-Way Fixed Effects Model (1/2)
+
+- The regression equation becomes:
+$$
+\text{life\_satisf}_{it} = \beta_0 + {\color{wongGreen}\beta_1} \text{gdp}_{it} + {\color{wongGold}\alpha_i} + {\color{wongOrange}\delta_t} + \varepsilon_{it},
+$$
+  - $\color{wongGold}\alpha_i$: country-specific effects (to absorb unobserved, time-invariant differences across countries).
+  - $\color{wongOrange}\delta_t$: time effects (to capture common shocks in a given year).
+
+## Two-Way Fixed Effects Model (2/2)
+
+- $\color{wongGreen}\beta_1$ measures the effect of GDP on life satisfaction <span class="hl-blue">within countries over time</span>, net of:
+  - <span class="hl-gold">persistent cross-country differences</span> ($\color{wongGold}\alpha_i$),
+  - <span class="hl-orange">global shocks or year-specific changes</span> ($\color{wongOrange}\delta_t$).
+- In other words:
+  - we compare each country to *itself* over time,
+  - while adjusting for events that affect all countries in the same year.
+
+## Implementation in R
+
+With the `lm()`{.R} function:
+
+```{r}
+#| eval: false
+mod_twfe_lm <- lm(
+  life_satisf ~ gdp + factor(country) + factor(year),
+  data = tb
+)
+```
+
+With the `plm()`{.R} function:
+
+```{r}
+#| eval: false
+mod_twfe <- plm(
+  life_satisf ~ gdp,
+  data = tb_pdata,
+  model = "within",
+  effect = "twoways"
+)
+```
+
+
+## Package for Estimations with Multiple Fixed-Effects
+
+The package `{fixest}` seems nice:
+
+- The homepage of the package: [🌐 fixest: Fast and user-friendly fixed-effects estimation](https://lrberge.github.io/fixest/)
+- A cool vignette for the package: [🌐 Fast Fixed-Effects Estimation: Short Introduction](https://cran.r-project.org/web/packages/fixest/vignettes/fixest_walkthrough.html)
+
+```{r}
+#| eval: false
+library(fixest)
+mod_fe_fixest <- feols(life_satisf ~ gdp | year, data = tb)
+etable(mod_fe_fixest)
+
+mod_twfe_fixest <- feols(life_satisf ~ gdp | year + country, data = tb)
+etable(mod_twfe_fixest)
+```
+
+## Exercises {.exercise}
+
+Practice with [the third tutorial](tutorial-3.html)!

@@ -1,0 +1,384 @@
+/*-- scss:defaults --*/
+
+// ---- Palette (same tokens as the tutorial page) ----
+$paper:        #F5F6F0;
+$paper-2:      #EDEEE4;
+$ink:          #1B2621;
+$ink-soft:     #4A564F;
+$accent:       #3E7C6B;
+$accent-deep:  #2A5A4D;
+$amber:        #C98A3E;
+$warn-accent:  #C9502F;
+$warn-bg:      #FBF0E4;
+$line:         #DBD8CA;
+$code-bg:      #EFEFEF;
+$code-ink:     #444444;
+
+$wongBlack:     #000000;
+$wongGold:      #E69F00;
+$wongLightBlue: #56B4E9;
+$wongGreen:     #009E73;
+$wongYellow:    #F0E442;
+$wongBlue:      #0072B2;
+$wongOrange:    #D55E00;
+$wongPurple:    #CC79A7;
+
+$body-bg: $paper;
+$body-color: $ink;
+$link-color: $accent-deep;
+
+$presentation-heading-color: $ink;
+$presentation-font-size-root: 32px;
+$presentation-heading-font: "Fraunces", serif;
+$presentation-font-family: "Inter", sans-serif;
+$code-font: "JetBrains Mono", monospace;
+
+$presentation-h2-font-size: 1.5em;
+
+$wongBlack:     #000000;
+$wongGold:      #E69F00;
+$wongLightBlue: #56B4E9;
+$wongGreen:     #009E73;
+$wongYellow:    #F0E442;
+$wongBlue:      #0072B2;
+$wongOrange:    #D55E00;
+$wongPurple:    #CC79A7;
+$roseTol:       #882255;
+
+
+/* Gras colors */
+
+
+.gras-wongBlue      { color: $wongBlue; font-weight: bold; }
+.gras-wongGreen     { color: $wongGreen; font-weight: bold; }
+.gras-wongOrange    { color: $wongOrange; font-weight: bold; }
+.gras-wongGold      { color: $wongGold; font-weight: bold; }
+.gras-wongLightBlue { color: $wongLightBlue; font-weight: bold; }
+.gras-wongYellow    { color: $wongYellow; font-weight: bold; }
+.gras-wongPurple    { color: $wongPurple; font-weight: bold; }
+.gras-wongBlack     { color: $wongBlack; font-weight: bold; }
+
+
+.gras-firstCol {
+  color: $wongBlue;
+  font-weight: bold;
+}
+
+.gras-secondCol {
+  color: $wongGreen;
+  font-weight: bold;
+}
+
+.gras-thirdCol {
+  color: $wongGold;
+  font-weight: bold;
+}
+
+/*-- scss:rules --*/
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+.reveal .slides section{
+  text-align: left;
+}
+
+.reveal h1, .reveal h2, .reveal h3{
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: $ink;
+}
+
+.reveal .slide-background{
+  background-color: $paper;
+}
+
+// Title slide
+.reveal .title-slide, #title-slide{
+  text-align: center;
+}
+.reveal .title-slide h1.title, #title-slide h1.title{
+  font-size: 1.6em;
+  color: $accent-deep;
+}
+.reveal .title-slide .subtitle, #title-slide .subtitle{
+  font-family: "JetBrains Mono", monospace;
+  font-size: .6em;
+  color: $ink-soft;
+}
+
+// Part section
+.reveal .slide-background.part {
+  background-color: $roseTol !important;
+}
+
+.reveal .slides section.part {
+  color: #ffffff;
+}
+
+.reveal .slides section.part h1 {
+  color: #ffffff;
+}
+
+
+// Section divider slides
+.reveal .slides section.section-title,
+.reveal .slides > section.center{
+  text-align: center;
+}
+
+
+// Code blocks
+.reveal pre{
+  background: $code-bg;
+  border-radius: 3px;
+  box-shadow: none;
+  width: 100%;
+}
+.reveal pre code{
+  background: transparent;
+  color: $code-ink;
+  font-family: "JetBrains Mono", monospace;
+}
+.reveal code{
+  font-family: "JetBrains Mono", monospace;
+  background: $paper-2;
+  border-radius: 3px;
+  color: $accent-deep;
+}
+
+// Links
+.reveal a{
+  color: $accent-deep;
+}
+
+.small {
+  font-size: 0.9em;
+}
+
+.smaller {
+  font-size: 0.8em;
+}
+
+.reveal .slide figure > figcaption {
+  font-size: 0.6em;
+  text-align: center;
+}
+
+/* Automatically invert the black logo to white on .part slides
+.reveal:has(#title-slide.present) .slide-logo {
+  filter: brightness(0) invert(1) !important;
+}*/
+
+/* Invert logo only on dark part slides */
+.reveal:has(section.part.present) .slide-logo {
+  filter: brightness(0) invert(1) !important;
+}
+
+/* Target footer text specifically when the title slide is visible
+.reveal:has(#title-slide.present) .footer,
+.reveal:has(#title-slide.present) .footer p {
+  color: #ffffff !important;
+}*/
+
+/* Footer on title slide */
+.reveal:has(#title-slide.present) .footer,
+.reveal:has(#title-slide.present) .footer p {
+  color: $ink-soft !important;
+}
+/* Slide number on .part slides */
+.reveal:has(section.part.present) .slide-number {
+  color: #ffffff !important;
+}
+
+/* Similar process for par slides */
+/* Automatically invert the black logo to white on .part slides */
+.reveal:has(section.part.present) .slide-logo {
+  filter: brightness(0) invert(1) !important;
+}
+.reveal:has(section.part.present) .footer,
+.reveal:has(section.part.present) .footer p {
+  color: #ffffff !important;
+}
+
+
+.reveal .slide-background.exercise {
+  background-color: #fff4d6 !important;
+}
+
+.reveal .slide-background.technical {
+  background-color: #CDEAFC !important;
+}
+
+.reveal .slide-background.exercisesol {
+  background-color: #DCEFE6 !important;
+}
+
+
+// ---------- Callout-style boxes ----------
+.tip, .objective, .warning{
+  border-radius: 2px;
+  padding: .7em 1em;
+  margin: .8em 0;
+  font-size: .85em;
+}
+.tip > :first-child, .objective > :first-child, .warning > :first-child{
+  margin-top: 0;
+}
+.tip > :last-child, .objective > :last-child, .warning > :last-child{
+  margin-bottom: 0;
+}
+
+.tip{
+  background: $paper-2;
+  border-left: 3px solid $accent;
+}
+.tip .box-title{
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  color: $accent-deep;
+  display: block;
+  margin-bottom: .3em;
+}
+
+.objective{
+  background: #EFF2E6;
+  border: 1px solid #C7D3B4;
+}
+.objective .box-title{
+  font-family: "JetBrains Mono", monospace;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-size: .8em;
+  color: $ink-soft;
+  display: block;
+  margin-bottom: .3em;
+}
+
+.warning{
+  background: $warn-bg;
+  border-left: 3px solid $warn-accent;
+}
+.warning .box-title{
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  color: $warn-accent;
+  display: block;
+  margin-bottom: .3em;
+}
+
+// ---------- Quiz-style fragment answers ----------
+.quiz-answer{
+  margin-top: .8em;
+  padding: .6em 1em;
+  background: #EAF2EC;
+  border: 1px solid #BFDBCC;
+  border-radius: 2px;
+  font-size: .85em;
+}
+
+// ---------- Directory tree ----------
+.dirtree{
+  font-family: "JetBrains Mono", monospace;
+  font-size: .62em;
+  line-height: 1.7;
+  background: $paper-2;
+  border: 1px solid $line;
+  border-radius: 2px;
+  padding: .8em 1.1em;
+  display: inline-block;
+}
+.dirtree .dir{ color: $accent-deep; font-weight: 600; }
+.dirtree .file{ color: $ink-soft; }
+
+.dirtree .dir-current, .dirtree .file-current{
+  background: rgba(62, 124, 107, .18);
+  color: $accent-deep;
+  font-weight: 700;
+  border-radius: 2px;
+  padding: 0 .3em;
+  margin: 0 -.3em;
+}
+
+// ---------- Small data tables ----------
+.reveal table{
+  font-size: .75em;
+  border-collapse: collapse;
+}
+.reveal table th, .reveal table td{
+  border: 1px solid $line;
+  padding: .4em .7em;
+}
+.reveal table th{
+  background: $paper-2;
+  color: $ink-soft;
+}
+
+// Highlight helper spans (mirrors \highlightblue, \highlightgreen, \highlightpurple, \grasB, \grasG, \grasO from the beamer theme)
+.hl-blue{ color: #2E6E9E; font-weight: 600; }
+.hl-green{ color: $accent-deep; font-weight: 600; }
+.hl-purple{ color: #7A5C9E; font-weight: 600; }
+.hl-orange{ color: $wongOrange; font-weight: 600; }
+.hl-gold{ color: $wongGold; font-weight: 600; }
+
+.reveal .footer-note{
+  font-family: "JetBrains Mono", monospace;
+  font-size: .5em;
+  color: $ink-soft;
+}
+
+// ---------- Homepage button (top-left) ----------
+.homepage-link{
+  position: fixed;
+  top: 1em;
+  left: 1em;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: .5em;
+  padding: .45em .9em;
+  font-family: "Inter", sans-serif;
+  font-size: .65em;
+  font-weight: 500;
+  color: $ink-soft;
+  background: $paper;
+  border: 1px solid $line;
+  border-radius: 20px;
+  text-decoration: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,.08);
+  transition: color .15s ease, border-color .15s ease, background .15s ease;
+}
+
+/* Homepage button on .part slides — match the inverted footer/logo styling */
+body:has(section.part.present) .homepage-link{
+  color: #ffffff;
+  background: rgba(255, 255, 255, .08);
+  border-color: rgba(255, 255, 255, .4);
+}
+
+body:has(section.part.present) .homepage-link i{
+  color: #ffffff;
+}
+
+body:has(section.part.present) .homepage-link:hover,
+body:has(section.part.present) .homepage-link:focus-visible{
+  color: #ffffff;
+  background: rgba(255, 255, 255, .18);
+  border-color: #ffffff;
+}
+
+.homepage-link:hover,
+.homepage-link:focus-visible{
+  color: $accent-deep;
+  border-color: $accent;
+  background: $paper-2;
+}
+
+.homepage-link i{
+  font-size: 1em;
+  color: $accent;
+}
+
+// Keep it out of the way when exporting to PDF
+.reveal.print-pdf .homepage-link{
+  display: none;
+}

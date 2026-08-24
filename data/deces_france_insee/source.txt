@@ -1,0 +1,3 @@
+Demography - Number of deaths - Metropolitan France Identifier 000436394
+Source: Insee
+https://www.insee.fr/en/statistiques/serie/000436394

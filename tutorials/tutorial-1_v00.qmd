@@ -1,0 +1,856 @@
+---
+title: "Tutorial #1. Data Management and Data Wrangling"
+subtitle: "Introduction to programming for data analysis"
+author:
+  - name: Ulrich Aiounou
+    email: dimitri.aiounou@univ-amu.fr
+    affiliations:
+      - name: AMSE, Aix Marseille University
+  - name: Ewen Gallic
+    email: ewen.gallic@univ-amu.fr
+    affiliations:
+      - name: AMSE, Aix Marseille University
+  - name: Kla Kouadio
+    email: kla.kouadio@univ-amu.fr
+    affiliations:
+      - name: AMSE, Aix Marseille University
+format:
+  html:
+    css: styles.css
+    include-in-header: _fonts.html
+    include-before-body: _topbar.html
+    include-after-body: _hints-script.html
+    toc: true
+    toc-location: left
+    toc-title: "On this page"
+    number-sections: false
+    page-layout: article
+    anchor-sections: true
+    code-line-numbers: true
+    highlight-style: github
+---
+
+
+::: {.path-crumb}
+M1 Economics / Intro to Programming / <span class="here">tutorial-1</span>
+:::
+
+::: {.hero-tree}
+project-m1/<br>
+&nbsp;&nbsp;<span class="dir">data/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">input/</span> <span class="file">data_choices.csv</span><br>
+&nbsp;&nbsp;<span class="dir">scripts/</span><span class="cursor"></span>
+:::
+
+::: {.warning}
+
+## Disclaimer
+
+This HTML page was generated with Claude Sonnet 5 based on exercises we developed from a LaTeX document.
+
+If you would prefer to work with a more traditional PDF version, you can download it here: [Download the PDF](tutorial-1.pdf).
+
+Part of the content was created by Pierre Michel (AMSE) and Morgan Raux (AMSE) who kindly shared their work.
+
+:::
+
+::: {.tip}
+#### 💡 About the code chunks in this document
+
+The code chunks in **Part 1** describe a *fictional* project folder (`project-m1`) that a classmate sent you — they illustrate path concepts but are not meant to run on your own machine, so they are shown as non-executed chunks. From **Part 2** onward, the chunks are real, executable R chunks: as long as you follow the tutorial's setup instructions (creating the folders and downloading the described files), they will run exactly as written.
+:::
+
+## Part 1 — Mastering absolute and relative file paths in R
+
+You have just received a project directory named `project-m1` from one of your classmates for an econometrics and quantitative finance assignment. This directory contains all the folders necessary to analyze investment choices using statistical models.
+
+::: {.tip}
+#### Reminder — Absolute vs. Relative Paths
+
+- **Absolute Path:** the complete address of a file starting from the root of the operating system (e.g., `C:/Users/Name/Documents/...` or `/home/user/...`). It is rigid and works only on your specific machine.
+- **Relative Path:** the address of a file relative to your current working directory. It uses the single dot `.` (current folder) and the double dot `..` (move up to the parent folder). This is the key to **reproducibility**.
+:::
+
+The complete directory tree looks like this:
+
+::: {.hero-tree style="display:block;"}
+project-m1/<br>
+&nbsp;&nbsp;<span class="dir">data/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">input/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">data_choices.csv</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">df_train.csv</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">df_validation.csv</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">output/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">my_nn.rda</span><br>
+&nbsp;&nbsp;<span class="dir">references/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">Peterson_et_al_2021_Science.pdf</span><br>
+&nbsp;&nbsp;<span class="dir">scripts/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">project_utility.Rproj</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">r/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">neural_network.R</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">ebook/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file">prospec_utility.qmd</span>
+:::
+
+::: {.qcard}
+**Q1. The starting point.**
+
+**Scenario.** You launch RStudio by double-clicking on the project file `project_utility.Rproj` located in the `scripts` folder from your file explorer. RStudio automatically sets your working directory to the folder containing this `.Rproj` file.
+
+You open a brand new, empty script. You want to import the contents of the `data_choices.csv` file.
+
+a) What is your current Working Directory?
+b) Provide an R command using the `readr` package to load this file into an object named `lotteries`.
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn hint" data-step="2" disabled><span class="dot"></span>Hint 2</button>
+<button class="step-btn sol" data-step="3" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Remember: opening an `.Rproj` file sets the working directory to **the folder that contains it** — not the folder of whatever script you open afterward.
+:::
+
+::: {.reveal .hint-box data-reveal="2"}
+`data_choices.csv` sits in exactly the same folder as the `.Rproj` file. So the relative path is... just the filename.
+:::
+
+::: {.reveal .sol-box data-reveal="3"}
+The current working directory is the `scripts/` folder, because opening an `.Rproj` file defaults the root directory to its parent folder. Since the data file is located in the exact same folder as the project file, the relative path is direct:
+
+```{r}
+#| eval: false
+library(readr)
+# The relative path is simply the filename itself
+lotteries <- read_csv("data_choices.csv")
+```
+:::
+:::
+
+::: {.qcard}
+**Q2. Moving up and down.**
+
+**Scenario.** Still in the same RStudio session (your working directory has not changed), you now want to import the training data file named `df_train.csv`.
+
+Provide the R command to load this file and store the result in an object named `df_train`.
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn hint" data-step="2" disabled><span class="dot"></span>Hint 2</button>
+<button class="step-btn sol" data-step="3" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+From `scripts/`, you first need to go up one level to exit `scripts` and land in `project-m1`: `..`
+:::
+
+::: {.reveal .hint-box data-reveal="2"}
+Then enter the `data` folder (`../data`) and the `input` subfolder (`../data/input`) to target the file.
+:::
+
+::: {.reveal .sol-box data-reveal="3"}
+Path: `../data/input/df_train.csv`
+
+```{r}
+#| eval: false
+df_train <- read_csv("../data/input/df_train.csv")
+```
+:::
+:::
+
+::: {.qcard}
+**Q3. The deep directory trap.**
+
+**Scenario.** You open the script `neural_network.R` located deep inside the `scripts/r/` subfolder. Note that your RStudio session is still actively attached to the `project_utility.Rproj` file opened in Question 1.
+
+You want to save your final model into the `data/output/` folder under the name `my_nn.rda`. What relative path structure should you pass to the `save(..., file = ...)` function? Justify your choice.
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn hint" data-step="2" disabled><span class="dot"></span>Hint 2</button>
+<button class="step-btn sol" data-step="3" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Classic trap: does the working directory change when you open a script that lives deeper in the folder tree?
+:::
+
+::: {.reveal .hint-box data-reveal="2"}
+No — as long as your RStudio session is tied to an `.Rproj` file, the working directory never changes. It stays locked onto `scripts/`, regardless of which script you're editing or where it's stored.
+:::
+
+::: {.reveal .sol-box data-reveal="3"}
+The path does not depend on the position of `neural_network.R`; it starts from `scripts/`: exit `scripts` (`..`), then head to the target folder.
+
+```{r}
+#| eval: false
+save(model, file = "../data/output/my_nn.rda")
+```
+:::
+:::
+
+::: {.qcard}
+**Q4. Reproducibility.**
+
+A teammate sends you their script to read the bibliographic reference file. Inside, you spot the following line of code:
+
+```{r}
+#| eval: false
+library(pdftools)
+text_data <- pdf_text("C:/Users/Camille/Documents/project-m1/references/Peterson_et_al_2021_Science.pdf")
+```
+
+a) What type of file path is this?
+b) Why will this code inevitably throw an error when you run it on your machine?
+c) Provide a clean, collaborative fix using a relative path instead.
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn hint" data-step="2" disabled><span class="dot"></span>Hint 2</button>
+<button class="step-btn sol" data-step="3" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Look at the prefix `C:/` — what does it correspond to, and does that folder exist on your own machine?
+:::
+
+::: {.reveal .hint-box data-reveal="2"}
+It's an absolute path tied to a specific user's environment. To fix it, start again from your working directory (`scripts/`) and go up into `references/`.
+:::
+
+::: {.reveal .sol-box data-reveal="3"}
+This is an absolute path (identified by the drive root prefix `C:/`). It is not reproducible: it looks for a specific user environment (`Camille`) that does not exist on your computer.
+
+```{r}
+#| eval: false
+text_data <- pdf_text("../references/Peterson_et_al_2021_Science.pdf")
+```
+:::
+:::
+
+## Part 2 — Does money bring happiness?
+
+This exercise introduces a study of the relationship between life satisfaction and standard of living across countries. The analysis is conducted at the national level, using self-reported measures of overall life satisfaction and per capita GDP as a proxy for standard of living. **The central hypothesis** is that higher per capita GDP is positively associated with higher levels of life satisfaction.
+
+::: {.objective}
+#### Objectives of the exercise
+
+1. Retrieve the data to test the hypothesis from [Eurostat](https://ec.europa.eu/eurostat/web/main/data/database).
+2. Prepare the data for further analysis in R.
+:::
+
+**Setup.** Prepare a project for the first tutorial. Adopt a `tutorial-1/` root containing `data/{raw,tmp,out}`, `scripts/`, `figs/`, `tables/`, `references/`, a `README.md` and a `project.Rproj`. Working within an RStudio project sets your active working directory to the project's root folder (`tutorial-1/`).
+
+```{r}
+#| include: false
+library(readr)
+library(dplyr)
+```
+
+::: {.qcard}
+**Q1.** Import the per capita GDP dataset in R (the "Real GDP per capita" dataset, ref: `sdg_08_10`, downloaded as `data/raw/sdg_08_10.csv`). Adapt the following instruction:
+
+```{r}
+#| eval: false
+gdp <- read_csv(...)
+```
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+You are working from the project root directory (`tutorial-1/`) — navigate down into the subfolders.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+```{r}
+library(readr)
+gdp <- read_csv("data/raw/sdg_08_10.csv")
+gdp
+```
+:::
+:::
+
+::: {.qcard}
+**Q2.** What does the following instruction do?
+
+```{r}
+#| eval: false
+View(gdp)
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+The `View()` function opens a spreadsheet-style data viewer inside RStudio. This allows you to visually inspect the rows and columns of your data frame natively. Be careful: the number of displayed columns is limited to 50; click the little arrows at the top of the viewer pane to see the next 50.
+:::
+:::
+
+::: {.qcard}
+**Q3.** Which column(s) of `gdp` can be used to identify a unique observation?
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Think of a Eurostat panel: one spatial dimension, one temporal dimension.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+Typically, Eurostat panels use a combination of the spatial identifier column (`geo`) and the temporal identifier column (`TIME_PERIOD`) to form a unique composite primary key per observation row.
+:::
+:::
+
+::: {.qcard}
+**Q4.** Import the life satisfaction dataset in R (the "Overall life satisfaction by sex, age and educational attainment" dataset, ref: `ilc_pw01`, saved as `data/raw/ilc_pw01.csv`). Adapt the following instruction:
+
+```{r}
+#| eval: false
+life_satisf <- read_csv(...)
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+```{r}
+life_satisf <- read_csv("data/raw/ilc_pw01.csv")
+life_satisf
+```
+:::
+:::
+
+::: {.qcard}
+**Q5.** What does the following instruction do?
+
+```{r}
+#| eval: false
+life_satisf <- life_satisf |>
+    select(geo, TIME_PERIOD, OBS_VALUE)
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+It subsets the data frame, keeping only three columns: geographic region (`geo`), time period (`TIME_PERIOD`), and the target observation values (`OBS_VALUE`). All other columns are dropped.
+
+```{r}
+life_satisf <- life_satisf |>
+    select(geo, TIME_PERIOD, OBS_VALUE)
+life_satisf
+```
+:::
+:::
+
+::: {.qcard}
+**Q6.** What does the following instruction do?
+
+```{r}
+#| eval: false
+life_satisf <- life_satisf |>
+    rename(
+        country = geo,
+        year = TIME_PERIOD,
+        life_satisf = OBS_VALUE
+    )
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+It renames the explicit dataset columns to clean up feature definitions (`geo` becomes `country`, `TIME_PERIOD` becomes `year`, and `OBS_VALUE` becomes `life_satisf`) to make future analysis code clearer.
+
+```{r}
+life_satisf <- life_satisf |>
+    rename(
+        country = geo,
+        year = TIME_PERIOD,
+        life_satisf = OBS_VALUE
+    )
+life_satisf
+```
+:::
+:::
+
+::: {.qcard}
+**Q7.** What does the following code do?
+
+```{r}
+#| eval: false
+write_csv(life_satisf, file = "data/out/lifesat.csv")
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+It exports the modified `life_satisf` data frame object out of active memory, saving it physically as a static comma-separated values (.csv) file into the destination folder path: `data/out/lifesat.csv`.
+
+```{r}
+write_csv(life_satisf, file = "data/out/lifesat.csv")
+```
+:::
+:::
+
+::: {.qcard}
+**Q8.** What does the following code do?
+
+```{r}
+#| eval: false
+gdp <- gdp |>
+    select(geo, TIME_PERIOD, OBS_VALUE) |>
+    rename(
+        country = geo,
+        year = TIME_PERIOD,
+        gdp = OBS_VALUE
+    ) |>
+    write_csv(file = "data/out/gdp.csv")
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+This represents a pipeline sequence for the `gdp` object: it focuses on three columns (dropping irrelevant attributes) via `select()`, cleans up their names using `rename()`, and exports the resulting data frame to disk at `data/out/gdp.csv`.
+
+```{r}
+gdp <- gdp |>
+    select(geo, TIME_PERIOD, OBS_VALUE) |>
+    rename(
+        country = geo,
+        year = TIME_PERIOD,
+        gdp = OBS_VALUE
+    ) |>
+    write_csv(file = "data/out/gdp.csv")
+gdp
+```
+:::
+:::
+
+::: {.qcard}
+**Q9.** In the dataset `gdp`, keep only the rows where the year is 2023. Then, sort these rows so that countries with higher values of per capita GDP appear first (i.e., arrange in descending order).
+
+```{r}
+#| eval: false
+gdp |>
+    filter(...) |>
+    arrange(...)
+```
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Use `filter()` for the condition, and `arrange(desc(...))` to sort in descending order.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+```{r}
+gdp |>
+    filter(year == 2023) |>
+    arrange(desc(gdp))
+```
+:::
+:::
+
+::: {.qcard}
+**Q10.** In the dataset `gdp`, keep only the rows where the country is France.
+
+```{r}
+#| eval: false
+gdp |>
+    filter(...)
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+```{r}
+gdp |> 
+    filter(country == "FR")
+```
+:::
+:::
+
+::: {.qcard}
+**Q11.** Adapt the following instruction to join the two datasets `gdp` and `lifesat`, using the `inner_join()` function.
+
+```{r}
+#| eval: false
+combined_data <- ...
+```
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Join on the common relational primary keys shared by both tables.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+```{r}
+combined_data <- inner_join(gdp, life_satisf, by = c("country", "year"))
+combined_data
+```
+:::
+:::
+
+::: {.qcard}
+**Q12.** In the dataset `combined_data`, group the rows by country using `group_by()`. Then, for each country, compute the average per capita GDP and the average life satisfaction using `summarise()` and `mean()`. Lastly, create a new column that is a dummy variable: it should take the value 1 if the country's average per capita GDP is greater than $35,000, and 0 otherwise. Use `mutate()` with `ifelse()` for this step.
+
+```{r}
+#| eval: false
+combined_data |>
+    group_by(...) |>
+    summarise(...) |>
+    mutate(...)
+```
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn hint" data-step="2" disabled><span class="dot"></span>Hint 2</button>
+<button class="step-btn sol" data-step="3" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+`group_by(country)`, then `summarise()` with two calls to `mean(..., na.rm = TRUE)`.
+:::
+
+::: {.reveal .hint-box data-reveal="2"}
+For the dummy variable, use `mutate()` with `ifelse(condition, 1, 0)`.
+:::
+
+
+```{r}
+summary_data <- combined_data |>
+    group_by(country) |>
+    summarise(
+        mean_gdp = mean(gdp, na.rm = TRUE),
+        mean_sat = mean(life_satisf, na.rm = TRUE)
+    ) |>
+    mutate(high_gdp_dummy = ifelse(mean_gdp > 35000, 1, 0))
+summary_data
+```
+:::
+
+
+::: {.qcard}
+**Q13.** Export in a CSV file the dataset `combined_data` in your `out` data folder. Name the file `gdp-lifesat.csv`.
+
+```{r}
+#| eval: false
+combined_data |>
+    write_csv(...)
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+```{r}
+combined_data |>
+    write_csv("data/out/gdp-lifesat.csv")
+```
+:::
+:::
+
+::: {.qcard}
+**Q14.** If you replace `inner_join()` with `left_join()` in Q11, what would change? Explain the behavior of these two functions.
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Think about what happens to rows that have no match in the other table.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+An `inner_join()` returns only rows where a matching key is found in both datasets. If a country/year pair is missing in either dataset, it disappears. A `left_join()` retains all entries from the primary reference frame on the left-hand side (`gdp`). If matching indices are absent on the right-hand side (`life_satisf`), the metrics are filled with `NA` without dropping rows. See the [{dplyr} cheat sheet](https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf) for more details.
+:::
+:::
+
+::: {.qcard}
+**Q15.** Download an additional dataset from Eurostat. For example, the unemployment rate (ref `teilm020`). Add the values to the `combined_data` frame.
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+Assuming the file has been processed similarly and matches our clean structure schema:
+
+```{r}
+#| eval: false
+unemp <- read_csv("data/raw/teilm020.csv") |>
+    select(geo, TIME_PERIOD, OBS_VALUE) |>
+    rename(country = geo, year = TIME_PERIOD, unemployment = OBS_VALUE)
+
+combined_data <- combined_data |>
+    left_join(unemp, by = c("country", "year"))
+```
+:::
+:::
+
+## Part 3 — Introduction to conditional expressions
+
+In programming, conditional expressions allow your code to make decisions. They execute different blocks of instructions depending on whether a specific condition evaluates to **TRUE** or **FALSE**. In this section, we explore the two primary ways to handle conditions in R: the `ifelse()` function — ideal for creating new columns inside a data frame (a *vectorized* approach) — and the standard `if ... else` statement, used to control the flow of a script or custom functions (a *procedural* approach).
+
+::: {.tip}
+#### 💡 Reminder — Logical Operators (Boolean Calculus)
+
+Let **A** and **B** represent logical statements or conditions. R evaluates each statement to see if it is true for a given row or observation, returning either `TRUE` or `FALSE`.
+
+For example, statement A could be "Is the country France?" (`country == "FR"`), and statement B could be "Is the year 2023?" (`year == 2023`).
+
+We can combine or invert these statements using three core operators:
+
+- **AND (`&`)**: returns TRUE only if both statements are true simultaneously.
+- **OR (`|`)**: returns TRUE if at least one of the statements is true.
+- **NOT (`!`)**: inverts the statement (TRUE becomes FALSE, and vice versa).
+
+**Quick reference truth table**
+
+| A | B | A & B (AND) | A \| B (OR) | !A (NOT A) |
+|:---:|:---:|:---:|:---:|:---:|
+| TRUE | TRUE | TRUE | TRUE | FALSE |
+| TRUE | FALSE | FALSE | TRUE | FALSE |
+| FALSE | TRUE | FALSE | TRUE | TRUE |
+| FALSE | FALSE | FALSE | FALSE | TRUE |
+
+**Examples in data filtering**
+
+```{r}
+#| eval: false
+# Keep rows where country is France AND the year is 2023
+tb |> filter(country == "FR" & year == 2023)
+
+# Keep rows where country is France OR Italy
+tb |> filter(country == "FR" | country == "IT")
+
+# Keep rows where country is NOT France
+tb |> filter(country != "FR")   # or: filter(!(country == "FR"))
+```
+:::
+
+::: {.tip}
+#### 💡 Advanced Logical Operators and Set Membership
+
+When datasets grow, writing multiple conditions using `&` and `|` can become difficult. We can use set membership operators and logical distribution rules to simplify our code.
+
+**The matching operator: `%in%`**
+
+The `%in%` operator tests if an element matches *any* value within a specified group or vector. It acts as an efficient shorthand for multiple OR statements. For example, instead of joining "is the country France?" and "is the country Italy?" with an OR operator, you can check if the country belongs to the set `c("FR", "IT")`.
+
+**Distributing NOT across conditions: De Morgan's Laws**
+
+When you apply a `!` (NOT) operator to an expression inside brackets, the internal logical operators flip:
+
+- `!(A & B)` is equivalent to `!A | !B` ("not both" means it is either not A, or not B).
+- `!(A | B)` is equivalent to `!A & !B` ("not either" means it is not A, and simultaneously not B).
+
+**Examples in data filtering**
+
+```{r}
+#| eval: false
+# --- Using %in% instead of multiple OR lines ---
+# Long way:
+tb |> filter(country == "FR" | country == "IT" | country == "DE")
+
+# Short, elegant way:
+tb |> filter(country %in% c("FR", "IT", "DE"))
+
+# --- Excluding an entire group (Not In) ---
+tb |> filter(!(country %in% c("FR", "IT", "DE")))
+
+# --- Understanding bracket negation ---
+# Exclude rows where it is France in the year 2023
+tb |> filter(!(country == "FR" & year == 2023))
+# ...equivalent to:
+tb |> filter(country != "FR" | year != 2023)
+
+# Exclude rows that are either France OR Italy
+tb |> filter(!(country == "FR" | country == "IT"))
+# ...equivalent to:
+tb |> filter(country != "FR" & country != "IT")
+```
+:::
+
+::: {.qcard}
+**Q16. The vectorized `ifelse()` function.**
+
+We want to classify observations into two broad categories based on their reported life satisfaction. If the score in the `life_satisf` column is strictly greater than 7, the new row variable should display `"High"`. Otherwise, it should display `"Moderate or Low"`.
+
+Complete the following R code to create this new categorical variable named `happiness_status`:
+
+```{r}
+#| eval: false
+tb <- tb |> 
+    mutate(happiness_status = ifelse(..., ..., ...))
+```
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+`ifelse(condition, value_if_true, value_if_false)` works line-by-line across vectors or columns — fill in the three arguments in order.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+This continues our example from Part 2 — `tb` below is our `combined_data` object, renamed for consistency with Tutorials #2 and #3:
+
+```{r}
+tb <- combined_data
+
+tb <- tb |> 
+    mutate(
+        happiness_status = ifelse(
+            life_satisf > 7, "High", "Moderate or Low"
+        )
+    )
+tb |> select(country, year, life_satisf, happiness_status)
+```
+:::
+:::
+
+::: {.qcard}
+**Q17. The flow-control `if` / `else` block.**
+
+Imagine you are writing an automated data pipeline script. You want R to print a warning message directly in the console if the overall mean per capita GDP of your clean sample dataset surpasses a specific baseline threshold (e.g., $40,000).
+
+Analyze the code script below and explain exactly what message will be printed to the console if the variable `mean_gdp` happens to be exactly 42,500:
+
+```{r}
+#| eval: false
+mean_gdp <- 42500
+
+if (mean_gdp > 40000) {
+    print("Warning: Global average living standards are high.")
+} else {
+    print("Global average living standards remain below the critical threshold.")
+}
+```
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Is 42,500 strictly greater than 40,000?
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+Since the value stored in `mean_gdp` (42,500) is strictly greater than 40,000, the scalar condition evaluates to **TRUE**. R immediately executes the first code block and prints:
+
+```{r}
+mean_gdp <- 42500
+
+if (mean_gdp > 40000) {
+    print("Warning: Global average living standards are high.")
+} else {
+    print("Global average living standards remain below the critical threshold.")
+}
+```
+
+The secondary fallback instruction path following `else` is completely bypassed.
+:::
+:::
+
+::: {.qcard}
+**Q18. A typical error.**
+
+A student attempts to alter individual row values inside their data frame using a standard procedural `if` block like this:
+
+```{r}
+#| eval: false
+if (tb$life_satisf > 7) {
+    tb$status = "High"
+}
+```
+
+R executes this but throws a clear warning message in the console stating: *"the condition has length > 1 and only the first element will be used"*.
+
+Explain conceptually why standard `if` blocks fail when applied to complete data frame tables, and why using a vectorized tool like `ifelse()` from Q16 is mandatory here.
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Does `tb$life_satisf > 7` return a single logical value, or several?
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+The standard procedural `if (condition)` statement in base R is engineered to evaluate only a single, individual TRUE/FALSE item (a scalar value) to choose a track for the whole script. However, `tb$life_satisf > 7` does not return one single answer: it creates a vector containing many TRUE/FALSE elements (one for every country/year row). The procedural `if` statement looks only at the very first row element to decide, and ignores the rest of the dataset. To mutate data frames row-by-row based on attributes, we must always use a vectorized alternative like `ifelse()` or `dplyr::case_when()`.
+
+Below, we reproduce the exact message R raises if you try to run this code as written (using `tryCatch()` only so this demonstration doesn't stop the rendering of the document — depending on your R version, this shows up as a warning or, in recent versions of R, as a hard error):
+
+```{r}
+#| message: true
+tryCatch(
+    if (tb$life_satisf > 7) {
+        tb$status <- "High"
+    },
+    warning = function(w) cat("Warning caught:", conditionMessage(w), "\n"),
+    error = function(e) cat("Error caught:", conditionMessage(e), "\n")
+)
+```
+:::
+:::
+
+<div class="text-center">
+  <a href="tutorial-2.html" class="btn btn-success">
+    {{< fa arrow-right >}} Tutorial 2
+  </a>
+</div>
+---
+
+*Introduction to Programming for Data Analysis — Master 1 in Economics*

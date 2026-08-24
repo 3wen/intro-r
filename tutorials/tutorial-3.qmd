@@ -1,0 +1,733 @@
+---
+title: "Tutorial #3. Linear regressions and statistical tests"
+subtitle: "Introduction to programming for data analysis"
+author:
+  - name: Ulrich Aiounou
+    email: dimitri.aiounou@univ-amu.fr
+    affiliations:
+      - name: AMSE, Aix Marseille University
+  - name: Ewen Gallic
+    email: ewen.gallic@univ-amu.fr
+    affiliations:
+      - name: AMSE, Aix Marseille University
+  - name: Kla Kouadio
+    email: kla.kouadio@univ-amu.fr
+    affiliations:
+      - name: AMSE, Aix Marseille University
+  - name: Pierre Michel
+    email: pierre.michel@univ-amu.fr
+    affiliations:
+      - name: AMSE, Aix Marseille University
+format:
+  html:
+    css: styles.css
+    include-in-header: _fonts.html
+    include-after-body: _hints-script.html
+    include-before-body: _topbar.html
+    toc: true
+    toc-location: left
+    toc-title: "On this page"
+    number-sections: false
+    page-layout: article
+    anchor-sections: true
+    code-line-numbers: true
+    highlight-style: github
+navbar:
+  right:
+    - text: "Home"
+      href: "../"
+---
+
+
+
+::: {.path-crumb}
+M1 Economics / Intro to Programming / <span class="here">tutorial-3</span>
+:::
+
+::: {.warning}
+
+## Disclaimer
+
+This HTML page was generated with Claude Sonnet 5 based on exercises we developed from a LaTeX document.
+
+If you would prefer to work with a more traditional PDF version, you can download it here: [Download the PDF](tutorial-3.pdf).
+
+Part of the content was created by Pierre Michel (AMSE) and Morgan Raux (AMSE) who kindly shared their work.
+
+:::
+
+This tutorial focuses on regression models and statistical hypothesis testing. After completing Tutorial #2, you should be able to create basic data visualizations and compute summary statistics. Building on these skills, you are now ready to run regression analyses and apply statistical modeling techniques.
+
+In Tutorial #1, you downloaded datasets from Eurostat, merged them into a single dataset in R, and exported the result as a CSV file.
+
+::: {.objective}
+#### Objectives of the tutorial
+
+In this tutorial, you will use the dataset from exercise 2 of Tutorial #1 to:
+
+1. create visualizations to examine the relationship between the two main variables (per capita GDP and overall life satisfaction),
+2. estimate regression models, including both linear and nonlinear specifications for panel data.
+:::
+
+```{r}
+#| include: false
+library(readr)
+library(dplyr)
+library(ggplot2)
+```
+
+::: {.tip}
+
+#### Did not finish tutorial 1?
+
+Didn't get to finish combining the data in Tutorial 1? Grab the ready-to-use file below and save it to the `data/out/` folder of your project.
+
+- <a href="data/out/gdp_lifesat.csv" class="btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" download>{{< fa download >}} gdp_lifesat.csv</a>
+
+:::
+
+::: {.qcard}
+**Q1.** Import the dataset that you saved at the end of exercise 2 of Tutorial #1.
+
+```{r}
+#| eval: false
+library(tidyverse)
+library(stargazer)
+tb <- ...
+```
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+The file lives in your `data/out/` folder — build the relative path from your project root.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+```{r}
+library(readr)
+# Import data path from your project repository structure
+tb <- read_csv("data/out/gdp-lifesat.csv")
+tb
+```
+:::
+:::
+
+## Scatterplots
+
+A scatterplot visually represents the relationship between two variables. In the current dataset, it is useful to examine how per capita GDP relates to overall life satisfaction.
+
+### GDP and life satisfaction
+
+::: {.qcard}
+**Q2.** Create a scatterplot to display the relationship between per capita GDP and overall life satisfaction. Label the x-axis "Per capita GDP" and the y-axis "Overall Life Satisfaction". Use the title "Per capita GDP vs. Overall Life Satisfaction" for the graph.
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Map `x = gdp` and `y = life_satisf` inside `aes()`, then use `geom_point()`.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+```{r}
+ggplot(data = tb, mapping = aes(x = gdp, y = life_satisf)) +
+    geom_point(alpha = 0.6) +
+    labs(
+        x = "Per capita GDP",
+        y = "Overall Life Satisfaction",
+        title = "Per capita GDP vs. Overall Life Satisfaction"
+    ) +
+    theme_minimal()
+```
+:::
+:::
+
+::: {.qcard}
+**Q3.** Add a linear regression line to the scatterplot.
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+`geom_smooth()` adds a fitted trend line; set `method = "lm"` for a straight linear fit, and `se = TRUE` to show the confidence band.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+```{r}
+ggplot(data = tb, mapping = aes(x = gdp, y = life_satisf)) +
+    geom_point(alpha = 0.6) +
+    geom_smooth(method = "lm", color = "blue", se = TRUE) +
+    labs(
+        x = "Per capita GDP",
+        y = "Overall Life Satisfaction",
+        title = "Per capita GDP vs. Overall Life Satisfaction (Linear)"
+    ) +
+    theme_minimal()
+```
+:::
+:::
+
+::: {.qcard}
+**Q4.** Add a quadratic curve to the scatterplot.
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Still `method = "lm"`, but change the `formula` argument to include a squared term: `y ~ x + I(x^2)`.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+```{r}
+ggplot(data = tb, mapping = aes(x = gdp, y = life_satisf)) +
+    geom_point(alpha = 0.6) +
+    geom_smooth(
+        method = "lm", formula = y ~ x + I(x^2), color = "red", se = TRUE
+    ) +
+    labs(
+        x = "Per capita GDP",
+        y = "Overall Life Satisfaction",
+        title = "Per capita GDP vs. Overall Life Satisfaction (Quadratic)"
+    ) +
+    theme_minimal()
+```
+:::
+:::
+
+### Changes in GDP and life satisfaction
+
+::: {.qcard}
+**Q5.** Create two new columns, `gdp_yoy` and `life_satisf_yoy`, which represent the within-country year-on-year changes in GDP and life satisfaction, respectively.
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn hint" data-step="2" disabled><span class="dot"></span>Hint 2</button>
+<button class="step-btn sol" data-step="3" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+This is panel data: to compute a year-on-year change correctly, you must first sort observations chronologically **within each country**.
+:::
+
+::: {.reveal .hint-box data-reveal="2"}
+`arrange(country, year)` followed by `group_by(country)`, then use `lag()` inside `mutate()` to access the previous year's value.
+:::
+
+::: {.reveal .sol-box data-reveal="3"}
+Because this is panel data, we must sort chronologically and group by country before calculating changes to avoid mixed metrics between borders:
+
+```{r}
+tb <- tb |>
+    arrange(country, year) |>
+    group_by(country) |>
+    mutate(
+        gdp_yoy = gdp - lag(gdp),
+        life_satisf_yoy = life_satisf - lag(life_satisf)
+    ) |>
+    ungroup()
+tb
+```
+:::
+:::
+
+::: {.qcard}
+**Q6.** Create a scatterplot to illustrate the relationship between `gdp_yoy` and `life_satisf_yoy`.
+
+- Place the year-on-year variation in life satisfaction on the y-axis and label it "Yearly Change in Life Satisfaction".
+- Place the year-on-year variation in per capita GDP on the x-axis and label it "Yearly Change in Per Capita GDP".
+- Title the graph "Relationship Between Changes in GDP and Life Satisfaction".
+- Add a linear regression line to the scatterplot.
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+```{r}
+ggplot(data = tb, mapping = aes(x = gdp_yoy, y = life_satisf_yoy)) +
+    geom_point(alpha = 0.5) +
+    geom_smooth(method = "lm", color = "darkgreen") +
+    labs(
+        x = "Yearly Change in Per Capita GDP",
+        y = "Yearly Change in Life Satisfaction",
+        title = "Relationship Between Changes in GDP and Life Satisfaction"
+    ) +
+    theme_minimal()
+```
+:::
+:::
+
+## OLS Regression
+
+::: {.qcard}
+**Q7.** Examine and evaluate the following instructions. Then, explain what they do.
+
+```{r}
+#| output: false
+model_lm <- lm(life_satisf ~ gdp, data = tb)
+summary(model_lm)
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+The `lm()` command calculates a standard pooled ordinary least squares (OLS) linear model mapping the effect of independent variable `gdp` onto dependent metric `life_satisf`. Calling `summary()` prints the descriptive evaluation properties: regression estimates ($\hat{\beta}$ parameters), standard errors, $t$-statistics, associated $p$-values, and overall model diagnostics ($R^2$ variance performance).
+```{r}
+#| echo: false
+summary(model_lm)
+```
+
+:::
+:::
+
+::: {.qcard}
+**Q8.** Examine and evaluate the following instructions. Then, explain what they do.
+
+```{r}
+#| eval: false
+library(stargazer)
+stargazer(model_lm, type = "latex", out = "tables/model_lm.tex")
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+The function converts the raw statistical model object metrics directly into a formatted LaTeX tabular canvas, printing and writing the compiled outputs to the external filepath location: `tables/model_lm.tex`.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+library(stargazer)
+stargazer(model_lm, type = "latex", out = "tables/model_lm.tex")
+```
+
+:::
+:::
+
+### Fixed effects regression
+
+::: {.qcard}
+**Q9.** Extend the previous regression model by including country fixed effects to account for unobserved, time-invariant differences across countries.
+
+```{r}
+#| eval: false
+model_country_fe <- ...
+summary(model_country_fe)
+```
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Add `country` as a right-hand-side term, wrapped in `factor()` so it is treated as a categorical variable (a set of dummies) rather than a numeric one.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+We append country variables as dummy indices using the `factor()` wrapper:
+
+```{r}
+model_country_fe <- lm(life_satisf ~ gdp + factor(country), data = tb)
+summary(model_country_fe)
+```
+:::
+:::
+
+::: {.qcard}
+**Q10.** Extend the country fixed-effects model by adding year fixed effects to control for common shocks across all countries in a given year.
+
+```{r}
+#| eval: false
+model_country_time_fe <- ...
+summary(model_country_time_fe)
+```
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Same idea as Q9, but add a second `factor()` term for `year` alongside `factor(country)`.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+```{r}
+model_country_time_fe <- lm(
+    life_satisf ~ gdp + factor(country) + factor(year), 
+    data = tb
+)
+summary(model_country_time_fe)
+```
+:::
+:::
+
+::: {.qcard}
+**Q11.** Examine and evaluate the following instructions. Then, explain what they do.
+
+```{r}
+#| eval: false
+stargazer(
+    model_lm, model_country_fe, model_country_time_fe,
+    type = "latex",
+    out = "tables/regression_results.tex",
+    title = "Correlation between per capita GDP and life satisfaction",
+    column.labels = c("Baseline OLS Reg.", "Country FE", "Country and Year FE"),
+    covariate.labels = c("per capita GDP"),
+    add.lines = list(
+        c('Country FE', '-', 'Yes', 'Yes'),
+        c('Year FE', '-', '-', 'Yes')
+    )
+)
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+This block merges the baseline, country FE, and two-way FE models into a single side-by-side LaTeX compilation table. It replaces the long list of individual dummy coefficients with neat summary rows using custom indicators in `add.lines`, saves the resulting output inside `tables/regression_results.tex`, and updates the column titles appropriately.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+stargazer(
+    model_lm, model_country_fe, model_country_time_fe,
+    type = "latex",
+    out = "tables/regression_results.tex",
+    title = "Correlation between per capita GDP and life satisfaction",
+    column.labels = c("Baseline OLS Reg.", "Country FE", "Country and Year FE"),
+    covariate.labels = c("per capita GDP"),
+    add.lines = list(
+        c('Country FE', '-', 'Yes', 'Yes'),
+        c('Year FE', '-', '-', 'Yes')
+    )
+)
+```
+
+
+:::
+:::
+
+## Non-linear regression
+
+We herein consider non-linear regression models with a dummy as dependent variable, such as probit and logit regression models.
+
+::: {.qcard}
+**Q12.** Compute the median of life satisfaction.
+
+```{r}
+#| eval: false
+median_life_satisf <- ...
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+```{r}
+median_life_satisf <- median(tb$life_satisf, na.rm = TRUE)
+median_life_satisf
+```
+:::
+:::
+
+::: {.qcard}
+**Q13.** In the dataset, create a binary variable named `life_satisf_above_med`, which takes the value 1 if life satisfaction is above the median and 0 otherwise.
+
+```{r}
+#| eval: false
+tb <- ...
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+```{r}
+tb <- tb |>
+    mutate(
+        life_satisf_above_med = ifelse(
+            life_satisf > median_life_satisf, 
+            1,
+            0
+        )
+    )
+tb
+```
+:::
+:::
+
+::: {.qcard}
+**Q14.** Run a **probit** regression of `life_satisf_above_med` on `gdp`, and display the summary of the results.
+
+```{r}
+#| eval: false
+model_probit <- ...
+summary(model_probit)
+```
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+With a binary dependent variable, `lm()` is no longer appropriate — use `glm()` with `family = binomial(link = "probit")`.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+We utilize generalized linear model modeling via `glm()` specifying link definitions:
+
+```{r}
+model_probit <- glm(
+    life_satisf_above_med ~ gdp, 
+    data = tb,
+    family = binomial(link = "probit")
+)
+summary(model_probit)
+```
+:::
+:::
+
+::: {.qcard}
+**Q15.** Run a **logit** regression of `life_satisf_above_med` on `gdp`, and display the summary of the results.
+
+```{r}
+#| eval: false
+model_logit <- ...
+summary(model_logit)
+```
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Same as Q14, but change the link function to `"logit"`.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+```{r}
+model_logit <- glm(
+    life_satisf_above_med ~ gdp, 
+    data = tb,
+    family = binomial(link = "logit")
+)
+summary(model_logit)
+```
+:::
+:::
+
+## Statistical tests
+
+::: {.qcard}
+**Q16.** Compute the median of per capita GDP.
+
+```{r}
+#| eval: false
+median_gdp <- ...
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+```{r}
+median_gdp <- median(tb$gdp, na.rm = TRUE)
+median_gdp
+```
+:::
+:::
+
+::: {.qcard}
+**Q17.** In the dataset, create a binary variable named `gdp_above_med`, which takes the value 1 if per capita GDP is above the median and 0 otherwise.
+
+```{r}
+#| eval: false
+tb <- ...
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+```{r}
+tb <- tb |>
+    mutate(gdp_above_med = ifelse(gdp > median_gdp, 1, 0))
+tb
+```
+:::
+:::
+
+::: {.qcard}
+**Q18.** Examine and evaluate the following instructions. Then, explain what they do.
+
+```{r}
+group1 <- tb |>
+    filter(gdp_above_med == 0) |>
+    pull(life_satisf)
+    
+group2 <- tb |>
+    filter(gdp_above_med == 1) |>
+    pull(life_satisf)
+```
+
+::: {.cascade}
+<button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .sol-box data-reveal="1"}
+These two instructions split the dataset into two independent numeric vectors: `group1` contains the life satisfaction values for countries with below-median GDP, and `group2` contains the life satisfaction values for countries with above-median GDP. `pull()` extracts a single column as a plain vector, rather than as a one-column data frame.
+:::
+:::
+
+::: {.qcard}
+**Q19.** Perform a Student's t-test to compare the mean life satisfaction between observations with GDP above the median and those with GDP at or below the median.
+
+```{r}
+#| eval: false
+t_test_result <- ...
+print(t_test_result)
+```
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Use `t.test()` on the two vectors created in Q18, with `alternative = "two.sided"` since we have no prior expectation on the direction of the difference.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+```{r}
+t_test_result <- t.test(group2, group1, alternative = "two.sided")
+print(t_test_result)
+```
+:::
+:::
+
+::: {.qcard}
+**Q20.** Extract the test statistic and the p-value from the results of the t-test.
+
+```{r}
+#| eval: false
+test_statistic <- ...
+p_value <- ...
+```
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+The object returned by `t.test()` is a list — access its named elements with the `$` operator, just like a column of a data frame.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+Using list element indexing on the returned object properties:
+
+```{r}
+test_statistic <- t_test_result$statistic
+p_value <- t_test_result$p.value
+test_statistic
+p_value
+```
+:::
+:::
+
+::: {.qcard}
+**Q21.** Examine and evaluate the following instructions. Then, explain what they do.
+
+```{r}
+latex_table <- paste0(
+    "\\begin{tabular}{l c}\n",
+    "\\hline\n",
+    "& Difference in life satisfaction across groups" , 
+    " \\\\ \n",
+    "Test Statistic & ", 
+    format(test_statistic, digits = 3), 
+    " \\\\ \n",
+    "P-value & ", 
+    format.pval(p_value, digits = 3), 
+    " \\\\ \n",
+    "\\hline\n",
+    "\\end{tabular}"
+)
+file_path <- "tables/table_results_t_test_1_v1.tex"
+writeLines(latex_table, file_path)
+```
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn sol" data-step="2" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+`paste0()` glues character strings together with no separator — here, it is building a LaTeX `tabular` environment line by line, as a single block of text.
+:::
+
+::: {.reveal .sol-box data-reveal="2"}
+This block manually builds a small LaTeX table (a `tabular` environment with two rows: the test statistic and the p-value) as a character string, using `paste0()` to concatenate the LaTeX syntax with the formatted numeric results. `format()` and `format.pval()` control the number of significant digits displayed. `writeLines()` then writes this character string to the file `tables/table_results_t_test_1_v1.tex`, one line at a time. This is a manual alternative to `stargazer()`, useful for results (like a t-test) that are not regression model objects.
+
+```{r}
+#| echo: false
+cat(latex_table)
+```
+:::
+:::
+
+
+<div class="text-center">
+  <a href="tutorial-2.html" class="btn btn-success">
+    {{< fa arrow-left >}} Tutorial 2
+  </a>
+</div>
+
+---
+
+*Introduction to Programming for Data Analysis — Master 1 in Economics*

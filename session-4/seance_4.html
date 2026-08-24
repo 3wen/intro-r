@@ -1,0 +1,1784 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="seance_4_files/libs/clipboard/clipboard.min.js"></script>
+<script src="seance_4_files/libs/quarto-html/tabby.min.js"></script>
+<script src="seance_4_files/libs/quarto-html/popper.min.js"></script>
+<script src="seance_4_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="seance_4_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="seance_4_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="seance_4_files/libs/quarto-html/quarto-syntax-highlighting-86daaaaad7353f9cc0c554efc1dd6d94.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.6.40">
+
+  <meta name="author" content="Ulrich Aiounou">
+  <meta name="author" content="Ewen Gallic">
+  <meta name="author" content="Pierre Michel">
+  <title>Introduction to programming for data analysis</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="seance_4_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="seance_4_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="seance_4_files/libs/revealjs/dist/theme/quarto-43198bc06c5daeaf0df82a335523fb64.css">
+  <link href="seance_4_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="seance_4_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="seance_4_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="seance_4_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ TeX: { extensions: ["color.js"] }});
+  </script>
+  <script type="text/x-mathjax-config">
+  	MathJax.Hub.Register.StartupHook("TeX color Ready", function() {
+  	     MathJax.Extension["TeX/color"].colors["wongBlack"] = '#000000';
+  		 MathJax.Extension["TeX/color"].colors["wongGold"] = '#E69F00';
+  		 MathJax.Extension["TeX/color"].colors["wongLightBlue"] = '#56B4E9';
+  		 MathJax.Extension["TeX/color"].colors["wongGreen"] = '#009E73';
+  		 MathJax.Extension["TeX/color"].colors["wongYellow"] = '#F0E442';
+  		 MathJax.Extension["TeX/color"].colors["wongBlue"] = '#0072B2';
+  		 MathJax.Extension["TeX/color"].colors["wongOrange"] = '#D55E00';
+  		 MathJax.Extension["TeX/color"].colors["wongPurple"] = '#CC79A7';
+  		 
+  		 
+  		 MathJax.Extension["TeX/color"].colors["IBMBlue"] = '#648FFF';
+  		 MathJax.Extension["TeX/color"].colors["IBMPurple"] = '#785EF0';
+  		 MathJax.Extension["TeX/color"].colors["IBMMagenta"] = '#DC267F';
+  		 MathJax.Extension["TeX/color"].colors["IBMOrange"] = '#FE6100';
+  		 MathJax.Extension["TeX/color"].colors["IBMYellow"] = '#FFB000';
+  	});
+  </script>
+  </head><body class="quarto-light"><a href="index.html" class="homepage-link">
+  	<i class="fa-solid fa-house"></i> Course homepage
+  </a>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Introduction to programming for data analysis</h1>
+  <p class="subtitle">Session 4 — Statistical Tests and Regressions</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+<a href="https://research.ulrichaiounou.com/fr">Ulrich Aiounou</a> 
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:dimitri.aiounou@univ-amu.fr">dimitri.aiounou@univ-amu.fr</a>
+</div>
+        <p class="quarto-title-affiliation">
+            AMSE, Aix Marseille University
+          </p>
+    </div>
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+<a href="https://egallic.fr">Ewen Gallic</a> 
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:ewen.gallic@univ-amu.fr">ewen.gallic@univ-amu.fr</a>
+</div>
+        <p class="quarto-title-affiliation">
+            AMSE, Aix Marseille University
+          </p>
+    </div>
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+<a href="https://www.amse-aixmarseille.fr/fr/membres/michel">Pierre Michel</a> 
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:pierre.michel@univ-amu.fr">pierre.michel@univ-amu.fr</a>
+</div>
+        <p class="quarto-title-affiliation">
+            AMSE, Aix Marseille University
+          </p>
+    </div>
+</div>
+
+</section>
+<section id="disclaimer" class="slide level2" data-background-color="#F5F6F0">
+<h2>Disclaimer</h2>
+<p><span class="math display">\[
+\definecolor{wongBlack}{RGB}{0,0,0}
+\definecolor{wongGold}{RGB}{230, 159, 0}
+\definecolor{wongLightBlue}{RGB}{86, 180, 233}
+\definecolor{wongGreen}{RGB}{0, 158, 115}
+\definecolor{wongYellow}{RGB}{240, 228, 66}
+\definecolor{wongBlue}{RGB}{0, 114, 178}
+\definecolor{wongOrange}{RGB}{213, 94, 0}
+\definecolor{wongPurple}{RGB}{204, 121, 167}
+\definecolor{colA}{RGB}{255, 221, 85}
+\definecolor{colB}{RGB}{148, 78, 223}
+\definecolor{colC}{RGB}{63, 179, 178}
+\definecolor{colGpeZero}{RGB}{127, 23, 14}
+\definecolor{colGpeUn}{RGB}{27, 149, 224}
+\]</span></p>
+<ul>
+<li><p>The slides were adapted from those of Pierre Michel and Morgan Raux, both researchers at AMSE, who kindly shared their work.</p></li>
+<li><p>This slide deck was made with Quarto and reveal.js, it is translated by Claude Sonnet 5 from a LaTex presentation previously made with beamer.</p></li>
+</ul>
+</section>
+<section id="the-4-steps-in-any-data-analysis" class="slide level2">
+<h2>The 4 steps in any data analysis</h2>
+<ol type="1">
+<li>Finding data</li>
+<li>Cleaning data to combine several data sources</li>
+<li><strong>Producing knowledge out from data (summary statistics, regression analysis summarised via tables and graphs)</strong></li>
+<li>Interpreting the results (writing)</li>
+</ol>
+</section>
+<section>
+<section id="statistical-hypothesis-tests" class="title-slide slide level1 part center">
+<h1>Statistical Hypothesis Tests</h1>
+
+</section>
+<section id="what-is-a-statistical-hypothesis-test" class="slide level2">
+<h2>What is a statistical hypothesis test?</h2>
+<ul>
+<li>A <span class="hl-blue">statistical hypothesis test</span> is a statistical method for deciding between two hypotheses.</li>
+<li>It consists in rejecting (or not) a statistical hypothesis, called the <span class="hl-purple">null hypothesis</span>.</li>
+<li>The statistic of the test is assumed to follow a specific distribution under the null hypothesis.</li>
+<li>Using <span class="hl-blue">historical data</span>, an <span class="hl-purple">observed value</span> for that statistic is computed.</li>
+<li>Then, a comparison with what we would expect if the null were true is made, based on the p-value:
+<ul>
+<li>this comparison allows us to decide whether the difference is likely due to chance (in this case, the null is not rejected) or not.</li>
+</ul></li>
+</ul>
+</section>
+<section id="example-students-t-test" class="slide level2">
+<h2>Example: Student’s t-Test</h2>
+<p>A common hypothesis test is the <span class="hl-blue">Student’s t-Test</span>, used to compare the means of two independent samples.</p>
+<ul>
+<li>Consider two random samples of observations from two distributions <span class="math inline">\(P_1\)</span> and <span class="math inline">\(P_2\)</span>, with population means <span class="math inline">\(\mu_1\)</span> and <span class="math inline">\(\mu_2\)</span>.</li>
+<li>Let <span class="math inline">\(\overline{X}_1\)</span> and <span class="math inline">\(\overline{X}_2\)</span> be the sample means (with observed values <span class="math inline">\(\overline{x}_1\)</span> and <span class="math inline">\(\overline{x}_2\)</span>).</li>
+<li>We test whether the observed difference <span class="math inline">\(\overline{x}_1 - \overline{x}_2\)</span> is statistically distinguishable from 0 to infer whether <span class="math inline">\(\mu_1 = \mu_2\)</span>.</li>
+<li>In other words, the t-test is about testing the null hypothesis: <span class="math display">\[\text{H}_0: \mu_1 = \mu_2\]</span> using the observed difference <span class="math inline">\(\overline{x}_1 - \overline{x}_2\)</span>, while accounting for sample variability.</li>
+</ul>
+</section>
+<section id="example-students-t-test-1" class="slide level2">
+<h2>Example: Student’s t-Test</h2>
+<ul>
+<li>The T-statistic is <span class="math display">\[
+T = \frac{\overline{X}_1 - \overline{X}_2}{\sqrt{\tfrac{s_1^2}{n_1} + \tfrac{s_2^2}{n_2}}},
+\]</span> where <span class="math inline">\(s_1^2, s_2^2\)</span> are the sample variances and <span class="math inline">\(n_1, n_2\)</span> the sample sizes.</li>
+<li>Under <span class="math inline">\(\text{H}_0\)</span>, <span class="math inline">\(T\)</span> approximately follows a Student’s <span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(n-1\)</span> degrees of freedom.</li>
+</ul>
+</section>
+<section id="example-students-t-test-2" class="slide level2">
+<h2>Example: Student’s t-Test</h2>
+<ul>
+<li>The <span class="hl-blue">decision rule</span> for the t-Test (two-sided test) is as follows:
+<ul>
+<li>We reject <span class="math inline">\(\text{H}_0\)</span> if <span class="math inline">\(|T| &gt; t_{1-\alpha/2, \, \nu}\)</span>,</li>
+<li>where <span class="math inline">\(t_{1-\alpha/2, \, \nu}\)</span> is the critical value of the <span class="math inline">\(t\)</span>-distribution with <span class="math inline">\(\nu\)</span> degrees of freedom,</li>
+<li>and where <span class="math inline">\(\alpha\)</span> is the significance level (usually <span class="math inline">\(5\%\)</span>).</li>
+</ul></li>
+<li>Equivalently, we reject <span class="math inline">\(\text{H}_0\)</span> if the p-value <span class="math inline">\(&lt; \alpha\)</span>
+<ul>
+<li>The p-value is the probability, under <span class="math inline">\(H_0\)</span>, of observing a test statistic at least as extreme as the one computed from the data, under the null: <span class="math display">\[
+p = \mathbb{P}\big[ \mid T_\nu \mid \geq \mid t_{\text{obs}}\mid \big] = 2 \times \mathbb{P}\big[ T_\nu \geq \mid t_{\text{obs}}\mid\big],
+\]</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="application-to-gdp-and-life-satisfaction" class="slide level2">
+<h2>Application to GDP and life satisfaction</h2>
+<ul>
+<li><span class="gras-secondCol">We want to test whether the average GDP of ‘happy’ countries differs significantly from the average GDP of ‘unhappy’ countries (in 2018).</span></li>
+<li>We assume that:
+<ul>
+<li>we have independent observations across countries,</li>
+<li>each group’s sampling distribution of the mean is approximately normal (if <span class="math inline">\(n&gt;30\)</span> for example, which is not the case here…).</li>
+</ul></li>
+</ul>
+</section>
+<section id="application-to-gdp-and-life-satisfaction-1" class="slide level2">
+<h2>Application to GDP and life satisfaction</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>tb <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/out/gdp_lifesatisf.csv"</span>)</span>
+<span id="cb1-2"><a href=""></a>happy <span class="ot">&lt;-</span> <span class="fu">filter</span>(tb, </span>
+<span id="cb1-3"><a href=""></a>  life_satisf <span class="sc">&gt;=</span> <span class="dv">7</span>, year <span class="sc">==</span> <span class="dv">2018</span></span>
+<span id="cb1-4"><a href=""></a>  )</span>
+<span id="cb1-5"><a href=""></a>unhappy <span class="ot">&lt;-</span> <span class="fu">filter</span>(</span>
+<span id="cb1-6"><a href=""></a>  tb, life_satisf <span class="sc">&lt;</span> <span class="dv">7</span>, year <span class="sc">==</span> <span class="dv">2018</span></span>
+<span id="cb1-7"><a href=""></a>  )</span>
+<span id="cb1-8"><a href=""></a><span class="fu">t.test</span>(happy<span class="sc">$</span>gdp, unhappy<span class="sc">$</span>gdp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  happy$gdp and unhappy$gdp
+t = 3.7208, df = 3.4399, p-value = 0.02669
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+  3249.704 28710.630
+sample estimates:
+mean of x mean of y 
+ 43502.17  27522.00 </code></pre>
+</div>
+</div>
+<ul>
+<li>What do you conclude?</li>
+</ul>
+</div></div>
+</section></section>
+<section>
+<section id="linear-regression" class="title-slide slide level1 part center">
+<h1>Linear Regression</h1>
+
+</section>
+<section id="linear-regression-1" class="slide level2">
+<h2>Linear Regression</h2>
+<ul>
+<li>Recall that a linear regression is used to model the relationship between a <span class="hl-blue">dependent variable</span> (usually denoted <span class="hl-blue"><span class="math inline">\(Y\)</span></span>) and one or more <span class="hl-purple">explanatory variables</span> (usually denoted by <span class="hl-purple"><span class="math inline">\(X_1, X_2, \ldots, X_p\)</span></span>).</li>
+<li>Here, let us focus on the simple linear regression, with only one variable <span class="math inline">\(X\in \mathcal{X}\)</span>.</li>
+<li>We assume that the relationship between the <span class="hl-blue">dependent variable <span class="math inline">\(Y\)</span></span> and the <span class="hl-purple">independent variable <span class="math inline">\(X\)</span></span> is linear: <span class="math display">\[
+{\color{blue}Y} = a + b{\color{purple}X}
+\]</span></li>
+</ul>
+</section>
+<section id="example" class="slide level2">
+<h2>Example</h2>
+<ul>
+<li>Going back to our GDP/Life satisfaction example, assume that the <span class="hl-blue">response variable <span class="math inline">\(Y\)</span></span> is life satisfaction and the <span class="hl-purple">explanatory variable <span class="math inline">\(X\)</span></span> is GDP.</li>
+<li><span class="math inline">\(Y = a + bX\)</span>, where:
+<ul>
+<li><span class="math inline">\(a\)</span> is the <span class="hl-green">intercept (constant)</span>,</li>
+<li><span class="math inline">\(b\)</span> is the <span class="hl-purple">slope</span> of the line.</li>
+</ul></li>
+<li>The values <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are not known beforehand.</li>
+</ul>
+</section>
+<section id="example-1" class="slide level2">
+<h2>Example</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb3-2"><a href=""></a>  <span class="at">data =</span> tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2018</span>),</span>
+<span id="cb3-3"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> gdp, <span class="at">y =</span> life_satisf)</span>
+<span id="cb3-4"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb3-5"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb3-6"><a href=""></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb3-7"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb3-8"><a href=""></a>    <span class="at">x =</span> <span class="st">"Real per capita GDP in 2013 (2020 Euro)"</span>,</span>
+<span id="cb3-9"><a href=""></a>    <span class="at">y =</span> <span class="st">"Life satisfaction"</span></span>
+<span id="cb3-10"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb3-11"><a href=""></a>  <span class="fu">scale_x_continuous</span>(</span>
+<span id="cb3-12"><a href=""></a>    <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_number</span>(</span>
+<span id="cb3-13"><a href=""></a>      <span class="at">suffix =</span> <span class="st">""</span>, <span class="at">scale =</span> <span class="dv">1</span>, <span class="at">big.mark =</span> <span class="st">","</span></span>
+<span id="cb3-14"><a href=""></a>    )</span>
+<span id="cb3-15"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:40%;">
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-5-1.png" width="864"></p>
+<figcaption>Relationship between life satisfaction and per capita GDP, with OLS regression line (in blue).</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="the-regression-model" class="slide level2">
+<h2>The Regression Model</h2>
+<ul>
+<li><p>In the previous slide, we assumed the following model: <span class="math display">\[
+{\color{blue}Y_i} = {\color{green}\beta_0} + {\color{orange}\beta_1} {\color{purple}X_i} +\varepsilon_i,
+\]</span> where</p>
+<ul>
+<li><span class="math inline">\(i=1,\ldots,n\)</span> represent the individual, where <span class="math inline">\(n\)</span> is the total number of individuals,</li>
+<li><span class="hl-blue"><span class="math inline">\(Y_i\)</span></span> is the <span class="hl-blue">dependent variable</span>,</li>
+<li><span class="hl-purple"><span class="math inline">\(X_i\)</span></span> is the <span class="hl-purple">independent variable</span>,</li>
+<li><span class="hl-green"><span class="math inline">\(\beta_0\)</span></span> is the <span class="hl-green">intercept</span> of the regression line,</li>
+<li><span class="hl-orange"><span class="math inline">\(\beta_1\)</span></span> is the <span class="hl-orange">slope</span> of the regression line,</li>
+<li><span class="math inline">\(\varepsilon_i\)</span> is the error, where we assume <span class="math inline">\(\varepsilon \sim \mathcal{N}\big(0, \sigma^2\big)\)</span>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="the-ols-estimator" class="slide level2">
+<h2>The OLS Estimator</h2>
+<ul>
+<li>The coefficients <span class="hl-green"><span class="math inline">\(\beta_0\)</span></span> and <span class="hl-orange"><span class="math inline">\(\beta_1\)</span></span> can be estimated so as to minimize the sum of squared residuals (ordinary least squares (OLS) estimator): <span class="math display">\[
+(\hat{\beta}_0, \hat{\beta}_1)= \text{arg}\min_{\beta_0, \beta_1} \sum_{i=1}^{n}(Y_i - \beta_0 - \beta_1 X_i)^2
+\]</span></li>
+<li>Graphically speaking, this corresponds to finding the values of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> that will produce a line that is “as close as possible to the observations.”</li>
+<li>You saw in your regression class that in the case of simple linear regression, we have:
+<ul>
+<li><span class="math inline">\(\hat{\beta}_0 = \overline{Y}-\hat{\beta}_1 \overline{X}\)</span></li>
+<li><span class="math inline">\(\hat{\beta}_1 = \frac{\sum_{i=1}^{n} (X_i - \overline{X})(Y_i - \overline{Y})}{\sum_{i=1}^{n}(X_i-\overline{X})^2}\)</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="predicted-values-and-residuals" class="slide level2">
+<h2>Predicted Values and Residuals</h2>
+<ul>
+<li>The predicted values using the OLS estimator, denoted <span class="math inline">\(\hat{y}_i\)</span>, are computed as: <span class="math display">\[
+\hat{y}_i =\hat{\beta}_0 + \hat{\beta}_1 X_i
+\]</span></li>
+<li>The distance between the observed value <span class="math inline">\(Y_i\)</span> and the predicted value <span class="math inline">\(\hat{y}_i\)</span> is named the residual, denoted <span class="math inline">\(\hat{\varepsilon}\)</span>: <span class="math display">\[
+\hat{\varepsilon}_i = Y_i - \hat{y}_i
+\]</span></li>
+</ul>
+<div class="tip">
+<p><span class="box-title">Interactive Application</span> A cool interactive online graphical application to understand the mechanisms of OLS can be accessed at the following URL: <a href="https://www.econometrics-with-r.org/SimpleRegression.html">https://www.econometrics-with-r.org/SimpleRegression.html</a></p>
+</div>
+</section>
+<section id="a-linear-regression-with-r" class="slide level2">
+<h2>A Linear Regression with R</h2>
+<ul>
+<li>In <code>R</code>, the OLS estimators of a linear model can be easily obtained, using the <code class="sourceCode r"><span class="fu">lm</span>()</code> function:
+<ul>
+<li>we provide the <code class="sourceCode r"><span class="fu">lm</span>()</code> function with a formula of the relationship we want to model,</li>
+<li>and a dataset.</li>
+</ul></li>
+<li>For example, in the dataset <code>sim1</code> included in the <code>modelr</code> package, there are two variables, <code>y</code> and <code>x</code>. If we want to explain the variations of <code>y</code> by the variations of <code>x</code>, we write:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>mod_sim1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">data =</span> modelr<span class="sc">::</span>sim1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="the-estimated-model" class="slide level2">
+<h2>The Estimated Model</h2>
+<ul>
+<li>When we print the object returned by <code class="sourceCode r"><span class="fu">lm</span>()</code> in the console, we have:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>mod_sim1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x, data = modelr::sim1)
+
+Coefficients:
+(Intercept)            x  
+      4.221        2.052  </code></pre>
+</div>
+</div>
+<p>Hence, the estimated model writes: <span class="math display">\[
+\hat{y}_i = 4.221 + 2.05 \times x_i
+\]</span></p>
+</section>
+<section id="a-linear-regression-with-r-estimates" class="slide level2">
+<h2>A Linear Regression with R: Estimates</h2>
+<ul>
+<li>The coefficients of the model, estimated with OLS, can be accessed using the <code class="sourceCode r"><span class="fu">coef</span>()</code> function.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">coef</span>(mod_sim1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)           x 
+   4.220822    2.051533 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">coef</span>(mod_sim1)[<span class="st">"(Intercept)"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept) 
+   4.220822 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">coef</span>(mod_sim1)[<span class="st">"x"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       x 
+2.051533 </code></pre>
+</div>
+</div>
+</section>
+<section id="a-linear-regression-with-r-predictions" class="slide level2">
+<h2>A Linear Regression with R: Predictions</h2>
+<p>Instead of computing the predicted values using the extracted values of the coefficients and the matrix of explanatory variables, <code>R</code> offers the function <code class="sourceCode r"><span class="fu">predict</span>()</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">predict</span>(mod_sim1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        1         2         3         4         5         6         7         8 
+ 6.272355  6.272355  6.272355  8.323888  8.323888  8.323888 10.375421 10.375421 
+        9        10        11        12        13        14        15        16 
+10.375421 12.426954 12.426954 12.426954 14.478487 14.478487 14.478487 16.530020 
+       17        18        19        20        21        22        23        24 
+16.530020 16.530020 18.581553 18.581553 18.581553 20.633087 20.633087 20.633087 
+       25        26        27        28        29        30 
+22.684620 22.684620 22.684620 24.736153 24.736153 24.736153 </code></pre>
+</div>
+</div>
+</section>
+<section id="a-linear-regression-with-r-residuals" class="slide level2">
+<h2>A Linear Regression with R: Residuals</h2>
+<p>Similarly, for the residuals, <code>R</code> provides the <code class="sourceCode r"><span class="fu">residuals</span>()</code> function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">residuals</span>(mod_sim1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           1            2            3            4            5            6 
+-2.072442018  1.238279125 -4.146882207  0.664969362  1.919217378  2.972935148 
+           7            8            9           10           11           12 
+-3.019056466  0.129928252  0.136179642  0.007634878 -0.534352991  1.831009860 
+          13           14           15           16           17           18 
+ 4.651562487 -2.740466108  1.546366596 -3.256043368 -0.574045413  0.364775796 
+          19           20           21           22           23           24 
+ 1.504439222 -1.409703118  1.354755377  1.092815968 -2.242173633  1.842466099 
+          25           26           27           28           29           30 
+ 4.092390235  0.120490168 -1.556314330  0.231946675 -1.389730610 -2.760952005 </code></pre>
+</div>
+</div>
+</section>
+<section id="a-linear-regression-with-r-summary" class="slide level2">
+<h2>A Linear Regression with R: Summary</h2>
+<p>The <code class="sourceCode r"><span class="fu">summary</span>()</code> function applied to a linear regression model provides a lot of useful information on model fit:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="fu">summary</span>(mod_sim1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x, data = modelr::sim1)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.1469 -1.5197  0.1331  1.4670  4.6516 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   4.2208     0.8688   4.858 4.09e-05 ***
+x             2.0515     0.1400  14.651 1.17e-14 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.203 on 28 degrees of freedom
+Multiple R-squared:  0.8846,    Adjusted R-squared:  0.8805 
+F-statistic: 214.7 on 1 and 28 DF,  p-value: 1.173e-14</code></pre>
+</div>
+</div>
+</section>
+<section id="export-your-regression-table" class="slide level2 smaller">
+<h2>Export Your Regression Table</h2>
+<ul>
+<li>Please do not make a screenshot of a regression table from your statistical software.</li>
+<li>In <code>R</code>, there is a convenient package called <code>{stargazer}</code> which provides a function with the same name that allows you to export your summary table as a nice table in HTML or LaTeX format.
+<ul>
+<li>If you write your report using Google Docs, MS Word, OpenOffice, or Pages, export your table in HTML. You will then be able to copy/paste the table from your browser into your document (change the <code>type</code> argument).</li>
+</ul></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb19-2"><a href=""></a><span class="fu">stargazer</span>(mod_sim1, <span class="at">type =</span> <span class="st">"text"</span>)</span>
+<span id="cb19-3"><a href=""></a><span class="fu">stargazer</span>(mod_sim1, <span class="at">type =</span> <span class="st">"html"</span>)</span>
+<span id="cb19-4"><a href=""></a><span class="fu">stargazer</span>(mod_sim1, <span class="at">type =</span> <span class="st">"latex"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Using <code class="sourceCode r">type <span class="ot">=</span> <span class="st">"text"</span></code> (as shown on the right-hand side) is convenient for looking at your results in the console. However, in a report, prefer another format.</p>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+===============================================
+                        Dependent variable:    
+                    ---------------------------
+                                 y             
+-----------------------------------------------
+x                            2.052***          
+                              (0.140)          
+                                               
+Constant                     4.221***          
+                              (0.869)          
+                                               
+-----------------------------------------------
+Observations                    30             
+R2                             0.885           
+Adjusted R2                    0.880           
+Residual Std. Error       2.203 (df = 28)      
+F Statistic           214.660*** (df = 1; 28)  
+===============================================
+Note:               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
+</div>
+</div>
+</div></div>
+</section></section>
+<section>
+<section id="visualize-predicted-values" class="title-slide slide level1 part center">
+<h1>Visualize Predicted Values</h1>
+
+</section>
+<section id="predictions" class="slide level2">
+<h2>Predictions</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb21-2"><a href=""></a>  <span class="at">data =</span> sim1 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb21-3"><a href=""></a>    <span class="at">pred =</span> <span class="fu">predict</span>(</span>
+<span id="cb21-4"><a href=""></a>      mod_sim1, <span class="at">newdata =</span> sim1</span>
+<span id="cb21-5"><a href=""></a>    )</span>
+<span id="cb21-6"><a href=""></a>  )</span>
+<span id="cb21-7"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb21-8"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb21-9"><a href=""></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb21-10"><a href=""></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> pred),</span>
+<span id="cb21-11"><a href=""></a>    <span class="at">colour=</span> <span class="st">"dodgerblue"</span>, </span>
+<span id="cb21-12"><a href=""></a>    <span class="at">linewidth =</span> <span class="dv">1</span></span>
+<span id="cb21-13"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The blue line traces the predicted values from <code>mod_sim1</code> across the range of <code>x</code>.</p>
+</div><div class="column" style="width:40%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-15-1.png" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="residuals" class="slide level2">
+<h2>Residuals</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb22-2"><a href=""></a>  <span class="at">data =</span> sim1 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb22-3"><a href=""></a>    <span class="at">resid =</span> <span class="fu">residuals</span>(mod_sim1)</span>
+<span id="cb22-4"><a href=""></a>  )</span>
+<span id="cb22-5"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb22-6"><a href=""></a>  <span class="fu">geom_histogram</span>(</span>
+<span id="cb22-7"><a href=""></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> resid),</span>
+<span id="cb22-8"><a href=""></a>    <span class="at">binwidth =</span> <span class="fl">0.5</span>, <span class="at">colour =</span> <span class="st">"white"</span></span>
+<span id="cb22-9"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb22-10"><a href=""></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Residuals"</span>, <span class="at">y =</span> <span class="st">"Count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-16-1.png" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>The distribution of residuals should look roughly symmetric and centered around 0 if the model fits well.</p>
+</div></div>
+</section>
+<section id="quantile-quantile-plot" class="slide level2">
+<h2>Quantile-Quantile Plot</h2>
+<ul>
+<li>A <span class="hl-purple">QQ plot</span> (<span class="hl-purple">quantile–quantile plot</span>) in linear regression compares the sorted residuals from the model to the <span class="hl-blue">theoretical quantiles of a normal distribution</span>.</li>
+<li>This provides a visualization to <span class="hl-blue">check the normality assumption of residuals</span>.
+<ul>
+<li>If the residuals are normally distributed, they will roughly lie on the bisector.</li>
+<li>If we observe an S-shape pattern, this points to a skewness of the distribution of the residuals.</li>
+<li>If we observe curved tails, it implies heavy or light tails for the distribution of the residuals.</li>
+<li>If we observe isolated endpoints, this is a hint that there may be outliers.</li>
+</ul></li>
+</ul>
+</section>
+<section id="residuals-quantile-quantile-plot" class="slide level2">
+<h2>Residuals: Quantile-Quantile Plot</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb23-2"><a href=""></a>  <span class="at">data =</span> sim1 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb23-3"><a href=""></a>    <span class="at">resid =</span> <span class="fu">residuals</span>(mod_sim1)</span>
+<span id="cb23-4"><a href=""></a>  ),</span>
+<span id="cb23-5"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">sample =</span> y)</span>
+<span id="cb23-6"><a href=""></a>) <span class="sc">+</span> <span class="fu">stat_qq</span>() <span class="sc">+</span> <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb23-7"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Normal QQ plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-17-1.png" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>Points close to the diagonal line indicate residuals consistent with a normal distribution.</p>
+</div></div>
+</section>
+<section id="residuals-relationship-with-x" class="slide level2">
+<h2>Residuals: Relationship with <span class="math inline">\(X\)</span>?</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb24-2"><a href=""></a>  <span class="at">data =</span> sim1 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb24-3"><a href=""></a>    <span class="at">resid =</span> <span class="fu">residuals</span>(mod_sim1)</span>
+<span id="cb24-4"><a href=""></a>  )</span>
+<span id="cb24-5"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb24-6"><a href=""></a>  <span class="fu">geom_ref_line</span>(<span class="at">h =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb24-7"><a href=""></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb24-8"><a href=""></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> resid),</span>
+<span id="cb24-9"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb24-10"><a href=""></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Residuals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-18-1.png" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>No clear pattern between <code>x</code> and the residuals is a good sign. A visible trend would suggest a missing non-linear term.</p>
+</div></div>
+</section></section>
+<section>
+<section id="regression-with-categorical-features" class="title-slide slide level1 part center">
+<h1>Regression with categorical features</h1>
+
+</section>
+<section id="reference-class" class="slide level2">
+<h2>Reference Class</h2>
+<ul>
+<li>A character variable included in a regression will be transformed into a <code>factor</code> in <code>R</code>.</li>
+<li>By default, the reference class is the first level in alphanumerical order.</li>
+<li>To choose a different reference category:
+<ul>
+<li>specify the order manually with the <code>levels</code> argument of the <code class="sourceCode r"><span class="fu">factor</span>()</code> function,</li>
+<li>or use <code class="sourceCode r"><span class="fu">fct_relevel</span>()</code> from the <code>{forcats}</code> package to directly set the reference level.</li>
+</ul></li>
+<li>The reference level determines the baseline against which other categories are compared in the regression.</li>
+</ul>
+</section>
+<section id="reference-class-benchmark" class="slide level2">
+<h2>Reference Class: Benchmark</h2>
+<ul>
+<li>Benchmark situation: the variable <code>x</code> is a character variable which contains the following unique values: <code class="sourceCode r"><span class="st">"a"</span></code>, <code class="sourceCode r"><span class="st">"b"</span></code>, <code class="sourceCode r"><span class="st">"c"</span></code>, <code class="sourceCode r"><span class="st">"d"</span></code>.</li>
+<li>The reference category will thus be <code class="sourceCode r"><span class="st">"a"</span></code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> sim2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x, data = sim2)
+
+Coefficients:
+(Intercept)           xb           xc           xd  
+     1.1522       6.9639       4.9750       0.7588  </code></pre>
+</div>
+</div>
+</section>
+<section id="changing-the-reference-class" class="slide level2">
+<h2>Changing the Reference Class</h2>
+<p>Using the <code class="sourceCode r"><span class="fu">factor</span>()</code> function or the <code class="sourceCode r"><span class="fu">fct_relevel</span>()</code> function from <code>{forcats}</code>:</p>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1"><code class="sourceCode r"><span class="fu">factor</span>()</code></a></li><li><a href="#tabset-1-2"><code class="sourceCode r"><span class="fu">fct_relevel</span>()</code></a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">lm</span>(</span>
+<span id="cb27-2"><a href=""></a>  y <span class="sc">~</span> x,</span>
+<span id="cb27-3"><a href=""></a>  <span class="at">data =</span> sim2 <span class="sc">|&gt;</span> </span>
+<span id="cb27-4"><a href=""></a>    <span class="fu">mutate</span>(<span class="at">x =</span> <span class="fu">factor</span>(x, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"c"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"d"</span>))),</span>
+<span id="cb27-5"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x, data = mutate(sim2, x = factor(x, levels = c("c", 
+    "a", "b", "d"))))
+
+Coefficients:
+(Intercept)           xa           xb           xd  
+      6.127       -4.975        1.989       -4.216  </code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-1-2">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="fu">lm</span>(</span>
+<span id="cb29-2"><a href=""></a>  y <span class="sc">~</span> x,</span>
+<span id="cb29-3"><a href=""></a>  <span class="at">data =</span> sim2 <span class="sc">|&gt;</span> </span>
+<span id="cb29-4"><a href=""></a>    <span class="fu">mutate</span>(<span class="at">x =</span> <span class="fu">fct_relevel</span>(x, <span class="st">"c"</span>))</span>
+<span id="cb29-5"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x, data = mutate(sim2, x = fct_relevel(x, "c")))
+
+Coefficients:
+(Intercept)           xa           xb           xd  
+      6.127       -4.975        1.989       -4.216  </code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="bivariate-graph-for-residuals" class="slide level2">
+<h2>Bivariate Graph for Residuals</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a>mod_sim2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> sim2)</span>
+<span id="cb31-2"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb31-3"><a href=""></a>  <span class="at">data =</span> sim2 <span class="sc">|&gt;</span> </span>
+<span id="cb31-4"><a href=""></a>    <span class="fu">mutate</span>(<span class="at">pred =</span> <span class="fu">predict</span>(mod_sim2)),</span>
+<span id="cb31-5"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x)</span>
+<span id="cb31-6"><a href=""></a>)<span class="sc">+</span></span>
+<span id="cb31-7"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb31-8"><a href=""></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb31-9"><a href=""></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">y =</span> pred),</span>
+<span id="cb31-10"><a href=""></a>    <span class="at">colour =</span> <span class="st">"red"</span></span>
+<span id="cb31-11"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-22-1.png" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p><code>R</code> automatically converts categorical variables included in a model.</p>
+</div></div>
+</section></section>
+<section>
+<section id="interaction-terms" class="title-slide slide level1 part center">
+<h1>Interaction Terms</h1>
+
+</section>
+<section id="interaction-in-a-model" class="slide level2">
+<h2>Interaction in a Model</h2>
+<p>We may believe the effect of a variable (<span class="math inline">\(x_1\)</span>) depends on the value of another (<span class="math inline">\(x_2\)</span>).</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="co"># the sim3 dataset is from {modelr}</span></span>
+<span id="cb32-2"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb32-3"><a href=""></a>  <span class="at">data =</span> sim3, </span>
+<span id="cb32-4"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
+<span id="cb32-5"><a href=""></a>    <span class="at">x =</span> x1, <span class="at">y =</span> y, <span class="at">colour =</span> x2)</span>
+<span id="cb32-6"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb32-7"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb32-8"><a href=""></a>  <span class="fu">geom_smooth</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-23-1.png" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>The slope of <code>y</code> with respect to <code>x1</code> appears to differ across levels of <code>x2</code>.</p>
+</div></div>
+</section>
+<section id="interaction-in-a-model-1" class="slide level2">
+<h2>Interaction in a Model</h2>
+<ul>
+<li>Benchmark model without interactions: <span class="math display">\[
+y_i = \beta_0 + \beta_1 x_{1,i} + \beta_2 x_{2,i} + \varepsilon_i,
+\quad \varepsilon_i \sim \mathcal{N}(0, \sigma^2).
+\]</span></li>
+<li>To test whether the effect of <span class="math inline">\(x_1\)</span> depends on the value of <span class="math inline">\(x_2\)</span>, we add an interaction term: <span class="math display">\[
+y_i = \gamma_0 + \gamma_1 x_{1,i} + \gamma_2 x_{2,i}
+    + \gamma_3 (x_{1,i} \times x_{2,i}) + \varepsilon_i,
+\quad \varepsilon_i \sim \mathcal{N}(0, \sigma^2).
+\]</span></li>
+<li>With this specification, the marginal effect of <span class="math inline">\(x_1\)</span> is <span class="math display">\[
+\frac{\partial y_i}{\partial x_{1,i}} = \gamma_1 + \gamma_3 x_{2,i},
+\]</span> Hence, the slope of <span class="math inline">\(x_1\)</span> changes with <span class="math inline">\(x_2\)</span>.</li>
+</ul>
+</section>
+<section id="interaction-in-a-model-2" class="slide level2">
+<h2>Interaction in a Model</h2>
+<p>We will consider two cases:</p>
+<ol type="1">
+<li>a continuous variable interacted with a <span class="hl-blue">categorical variable</span>,</li>
+<li>a continuous variable interacted with a <span class="hl-blue">continuous variable</span>.</li>
+</ol>
+</section>
+<section id="interaction-between-continuous-and-categorical-variables" class="slide level2">
+<h2>Interaction Between Continuous and Categorical Variables</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a>(mod_bench <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">data =</span> sim3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x1 + x2, data = sim3)
+
+Coefficients:
+(Intercept)           x1          x2b          x2c          x2d  
+     1.8717      -0.1967       2.8878       4.8057       2.3596  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>(mod_interact <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">*</span> x2, <span class="at">data =</span> sim3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x1 * x2, data = sim3)
+
+Coefficients:
+(Intercept)           x1          x2b          x2c          x2d       x1:x2b  
+    1.30124     -0.09302      7.06938      4.43090      0.83455     -0.76029  
+     x1:x2c       x1:x2d  
+    0.06815      0.27728  </code></pre>
+</div>
+</div>
+</section>
+<section id="visualize-the-slopes-in-a-graph" class="slide level2">
+<h2>Visualize the Slopes in a Graph</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37" data-code-line-numbers="3,13,14,15,16,17,18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb37-2"><a href=""></a>  <span class="at">data =</span> sim3 <span class="sc">|&gt;</span> </span>
+<span id="cb37-3"><a href=""></a>    modelr<span class="sc">::</span><span class="fu">gather_predictions</span>(mod_bench, mod_interact) <span class="sc">|&gt;</span> </span>
+<span id="cb37-4"><a href=""></a>    <span class="fu">mutate</span>(</span>
+<span id="cb37-5"><a href=""></a>      <span class="at">model =</span> <span class="fu">factor</span>(</span>
+<span id="cb37-6"><a href=""></a>        model, </span>
+<span id="cb37-7"><a href=""></a>        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"mod_bench"</span>, <span class="st">"mod_interact"</span>), </span>
+<span id="cb37-8"><a href=""></a>        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Benchmark"</span>, <span class="st">"Interaction~between~x[1]~and~x[2]"</span>))</span>
+<span id="cb37-9"><a href=""></a>    ),</span>
+<span id="cb37-10"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x1, <span class="at">y =</span> y, <span class="at">colour =</span> x2)</span>
+<span id="cb37-11"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb37-12"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb37-13"><a href=""></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> pred)) <span class="sc">+</span></span>
+<span id="cb37-14"><a href=""></a>  <span class="fu">facet_wrap</span>(</span>
+<span id="cb37-15"><a href=""></a>    <span class="sc">~</span> model, </span>
+<span id="cb37-16"><a href=""></a>    <span class="at">labeller =</span> <span class="fu">labeller</span>(</span>
+<span id="cb37-17"><a href=""></a>      <span class="at">model =</span> label_parsed</span>
+<span id="cb37-18"><a href=""></a>    )</span>
+<span id="cb37-19"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+</section>
+<section id="visualize-the-slopes-in-a-graph-output" class="slide level2 output-location-slide"><h2>Visualize the Slopes in a Graph</h2><div class="cell output-location-slide">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-25-1.png" width="864"></p>
+</figure>
+</div>
+</div>
+</div></section><section id="a-quick-glance-at-the-residuals" class="slide level2">
+<h2>A Quick Glance at the Residuals</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38" data-code-line-numbers="10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb38-2"><a href=""></a>  <span class="at">data =</span> sim3 <span class="sc">|&gt;</span> </span>
+<span id="cb38-3"><a href=""></a>    modelr<span class="sc">::</span><span class="fu">gather_residuals</span>(mod_bench, mod_interact) <span class="sc">|&gt;</span> </span>
+<span id="cb38-4"><a href=""></a>    <span class="fu">mutate</span>(</span>
+<span id="cb38-5"><a href=""></a>      <span class="at">model =</span> <span class="fu">factor</span>(</span>
+<span id="cb38-6"><a href=""></a>        model, </span>
+<span id="cb38-7"><a href=""></a>        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"mod_bench"</span>, <span class="st">"mod_interact"</span>), </span>
+<span id="cb38-8"><a href=""></a>        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Benchmark"</span>, <span class="st">"Interaction~between~x[1]~and~x[2]"</span>))</span>
+<span id="cb38-9"><a href=""></a>    ),</span>
+<span id="cb38-10"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x1, <span class="at">y =</span> resid, <span class="at">colour =</span> x2)</span>
+<span id="cb38-11"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb38-12"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb38-13"><a href=""></a>  <span class="fu">facet_grid</span>(</span>
+<span id="cb38-14"><a href=""></a>    model <span class="sc">~</span> x2,</span>
+<span id="cb38-15"><a href=""></a>    <span class="at">labeller =</span> <span class="fu">labeller</span>(</span>
+<span id="cb38-16"><a href=""></a>      <span class="at">model =</span> label_parsed</span>
+<span id="cb38-17"><a href=""></a>    )</span>
+<span id="cb38-18"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb38-19"><a href=""></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"residuals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+</section>
+<section id="a-quick-glance-at-the-residuals-output" class="slide level2 output-location-slide"><h2>A Quick Glance at the Residuals</h2><div class="cell output-location-slide">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-26-1.png" width="864"></p>
+</figure>
+</div>
+</div>
+</div></section><section id="interaction-between-two-continuous-variables" class="slide level2">
+<h2>Interaction Between Two Continuous Variables</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a>(mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">data =</span> sim4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x1 + x2, data = sim4)
+
+Coefficients:
+(Intercept)           x1           x2  
+    0.03546      1.82167     -2.78252  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a>(mod2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">*</span> x2, <span class="at">data =</span> sim4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x1 * x2, data = sim4)
+
+Coefficients:
+(Intercept)           x1           x2        x1:x2  
+    0.03546      1.82167     -2.78252      0.95228  </code></pre>
+</div>
+</div>
+</section>
+<section id="interaction-between-two-continuous-variables-1" class="slide level2">
+<h2>Interaction Between Two Continuous Variables</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href=""></a>modelr<span class="sc">::</span><span class="fu">gather_predictions</span>(<span class="at">data =</span> sim4, mod1, mod2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 600 × 6
+   model    x1     x2   rep       y   pred
+   &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 mod1     -1 -1         1  4.25    0.996
+ 2 mod1     -1 -1         2  1.21    0.996
+ 3 mod1     -1 -1         3  0.353   0.996
+ 4 mod1     -1 -0.778     1 -0.0467  0.378
+ 5 mod1     -1 -0.778     2  4.64    0.378
+ 6 mod1     -1 -0.778     3  1.38    0.378
+ 7 mod1     -1 -0.556     1  0.975  -0.240
+ 8 mod1     -1 -0.556     2  2.50   -0.240
+ 9 mod1     -1 -0.556     3  2.70   -0.240
+10 mod1     -1 -0.333     1  0.558  -0.859
+# ℹ 590 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="interaction-between-two-continuous-variables-2" class="slide level2">
+<h2>Interaction Between Two Continuous Variables</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb45-2"><a href=""></a>  <span class="at">data =</span> sim4 <span class="sc">|&gt;</span> </span>
+<span id="cb45-3"><a href=""></a>    modelr<span class="sc">::</span><span class="fu">gather_predictions</span>(mod1, mod2) <span class="sc">|&gt;</span> </span>
+<span id="cb45-4"><a href=""></a>    <span class="fu">mutate</span>(</span>
+<span id="cb45-5"><a href=""></a>      <span class="at">model =</span> <span class="fu">factor</span>(</span>
+<span id="cb45-6"><a href=""></a>        model, </span>
+<span id="cb45-7"><a href=""></a>        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"mod1"</span>, <span class="st">"mod2"</span>), </span>
+<span id="cb45-8"><a href=""></a>        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Benchmark"</span>, <span class="st">"Interaction~between~x[1]~and~x[2]"</span>))</span>
+<span id="cb45-9"><a href=""></a>    ),</span>
+<span id="cb45-10"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x1, <span class="at">y =</span> pred, <span class="at">color =</span> x2, <span class="at">group =</span> x2)</span>
+<span id="cb45-11"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb45-12"><a href=""></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
+<span id="cb45-13"><a href=""></a>  <span class="fu">facet_wrap</span>( <span class="sc">~</span> model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+</section><section id="interaction-between-two-continuous-variables-2-output" class="slide level2 output-location-slide"><h2>Interaction Between Two Continuous Variables</h2><div class="cell output-location-slide">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-29-1.png" width="864"></p>
+</figure>
+</div>
+</div>
+</div></section></section>
+<section>
+<section id="non-linear-terms-in-a-linear-regression-model" class="title-slide slide level1 part center">
+<h1>Non-Linear Terms in a Linear Regression Model</h1>
+
+</section>
+<section id="non-linear-terms" class="slide level2">
+<h2>Non-Linear Terms</h2>
+<ul>
+<li>The relationship with an explanatory variable and the response variable may be non-linear.</li>
+<li>Introducing transformed variables into the model allows us to take these non-linearities into account.
+<ul>
+<li>log, squared value, power</li>
+</ul></li>
+<li>In an <code>R</code> formula, if the transformation involves one of the following signs, the transformation must appear inside the <code class="sourceCode r"><span class="fu">I</span>()</code> function when writing the formula:
+<ul>
+<li><code class="sourceCode r"><span class="sc">+</span></code>, <code class="sourceCode r"><span class="sc">*</span></code>, <code class="sourceCode r"><span class="sc">^</span></code>, <code class="sourceCode r"><span class="sc">-</span></code>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="example-2" class="slide level2">
+<h2>Example</h2>
+<ul>
+<li>For example, assume we want to fit the following model: <span class="math display">\[
+y_i = \beta_0 + \beta_1 x_i + \beta_2x_i^2 + \varepsilon_i, \quad \varepsilon_i \sim \mathcal{N}(0,1).
+\]</span></li>
+<li>The following <span class="hl-blue">formula</span> will be used:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a>y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>y ~ x + I(x^2)</code></pre>
+</div>
+</div>
+<ul>
+<li>Alternatively, one can use the <code class="sourceCode r"><span class="fu">poly</span>()</code> function (polynomials):</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a>y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="dv">2</span>, <span class="at">raw =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>y ~ poly(x, 2, raw = TRUE)</code></pre>
+</div>
+</div>
+</section></section>
+<section>
+<section id="regression-with-panel-data" class="title-slide slide level1 part center">
+<h1>Regression with Panel Data</h1>
+
+</section>
+<section id="panel-data" class="slide level2">
+<h2>Panel Data</h2>
+<ul>
+<li>In session 1, we mentioned panel data.</li>
+<li>Recall that <span class="hl-purple">cross-sectional data</span> contain observations that are collected at a single point in time across multiple units.</li>
+<li>In contrast, <span class="hl-purple">panel data</span> contain observations for multiple units followed over two or more time periods.</li>
+<li>A panel dataset will be denoted as follows: <span class="math display">\[\{ (\boldsymbol{X}_{it}, y_{it}) \}_{i=1,\dots,n;\; t=1,\dots,T},\]</span> where <span class="math inline">\(i=1,\ldots n\)</span> refers to <strong>individuals</strong> and <span class="math inline">\(t=1,\ldots\)</span> refers to the <strong>time period</strong>.</li>
+</ul>
+</section>
+<section id="example-3" class="slide level2">
+<h2>Example</h2>
+<p>The dataset containing real per capita GDP merged with the dataset giving life satisfaction, both downloaded from Eurostat (see <a href="tutorial-1.html">tutorial 1</a>) contains annual values (from 2010 to 2023) for multiple countries (6).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a>tb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 84 × 4
+   country  year    gdp life_satisf
+   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;
+ 1 FR       2010 32548.        6.72
+ 2 IT       2010 26774.        6.59
+ 3 DE       2010 38145.        7.17
+ 4 ES       2010 24253.        6.67
+ 5 NL       2010 42162.        7.94
+ 6 PT       2010 19958.        6.42
+ 7 FR       2011 33245.        7.13
+ 8 IT       2011 27502.        6.45
+ 9 DE       2011 39567.        7.32
+10 ES       2011 24455.        6.93
+# ℹ 74 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="panel-data-setup" class="slide level2">
+<h2>Panel Data Setup</h2>
+<ul>
+<li>We have a panel dataset: <span class="math inline">\(N=6\)</span> countries observed over <span class="math inline">\(T=14\)</span> years (even if it is not perfectly balanced).</li>
+<li>The variables:
+<ul>
+<li><span class="math inline">\(gdp_{it}\)</span>: per capita GDP,</li>
+<li><span class="math inline">\(life_{it}\)</span>: life satisfaction (response variable).</li>
+</ul></li>
+<li>Our regression model of interest: <span class="math display">\[
+\text{life\_satisf}_{it} = \beta_0 + {\color{wongGreen}\beta_1} \text{gdp}_{it} + \varepsilon_{it}.
+\]</span></li>
+<li>How can we account for <span class="hl-orange">shocks common to all countries in the same year</span> (e.g., financial crisis, pandemic)?</li>
+</ul>
+</section>
+<section id="why-time-fixed-effects" class="slide level2">
+<h2>Why Time Fixed Effects?</h2>
+<ul>
+<li>The <span class="hl-orange">events</span> mentioned previously (global recessions, pandemics, or geopolitical crises) affect all countries simultaneously.</li>
+<li>Ignoring these can bias <span class="math inline">\(\color{wongGreen}\beta_1\)</span> if GDP and <span class="hl-orange">these shocks</span> are correlated.</li>
+<li>To tackle this issue, we add <strong>time dummies</strong> <span class="math inline">\({\color{wongOrange}\delta_t}\)</span> to capture common <span class="hl-orange">year-specific effects</span>.</li>
+</ul>
+</section>
+<section id="panel-regression-with-time-fixed-effects" class="slide level2">
+<h2>Panel Regression with Time Fixed Effects</h2>
+<ul>
+<li>Extended specification: <span class="math display">\[
+\text{life\_satisf}_{it} = \beta_0 + {\color{wongGreen}\beta_1} \text{gdp}_{it} + \sum_{t\in\mathcal{T}} {\color{wongOrange}\delta_t} D_t + u_{it},
+\]</span> where <span class="math inline">\(D_t\)</span> is a dummy variable equal to 1 if year = <span class="math inline">\(t\)</span>, and <span class="math inline">\(\mathcal{T} = \{2013, 2018, 2021, 2022, 2023, 2024\}\)</span>.</li>
+<li>We interpret the coefficients as follows:
+<ul>
+<li><span class="math inline">\({\color{wongGreen}\beta_1}\)</span>: marginal effect of per capita GDP on life satisfaction, <span class="hl-blue">net of year-specific shocks</span>.</li>
+<li><span class="math inline">\(\color{wongOrange}\delta_t\)</span>: average shift in life satisfaction in year <span class="math inline">\(t\)</span> relative to the baseline year.</li>
+</ul></li>
+</ul>
+</section>
+<section id="implementation-in-r-pooled-ols" class="slide level2">
+<h2>Implementation in R: Pooled OLS</h2>
+<p>The FE model estimated with the <code class="sourceCode r"><span class="fu">lm</span>()</code> function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a>mod_fe <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb52-2"><a href=""></a>  life <span class="sc">~</span> gdp <span class="sc">+</span> <span class="fu">factor</span>(year),</span>
+<span id="cb52-3"><a href=""></a>  <span class="at">data =</span> panel_data</span>
+<span id="cb52-4"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Using the <code>{plm}</code> package:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href=""></a><span class="fu">library</span>(plm)</span>
+<span id="cb53-2"><a href=""></a>tb_pdata <span class="ot">&lt;-</span> <span class="fu">pdata.frame</span>(tb, <span class="at">index =</span> <span class="fu">c</span>(<span class="st">"country"</span>, <span class="st">"year"</span>))</span>
+<span id="cb53-3"><a href=""></a>mod_fe_plm <span class="ot">&lt;-</span> <span class="fu">plm</span>(</span>
+<span id="cb53-4"><a href=""></a>  life_satisf <span class="sc">~</span> gdp <span class="sc">+</span> <span class="fu">factor</span>(year),</span>
+<span id="cb53-5"><a href=""></a>  <span class="at">data =</span> tb_pdata,</span>
+<span id="cb53-6"><a href=""></a>  <span class="at">model =</span> <span class="st">"pooling"</span></span>
+<span id="cb53-7"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="with-country-fixed-effects" class="slide level2">
+<h2>With Country Fixed Effects</h2>
+<ul>
+<li>So far, we controlled for <span class="hl-orange">time fixed effects</span> <span class="math inline">\(\delta_t\)</span> (global shocks common to all countries).</li>
+<li>But countries also differ in <span class="hl-gold">time-invariant characteristics</span>, for example:
+<ul>
+<li>culture, geography, history,</li>
+<li>institutions, long-run policies, etc.</li>
+</ul></li>
+<li>These may be correlated with per capita GDP and life satisfaction.</li>
+<li>Hence, to account for this, we can also control for <span class="hl-gold">country fixed effects</span> <span class="math inline">\(\alpha_i\)</span>.</li>
+</ul>
+</section>
+<section id="two-way-fixed-effects-model-12" class="slide level2">
+<h2>Two-Way Fixed Effects Model (1/2)</h2>
+<ul>
+<li>The regression equation becomes: <span class="math display">\[
+\text{life\_satisf}_{it} = \beta_0 + {\color{wongGreen}\beta_1} \text{gdp}_{it} + {\color{wongGold}\alpha_i} + {\color{wongOrange}\delta_t} + \varepsilon_{it},
+\]</span>
+<ul>
+<li><span class="math inline">\(\color{wongGold}\alpha_i\)</span>: country-specific effects (to absorb unobserved, time-invariant differences across countries).</li>
+<li><span class="math inline">\(\color{wongOrange}\delta_t\)</span>: time effects (to capture common shocks in a given year).</li>
+</ul></li>
+</ul>
+</section>
+<section id="two-way-fixed-effects-model-22" class="slide level2">
+<h2>Two-Way Fixed Effects Model (2/2)</h2>
+<ul>
+<li><span class="math inline">\(\color{wongGreen}\beta_1\)</span> measures the effect of GDP on life satisfaction <span class="hl-blue">within countries over time</span>, net of:
+<ul>
+<li><span class="hl-gold">persistent cross-country differences</span> (<span class="math inline">\(\color{wongGold}\alpha_i\)</span>),</li>
+<li><span class="hl-orange">global shocks or year-specific changes</span> (<span class="math inline">\(\color{wongOrange}\delta_t\)</span>).</li>
+</ul></li>
+<li>In other words:
+<ul>
+<li>we compare each country to <em>itself</em> over time,</li>
+<li>while adjusting for events that affect all countries in the same year.</li>
+</ul></li>
+</ul>
+</section>
+<section id="implementation-in-r" class="slide level2">
+<h2>Implementation in R</h2>
+<p>With the <code class="sourceCode r"><span class="fu">lm</span>()</code> function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a>mod_twfe_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb54-2"><a href=""></a>  life_satisf <span class="sc">~</span> gdp <span class="sc">+</span> <span class="fu">factor</span>(country) <span class="sc">+</span> <span class="fu">factor</span>(year),</span>
+<span id="cb54-3"><a href=""></a>  <span class="at">data =</span> tb</span>
+<span id="cb54-4"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>With the <code class="sourceCode r"><span class="fu">plm</span>()</code> function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href=""></a>mod_twfe <span class="ot">&lt;-</span> <span class="fu">plm</span>(</span>
+<span id="cb55-2"><a href=""></a>  life_satisf <span class="sc">~</span> gdp,</span>
+<span id="cb55-3"><a href=""></a>  <span class="at">data =</span> tb_pdata,</span>
+<span id="cb55-4"><a href=""></a>  <span class="at">model =</span> <span class="st">"within"</span>,</span>
+<span id="cb55-5"><a href=""></a>  <span class="at">effect =</span> <span class="st">"twoways"</span></span>
+<span id="cb55-6"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="package-for-estimations-with-multiple-fixed-effects" class="slide level2">
+<h2>Package for Estimations with Multiple Fixed-Effects</h2>
+<p>The package <code>{fixest}</code> seems nice:</p>
+<ul>
+<li>The homepage of the package: <a href="https://lrberge.github.io/fixest/">🌐 fixest: Fast and user-friendly fixed-effects estimation</a></li>
+<li>A cool vignette for the package: <a href="https://cran.r-project.org/web/packages/fixest/vignettes/fixest_walkthrough.html">🌐 Fast Fixed-Effects Estimation: Short Introduction</a></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href=""></a><span class="fu">library</span>(fixest)</span>
+<span id="cb56-2"><a href=""></a>mod_fe_fixest <span class="ot">&lt;-</span> <span class="fu">feols</span>(life_satisf <span class="sc">~</span> gdp <span class="sc">|</span> year, <span class="at">data =</span> tb)</span>
+<span id="cb56-3"><a href=""></a><span class="fu">etable</span>(mod_fe_fixest)</span>
+<span id="cb56-4"><a href=""></a></span>
+<span id="cb56-5"><a href=""></a>mod_twfe_fixest <span class="ot">&lt;-</span> <span class="fu">feols</span>(life_satisf <span class="sc">~</span> gdp <span class="sc">|</span> year <span class="sc">+</span> country, <span class="at">data =</span> tb)</span>
+<span id="cb56-6"><a href=""></a><span class="fu">etable</span>(mod_twfe_fixest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exercises" class="slide level2 exercise">
+<h2>Exercises</h2>
+<p>Practice with <a href="tutorial-3.html">the third tutorial</a>!</p>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="figs/logo_AMSE_noir_RVB.png" class="slide-logo"></p>
+<div class="footer footer-default">
+<p>Introduction to programming for data analysis — Session 2</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="seance_4_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="seance_4_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="seance_4_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="seance_4_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="seance_4_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="seance_4_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="seance_4_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="seance_4_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="seance_4_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="seance_4_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: true,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const onCopySuccess = function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
+      });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>

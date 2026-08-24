@@ -1,0 +1,38 @@
+<div class="topbar">
+  <a href="index.html" class="menu">
+    <i class="fa-solid fa-house"></i> Course homepage
+  </a>
+
+  <span id="tutorial-nav"></span>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const match = window.location.pathname.match(/tutorial-(\d+)\.html$/);
+
+  if (!match) return;
+
+  const current = parseInt(match[1], 10);
+  const total = 3;
+
+  const nav = document.getElementById("tutorial-nav");
+
+  // Previous tutorial
+  if (current > 1) {
+    const prev = document.createElement("a");
+    prev.href = `tutorial-${current - 1}.html`;
+    prev.className = "menu tutorial-nav-link";
+    prev.innerHTML = `<i class="fa-solid fa-arrow-left"></i> Tutorial ${current - 1}`;
+    nav.appendChild(prev);
+  }
+
+  // Next tutorial
+  if (current < total) {
+    const next = document.createElement("a");
+    next.href = `tutorial-${current + 1}.html`;
+    next.className = "menu tutorial-nav-link";
+    next.innerHTML = `Tutorial ${current + 1} <i class="fa-solid fa-arrow-right"></i>`;
+    nav.appendChild(next);
+  }
+});
+</script>

@@ -1,0 +1,27 @@
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll('.cascade').forEach(function (cascade) {
+    var buttons = Array.from(cascade.querySelectorAll('.step-btn'));
+    var qcard = cascade.closest('.qcard');
+    var fill = cascade.querySelector('.progress-fill');
+    var total = buttons.length;
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var step = btn.dataset.step;
+        var reveal = qcard.querySelector('[data-reveal="' + step + '"]');
+        if (reveal) reveal.classList.add('show');
+        btn.disabled = true;
+
+        var next = buttons.find(function (b) {
+          return Number(b.dataset.step) === Number(step) + 1;
+        });
+        if (next) next.disabled = false;
+
+        var doneCount = buttons.filter(function (b) { return b.disabled; }).length;
+        if (fill) fill.style.width = (doneCount / total * 100) + '%';
+      });
+    });
+  });
+});
+</script>
