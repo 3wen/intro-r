@@ -643,7 +643,7 @@ What is the structure of my dataset?
 2. Panel dataset
 
 ::: {.quiz-answer .fragment}
-**Answer:** Panel dataset
+**Answer:** Cross-section dataset
 :::
 
 ## Example 1: Survey among students
