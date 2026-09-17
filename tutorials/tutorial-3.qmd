@@ -116,6 +116,8 @@ tb
 :::
 :::
 
+
+
 ## Scatterplots
 
 A scatterplot visually represents the relationship between two variables. In the current dataset, it is useful to examine how per capita GDP relates to overall life satisfaction.
