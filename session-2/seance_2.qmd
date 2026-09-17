@@ -202,7 +202,7 @@ countdown::countdown(
 - Hint: the US statistical agency collecting data on US higher education is called IPEDS 
   * use the IPEDS Data Explorer; look for complete data files.
   * since we have data from 2018, let us use a survey from the same year.
-- Once you have downloaded the data, put it in the `data/` folder of your project for session 2.
+- Once you have downloaded the data, put it in the `data/raw/` folder of your project for session 2.
 
 ## Solution: Link to the Desired Dataset {.exercisesol}
 
@@ -267,23 +267,60 @@ function_name <- function(argument_1, argument_2) {
 
 ## Example
 
-```r
+```{r}
 #' Addition of two numbers
 #' 
 #' @param x First number.
 #' @param y Second number.
 #' @returns The sum of x and y.
 add_numbers <- function(x, y) {
-    sum <- x + y
-
-    sum
+  sum_of_numbers <- x + y
+  
+  sum_of_numbers
 }
 ```
+
 
 ```r
 # Call the function with arguments:
 add_numbers(x = 2, y = 3)
 ```
+
+## The Environment: An Analogy
+
+- Every time `R` runs, it keeps track of all the objects you have created (data, variables, functions...).
+- This is called the <span class="hl-green">Global Environment</span>: think of it as a <span class="hl-purple">classroom</span>.
+- Anything you write directly in your script and evaluate (outside of a function) is added to this classroom, and stays there for you to see and use.
+- But what happens **inside** a function is a different story...
+
+## Your Function is a Mixer
+
+- Imagine your function is a <span class="hl-purple">kitchen mixer</span> sitting on the counter of the classroom.
+
+<br>
+
+- <span class="hl-green">Arguments</span> → the **ingredients** you pour into the mixer.
+- <span class="hl-green">Body</span> → the **recipe** the mixer follows (the instructions/operations).
+- <span class="hl-green">Return Value</span> → the **final product** that comes out of the mixer (a cake, or a smoothie).
+
+::: {.warning}
+<span class="box-title">Local vs Global</span>
+While it is mixing, the mixer creates its own little **local environment**: a private workspace that only exists while the mixer is running.
+:::
+
+## What Stays, What Goes to the Trash
+
+- Everything created **inside** the mixer (intermediate bowls, spoons, half-mixed batter...) only exists while the mixer is running.
+- Once the mixer stops, **only the final product (the returned value) leaves the mixer** and enters the classroom (the Global Environment).
+- <span class="hl-purple">Everything else created inside is thrown in the trashcan</span>: it disappears as soon as the function finishes running.
+
+::: {.tip}
+<span class="box-title">Back to our example</span>
+In `add_numbers()`, the object `sum_of_numbers` is created *inside* the mixer.
+
+- Does `sum` exist in your Global Environment after calling `add_numbers(x = 2, y = 3)`?
+- What is the only thing that makes it out of the mixer?
+:::
 
 ## Exercise {.exercise}
 
@@ -364,7 +401,8 @@ for (variable in iterable_object) {
 
 Example:
 
-```r
+```{r}
+#| eval: FALSE
 # Print the squares of the integers from 1 to 5
 for (i in 1:5) {
     j <- i^2
@@ -372,28 +410,61 @@ for (i in 1:5) {
 }
 ```
 
-## while Loop Syntax and Example
+:::{.fragment}
+To store the values through the iterations:
+```{r}
+#| eval: FALSE
+# Initialize empty vector
+res <- rep(NA, 5)
+for (i in 1:5) {
+    j <- i^2
+    res[i] <- j # the ith element gets the value j
+    print(j)
+}
+```
+:::
+
+
+## while Loop Syntax and Example {.small}
 
 Syntax:
 
-```r
+```{r}
+#| eval: false
 while (condition) {
-    # instructions to execute
+  # instructions to execute
 }
 ```
+
 
 Example:
 
-```r
-# Print the squares of the integers until the current integer 
-# is lower or equal to 5
+```{r}
+#| eval: false
+# Print the squares of the integers until the current integer is lower or equal to 5
+i <- 1 # initialize the counter to 1
+while (i <= 5) {
+  j <- i^2
+  print(j)
+  i <- i + 1 # Increment the counter
+}
+```
+
+:::{.fragment}
+To store the values of $i^2$ through the iterations:
+```{r}
+#| eval: false
+res <- NULL # initialize object with NULL value
 i <- 1 # initialize the counter to 1
 while (i <= 5) {
     j <- i^2
+    res <- c(res, j) # Append j to res
     print(j)
     i <- i + 1 # Increment the counter
+    res
 }
 ```
+:::
 
 ## Exercise {.exercise}
 
@@ -450,7 +521,7 @@ Use RStudio's projects instead. The working directory becomes the same as that w
 
 ## Import text files
 
-To load text files (e.g., the <a href="data/age_gender.txt" class="btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{< fa download >}} age_gender.txt file</a>s stored in your computer, use the function `read.table()`.
+To load text files (e.g., the <a href="data/raw/age_gender.txt" class="btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{< fa download >}} age_gender.txt file</a> stored in your computer, in the `data/raw` folder, use the function `read.table()`.
 
 `read.table(file, sep, header)`
 
@@ -459,7 +530,7 @@ To load text files (e.g., the <a href="data/age_gender.txt" class="btn btn-light
 - `header`: `TRUE` if file contains column names, `FALSE` by default
 
 ```r
-tab <- read.table(file = "data/age_gender.txt", header = TRUE)
+tab <- read.table(file = "data/raw/age_gender.txt", header = TRUE)
 head(tab, 3)
 ```
 
@@ -538,10 +609,12 @@ countdown::countdown(
 
 - Import the `HD2018.csv` file you downloaded from IPEDS into an object called `universities`.
 - Also import the labor force survey data, available on AMeTICE (Moodle) as `US_labor_force_survey.dta`, into an object called `survey`. Use the following instruction:
-```r
-  survey <- haven::read_dta("data/US_labor_force_survey.dta")
+```{r}
+#| eval: false
+survey <- haven::read_dta("data/raw/US_labor_force_survey.dta")
 ```
-- Put both files in the `data/` folder of your project for session 2 before importing them.
+
+- Put both files in the `data/raw/` folder of your project for session 2 before importing them.
 
 ## Solution: Import {.exercisesol}
 
@@ -550,10 +623,10 @@ countdown::countdown(
 #| warning: false
 library(tidyverse)
 # University dataset (CSV)
-universities <- read_csv("data/HD2018.csv")
+universities <- read_csv("data/raw/HD2018.csv")
 
 # Labor force survey (Stata format)
-survey <- haven::read_dta("data/US_labor_force_survey.dta")
+survey <- haven::read_dta("data/raw/US_labor_force_survey.dta")
 ```
 
 
@@ -1599,7 +1672,9 @@ Using `universities` and `survey`, write a pipeline that answers this question. 
 ```{r}
 universities <- universities |> 
   mutate(
-    COUNTYNM = str_to_upper(COUNTYNM)
+    COUNTYNM = str_to_upper(COUNTYNM),
+    # Remove the first occurence of " COUNTY" in column COUNTYNM
+    COUNTYNM = str_remove(COUNTYNM, " COUNTY")
   )
 
 survey <- survey |> 
