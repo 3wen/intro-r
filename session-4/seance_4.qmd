@@ -142,9 +142,14 @@ $$
 
 :::: {.columns}
 ::: {.column width="50%"}
+
+In the [first tutorial](tutorial-1.html), you created a CSV file with life satisfaction and per capita GDP for multiple countries, on an annual basis, with data originally from Eurostat.
+
+<a href="data/out/gdp_lifesat.csv" class="btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" download>{{< fa download >}} gdp_lifesat.csv</a>
+
 ```{r}
 #| eval: false
-tb <- read_csv("data/out/gdp_lifesatisf.csv")
+tb <- read_csv("data/out/gdp_lifesat.csv")
 happy <- filter(tb, 
   life_satisf >= 7, year == 2018
   )
@@ -171,6 +176,178 @@ t.test(happy$gdp, unhappy$gdp)
 - What do you conclude?
 :::
 ::::
+
+## Computing the statistics "by hand" (1/4)
+
+:::: {.columns}
+::: {.column width="50%"}
+
+Before computing $T$, we need the mean, variance and size of each group:
+
+```{r}
+#| eval: true
+mean_happy   <- mean(happy$gdp)
+mean_unhappy <- mean(unhappy$gdp)
+var_happy    <- var(happy$gdp)
+var_unhappy  <- var(unhappy$gdp)
+n_happy      <- nrow(happy)
+n_unhappy    <- nrow(unhappy)
+```
+
+:::
+::: {.column width="50%"}
+```{r}
+#| echo: true
+tibble(
+  group = c("happy", "unhappy"),
+  mean  = c(mean_happy, mean_unhappy),
+  var   = c(var_happy, var_unhappy),
+  n     = c(n_happy, n_unhappy)
+)
+```
+:::
+::::
+
+## Computing the statistics "by hand" (2/4)
+
+We can now plug these into the $T$-statistic formula:
+$$
+T = \frac{\overline{X}_1 - \overline{X}_2}{\sqrt{\tfrac{s_1^2}{n_1} + \tfrac{s_2^2}{n_2}}}
+$$
+
+```{r}
+#| eval: true
+t_obs <- (mean_happy - mean_unhappy) / 
+  sqrt(var_happy/n_happy + var_unhappy/n_unhappy)
+t_obs
+```
+
+- Compare this to the `t = ...` reported by `t.test()`: it matches!
+
+## Computing the statistics "by hand" (3/4)
+
+
+Since the two groups don't have equal variances, the [degrees of freedom]{.gras-firstCol} are **not** simply $n_1 + n_2 - 2$. The Welch–Satterthwaite approximation is used instead:
+$$
+\nu = \frac{\left(\tfrac{s_1^2}{n_1} + \tfrac{s_2^2}{n_2}\right)^2}{\dfrac{(s_1^2/n_1)^2}{n_1-1} + \dfrac{(s_2^2/n_2)^2}{n_2-1}}
+$$
+
+
+```{r}
+#| eval: true
+num <- (var_happy/n_happy + var_unhappy/n_unhappy)^2
+denom <- 
+  (var_happy/n_happy)^2 / (n_happy - 1) +
+  (var_unhappy/n_unhappy)^2 / (n_unhappy - 1)
+df_obs <- num / denom
+df_obs
+```
+
+- Again, this matches the `df = ...` reported by `t.test()`.
+
+
+## Computing the statistics "by hand" (4/4)
+
+:::: {.columns}
+::: {.column width="50%"}
+
+- `qt(p, df)` is the **quantile function** of the Student's $t$-distribution: it returns the value $t^\star$ such that $\mathbb{P}[T_{\nu} \le t^\star] = p$.
+- To get the critical value $t_{1-\alpha/2,\,\nu}$ for a two-sided test at level $\alpha$:
+
+```{r}
+#| eval: true
+alpha <- 0.05
+t_crit <- qt(1 - alpha/2, df = df_obs)
+t_crit
+
+abs(t_obs) > t_crit
+```
+:::
+::: {.column width="50%"}
+
+
+- Since $|T| > t_{1-\alpha/2,\,\nu}$, we reject $\text{H}_0$ at the 5\% level: happy and unhappy countries do not have the same average GDP.
+```{r}
+#| code-fold: true
+#| fig-height: 5
+alpha <- 0.05
+t_crit <- qt(1 - alpha / 2, df = df_obs)
+
+# x-range for the graph
+x_max <- max(abs(t_obs), t_crit) + 1.5
+
+curve_data <- tibble(x = seq(-x_max, x_max, by = .01)) |>
+  mutate(y = dt(x, df = df_obs))
+
+# Rejection area
+reject_data <- curve_data |>
+  filter(abs(x) >= t_crit)
+
+ggplot(curve_data, aes(x = x, y = y)) +
+  # rejection regions (both tails), shaded
+  geom_area(
+    data = reject_data,
+    mapping = aes(group = x > 0),
+    fill = "#D55E00", alpha = .25
+  ) +
+  geom_line(linewidth = 0.8) + # density curve
+  # critical values \pm t_crit
+  geom_vline(
+    xintercept = c(-t_crit, t_crit),
+    colour = "#D55E00", linetype = "dotted", linewidth = .7
+  ) +
+  # observed statistic
+  geom_vline(
+    xintercept = t_obs,
+    colour = "#0072B2", linetype = "dashed", linewidth = .9
+  ) +
+  # labels
+  annotate(
+    geom = "label", 
+    x = t_obs, y = max(curve_data$y) * .95,
+    label = str_c("t[obs] == ", round(t_obs, 2)),
+    parse = TRUE, colour = "#0072B2", fill = "white"
+  ) +
+  annotate(
+    geom = "text", 
+    x = c(-t_crit, t_crit), y = -max(curve_data$y) * .03,
+    label = str_c(c("-", "+"), round(t_crit, 2)),
+    colour = "#D55E00", size = 3.5
+  ) +
+  labs(
+    title = "Student's t-distribution under H0",
+    subtitle = str_c(
+      "df = ", round(df_obs, 1),
+      ", shaded areas: rejection region at α = ", alpha
+    ),
+    x = "t", 
+    y = "Density"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(plot.title.position = "plot")
+```
+
+
+:::
+::::
+
+## Bonus: recovering the p-value with `pt()`
+
+
+- `pt(q, df)` is the **cumulative distribution function** (CDF): it returns $\mathbb{P}[T_{\nu} \le q]$.
+- Recall the p-value formula from before:
+$$
+p = 2 \times \mathbb{P}\big[T_\nu \ge |t_{\text{obs}}|\big]
+$$
+
+```{r}
+#| eval: true
+p_value <- 2 * (1 - pt(abs(t_obs), df = df_obs))
+p_value
+```
+
+- This matchs the `p-value = ...` reported by `t.test()`.
+- `qt()` and `pt()` are inverses of each other: `qt(pt(x, df), df) == x`.
 
 # Linear Regression {.part}
 
