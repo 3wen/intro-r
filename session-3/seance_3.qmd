@@ -71,7 +71,7 @@ execute:
 library(tidyverse)
 
 # Source: https://www.insee.fr/en/statistiques/serie/000436394
-file <- "../data/deces_france_insee/monthly_values.csv"
+file <- "../data/raw/deces_france_insee/monthly_values.csv"
 deces <- read_csv2(file, skip = 4, col_names = c("period", "deaths", "codes"))
 
 deces <-
@@ -740,7 +740,7 @@ Practice with [the second tutorial](tutorial-2.html)!
 
 ```r
 # Source: https://www.insee.fr/en/statistiques/serie/000436394
-file <- "data/deces_france_insee/monthly_values.csv"
+file <- "data/raw/deces_france_insee/monthly_values.csv"
 deces <- read_csv2(
     file, skip = 4, 
     col_names = c("period", "deaths", "codes")
