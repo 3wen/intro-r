@@ -75,7 +75,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="tutorial-1_files/libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -412,7 +412,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>Prepare the data for further analysis in R.</li>
 </ol>
 </section>
-<p><strong>Setup.</strong> Prepare a project for the first tutorial. Adopt a <code>tutorial-1/</code> root containing <code>data/{raw,tmp,out}</code>, <code>scripts/</code>, <code>figs/</code>, <code>tables/</code>, <code>references/</code>, a <code>README.md</code> and a <code>project.Rproj</code>. Working within an RStudio project sets your active working directory to the project’s root folder (<code>tutorial-1/</code>).</p>
+<p><strong>Setup.</strong> Prepare a project for the first tutorial (see the <a href="project.html">recap if you need a refresher on how to do so</a>). Adopt a <code>tutorial-1/</code> root containing <code>data/{raw,tmp,out}</code>, <code>scripts/</code>, <code>figs/</code>, <code>tables/</code>, <code>references/</code>, a <code>README.md</code> and a <code>project.Rproj</code>. Working within an RStudio project sets your active working directory to the project’s root folder (<code>tutorial-1/</code>).</p>
 <div class="qcard">
 <p><strong>Q1.</strong> Import the per capita GDP dataset in R (the “Real GDP per capita” dataset, ref: <code>sdg_08_10</code>, downloaded as <code>data/raw/sdg_08_10.csv</code>). Adapt the following instruction:</p>
 <div class="cell">
@@ -439,31 +439,38 @@ document.addEventListener("DOMContentLoaded", function () {
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">library</span>(readr)</span>
 <span id="cb7-2"><a href="#cb7-2"></a>gdp <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/raw/sdg_08_10.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Rows: 84 Columns: 6
+<pre><code>Rows: 1027 Columns: 19
 ── Column specification ────────────────────────────────────────────────────────
 Delimiter: ","
-chr (4): freq, unit, na_item, geo
-dbl (2): TIME_PERIOD, OBS_VALUE
+chr (13): STRUCTURE, STRUCTURE_ID, STRUCTURE_NAME, freq, Time frequency, uni...
+dbl  (2): TIME_PERIOD, OBS_VALUE
+lgl  (4): Time, Observation value, CONF_STATUS, Confidentiality status (flag)
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>gdp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 84 × 6
-   freq  unit          na_item geo   TIME_PERIOD OBS_VALUE
-   &lt;chr&gt; &lt;chr&gt;         &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;
- 1 A     CLV10_EUR_HAB B1GQ    FR           2010    32548.
- 2 A     CLV10_EUR_HAB B1GQ    IT           2010    26774.
- 3 A     CLV10_EUR_HAB B1GQ    DE           2010    38145.
- 4 A     CLV10_EUR_HAB B1GQ    ES           2010    24253.
- 5 A     CLV10_EUR_HAB B1GQ    NL           2010    42162.
- 6 A     CLV10_EUR_HAB B1GQ    PT           2010    19958.
- 7 A     CLV10_EUR_HAB B1GQ    FR           2011    33245.
- 8 A     CLV10_EUR_HAB B1GQ    IT           2011    27502.
- 9 A     CLV10_EUR_HAB B1GQ    DE           2011    39567.
-10 A     CLV10_EUR_HAB B1GQ    ES           2011    24455.
-# ℹ 74 more rows</code></pre>
+<pre><code># A tibble: 1,027 × 19
+   STRUCTURE STRUCTURE_ID         STRUCTURE_NAME    freq  `Time frequency` unit 
+   &lt;chr&gt;     &lt;chr&gt;                &lt;chr&gt;             &lt;chr&gt; &lt;chr&gt;            &lt;chr&gt;
+ 1 dataflow  ESTAT:SDG_08_10(1.0) Real GDP per cap… A     Annual           CLV2…
+ 2 dataflow  ESTAT:SDG_08_10(1.0) Real GDP per cap… A     Annual           CLV2…
+ 3 dataflow  ESTAT:SDG_08_10(1.0) Real GDP per cap… A     Annual           CLV2…
+ 4 dataflow  ESTAT:SDG_08_10(1.0) Real GDP per cap… A     Annual           CLV2…
+ 5 dataflow  ESTAT:SDG_08_10(1.0) Real GDP per cap… A     Annual           CLV2…
+ 6 dataflow  ESTAT:SDG_08_10(1.0) Real GDP per cap… A     Annual           CLV2…
+ 7 dataflow  ESTAT:SDG_08_10(1.0) Real GDP per cap… A     Annual           CLV2…
+ 8 dataflow  ESTAT:SDG_08_10(1.0) Real GDP per cap… A     Annual           CLV2…
+ 9 dataflow  ESTAT:SDG_08_10(1.0) Real GDP per cap… A     Annual           CLV2…
+10 dataflow  ESTAT:SDG_08_10(1.0) Real GDP per cap… A     Annual           CLV2…
+# ℹ 1,017 more rows
+# ℹ 13 more variables: `Unit of measure` &lt;chr&gt;, na_item &lt;chr&gt;,
+#   `National accounts indicator (ESA 2010)` &lt;chr&gt;, geo &lt;chr&gt;,
+#   `Geopolitical entity (reporting)` &lt;chr&gt;, TIME_PERIOD &lt;dbl&gt;, Time &lt;lgl&gt;,
+#   OBS_VALUE &lt;dbl&gt;, `Observation value` &lt;lgl&gt;, OBS_FLAG &lt;chr&gt;,
+#   `Observation status (Flag) V2 structure` &lt;chr&gt;, CONF_STATUS &lt;lgl&gt;,
+#   `Confidentiality status (flag)` &lt;lgl&gt;</code></pre>
 </div>
 </div>
 </div>
@@ -528,31 +535,38 @@ dbl (2): TIME_PERIOD, OBS_VALUE
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>life_satisf <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/raw/ilc_pw01.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Rows: 84 Columns: 6
+<pre><code>Rows: 248 Columns: 27
 ── Column specification ────────────────────────────────────────────────────────
 Delimiter: ","
-chr (4): freq, unit, indic_wb, geo
-dbl (2): TIME_PERIOD, OBS_VALUE
+chr (20): STRUCTURE, STRUCTURE_ID, STRUCTURE_NAME, freq, Time frequency, sta...
+dbl  (2): TIME_PERIOD, OBS_VALUE
+lgl  (5): sex, Time, Observation value, CONF_STATUS, Confidentiality status ...
 
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>life_satisf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 84 × 6
-   freq  unit  indic_wb geo   TIME_PERIOD OBS_VALUE
-   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;
- 1 A     RTG   LIFESAT  FR           2010      6.72
- 2 A     RTG   LIFESAT  IT           2010      6.59
- 3 A     RTG   LIFESAT  DE           2010      7.17
- 4 A     RTG   LIFESAT  ES           2010      6.67
- 5 A     RTG   LIFESAT  NL           2010      7.94
- 6 A     RTG   LIFESAT  PT           2010      6.42
- 7 A     RTG   LIFESAT  FR           2011      7.13
- 8 A     RTG   LIFESAT  IT           2011      6.45
- 9 A     RTG   LIFESAT  DE           2011      7.32
-10 A     RTG   LIFESAT  ES           2011      6.93
-# ℹ 74 more rows</code></pre>
+<pre><code># A tibble: 248 × 27
+   STRUCTURE STRUCTURE_ID         STRUCTURE_NAME freq  `Time frequency` statinfo
+   &lt;chr&gt;     &lt;chr&gt;                &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt;            &lt;chr&gt;   
+ 1 dataflow  ESTAT:ILC_PW01$DEFA… Overall life … A     Annual           AVG     
+ 2 dataflow  ESTAT:ILC_PW01$DEFA… Overall life … A     Annual           AVG     
+ 3 dataflow  ESTAT:ILC_PW01$DEFA… Overall life … A     Annual           AVG     
+ 4 dataflow  ESTAT:ILC_PW01$DEFA… Overall life … A     Annual           AVG     
+ 5 dataflow  ESTAT:ILC_PW01$DEFA… Overall life … A     Annual           AVG     
+ 6 dataflow  ESTAT:ILC_PW01$DEFA… Overall life … A     Annual           AVG     
+ 7 dataflow  ESTAT:ILC_PW01$DEFA… Overall life … A     Annual           AVG     
+ 8 dataflow  ESTAT:ILC_PW01$DEFA… Overall life … A     Annual           AVG     
+ 9 dataflow  ESTAT:ILC_PW01$DEFA… Overall life … A     Annual           AVG     
+10 dataflow  ESTAT:ILC_PW01$DEFA… Overall life … A     Annual           AVG     
+# ℹ 238 more rows
+# ℹ 21 more variables: `Statistical information` &lt;chr&gt;, unit &lt;chr&gt;,
+#   `Unit of measure` &lt;chr&gt;, isced11 &lt;chr&gt;,
+#   `International Standard Classification of Education (ISCED 2011)` &lt;chr&gt;,
+#   life_sat &lt;chr&gt;, `Life satisfaction` &lt;chr&gt;, sex &lt;lgl&gt;, Sex &lt;chr&gt;, age &lt;chr&gt;,
+#   `Age class` &lt;chr&gt;, geo &lt;chr&gt;, `Geopolitical entity (reporting)` &lt;chr&gt;,
+#   TIME_PERIOD &lt;dbl&gt;, Time &lt;lgl&gt;, OBS_VALUE &lt;dbl&gt;, …</code></pre>
 </div>
 </div>
 </div>
@@ -580,20 +594,20 @@ dbl (2): TIME_PERIOD, OBS_VALUE
 <span id="cb18-2"><a href="#cb18-2"></a>    <span class="fu">select</span>(geo, TIME_PERIOD, OBS_VALUE)</span>
 <span id="cb18-3"><a href="#cb18-3"></a>life_satisf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 84 × 3
+<pre><code># A tibble: 248 × 3
    geo   TIME_PERIOD OBS_VALUE
    &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;
- 1 FR           2010      6.72
- 2 IT           2010      6.59
- 3 DE           2010      7.17
- 4 ES           2010      6.67
- 5 NL           2010      7.94
- 6 PT           2010      6.42
- 7 FR           2011      7.13
- 8 IT           2011      6.45
- 9 DE           2011      7.32
-10 ES           2011      6.93
-# ℹ 74 more rows</code></pre>
+ 1 AL           2018       5.5
+ 2 AL           2021       5.7
+ 3 AL           2022       6  
+ 4 AL           2023       6.3
+ 5 AT           2013       7.8
+ 6 AT           2018       8  
+ 7 AT           2021       8  
+ 8 AT           2022       7.9
+ 9 AT           2023       7.7
+10 AT           2024       7.6
+# ℹ 238 more rows</code></pre>
 </div>
 </div>
 </div>
@@ -629,20 +643,20 @@ dbl (2): TIME_PERIOD, OBS_VALUE
 <span id="cb21-6"><a href="#cb21-6"></a>    )</span>
 <span id="cb21-7"><a href="#cb21-7"></a>life_satisf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 84 × 3
+<pre><code># A tibble: 248 × 3
    country  year life_satisf
    &lt;chr&gt;   &lt;dbl&gt;       &lt;dbl&gt;
- 1 FR       2010        6.72
- 2 IT       2010        6.59
- 3 DE       2010        7.17
- 4 ES       2010        6.67
- 5 NL       2010        7.94
- 6 PT       2010        6.42
- 7 FR       2011        7.13
- 8 IT       2011        6.45
- 9 DE       2011        7.32
-10 ES       2011        6.93
-# ℹ 74 more rows</code></pre>
+ 1 AL       2018         5.5
+ 2 AL       2021         5.7
+ 3 AL       2022         6  
+ 4 AL       2023         6.3
+ 5 AT       2013         7.8
+ 6 AT       2018         8  
+ 7 AT       2021         8  
+ 8 AT       2022         7.9
+ 9 AT       2023         7.7
+10 AT       2024         7.6
+# ℹ 238 more rows</code></pre>
 </div>
 </div>
 </div>
@@ -704,30 +718,138 @@ dbl (2): TIME_PERIOD, OBS_VALUE
 <span id="cb26-8"><a href="#cb26-8"></a>    <span class="fu">write_csv</span>(<span class="at">file =</span> <span class="st">"data/out/gdp.csv"</span>)</span>
 <span id="cb26-9"><a href="#cb26-9"></a>gdp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 84 × 3
-   country  year    gdp
-   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;
- 1 FR       2010 32548.
- 2 IT       2010 26774.
- 3 DE       2010 38145.
- 4 ES       2010 24253.
- 5 NL       2010 42162.
- 6 PT       2010 19958.
- 7 FR       2011 33245.
- 8 IT       2011 27502.
- 9 DE       2011 39567.
-10 ES       2011 24455.
-# ℹ 74 more rows</code></pre>
+<pre><code># A tibble: 1,027 × 3
+   country  year   gdp
+   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
+ 1 AL       2000  2120
+ 2 AL       2001  2330
+ 3 AL       2002  2440
+ 4 AL       2003  2580
+ 5 AL       2004  2730
+ 6 AL       2005  2880
+ 7 AL       2006  3080
+ 8 AL       2007  3300
+ 9 AL       2008  3550
+10 AL       2009  3680
+# ℹ 1,017 more rows</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="qcard">
-<p><strong>Q9.</strong> In the dataset <code>gdp</code>, keep only the rows where the year is 2023. Then, sort these rows so that countries with higher values of per capita GDP appear first (i.e., arrange in descending order).</p>
+<p><strong>Q9.</strong> If you look closely at the <code>country</code> column of <code>gdp</code>, you will notice that some values do not correspond to a single country, but rather to a <strong>group of countries</strong> (e.g., the whole European Union, or the Euro area). Identify these aggregated observations, and remove them from <code>gdp</code> so that only individual countries remain.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>gdp <span class="sc">|&gt;</span></span>
-<span id="cb28-2"><a href="#cb28-2"></a>    <span class="fu">filter</span>(...) <span class="sc">|&gt;</span></span>
-<span id="cb28-3"><a href="#cb28-3"></a>    <span class="fu">arrange</span>(...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-2"><a href="#cb28-2"></a>    <span class="fu">distinct</span>(country) <span class="sc">|&gt;</span></span>
+<span id="cb28-3"><a href="#cb28-3"></a>    <span class="fu">print</span>(<span class="at">n =</span> <span class="cn">Inf</span>)</span>
+<span id="cb28-4"><a href="#cb28-4"></a></span>
+<span id="cb28-5"><a href="#cb28-5"></a>gdp <span class="ot">&lt;-</span> gdp <span class="sc">|&gt;</span></span>
+<span id="cb28-6"><a href="#cb28-6"></a>    <span class="fu">filter</span>(...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cascade">
+<button class="step-btn hint" data-step="1">
+<span class="dot"></span>Hint 1
+</button>
+<button class="step-btn hint" data-step="2" disabled="">
+<span class="dot"></span>Hint 2
+</button>
+<button class="step-btn sol" data-step="3" disabled="">
+<span class="dot"></span>Show solution
+</button>
+<div class="progress-track">
+<div class="progress-fill">
+
+</div>
+</div>
+</div>
+<div class="reveal hint-box" data-reveal="1">
+<p>Use <code>distinct(country)</code> to list the unique values taken by <code>country</code>. Among them, you should spot codes such as <code>EU27_2020</code> or <code>EA20</code>: these are Eurostat’s codes for the European Union (27 members, as of 2020) and the Euro area (20 members), not for individual countries.</p>
+</div>
+<div class="reveal hint-box" data-reveal="2">
+<p>Individual countries are always identified by a two-letter ISO code (e.g., <code>FR</code>, <code>DE</code>, <code>IT</code>). Aggregated groups of countries have longer codes. The base R function <code>nchar()</code> returns the number of characters in a character string — combine it with <code>filter()</code>.</p>
+</div>
+<div class="reveal sol-box" data-reveal="3">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co"># Inspect the distinct values of country</span></span>
+<span id="cb29-2"><a href="#cb29-2"></a>gdp <span class="sc">|&gt;</span></span>
+<span id="cb29-3"><a href="#cb29-3"></a>    <span class="fu">distinct</span>(country) <span class="sc">|&gt;</span></span>
+<span id="cb29-4"><a href="#cb29-4"></a>    <span class="fu">print</span>(<span class="at">n =</span> <span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 41 × 1
+   country  
+   &lt;chr&gt;    
+ 1 AL       
+ 2 AT       
+ 3 BA       
+ 4 BE       
+ 5 BG       
+ 6 CH       
+ 7 CY       
+ 8 CZ       
+ 9 DE       
+10 DK       
+11 EA19     
+12 EA20     
+13 EA21     
+14 EE       
+15 EL       
+16 ES       
+17 EU27_2020
+18 FI       
+19 FR       
+20 HR       
+21 HU       
+22 IE       
+23 IS       
+24 IT       
+25 LT       
+26 LU       
+27 LV       
+28 MD       
+29 ME       
+30 MK       
+31 MT       
+32 NL       
+33 NO       
+34 PL       
+35 PT       
+36 RO       
+37 RS       
+38 SE       
+39 SI       
+40 SK       
+41 TR       </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co"># Individual countries have a 2-character ISO code;</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a><span class="co"># groups of countries (e.g. EU27_2020, EA20) have longer codes.</span></span>
+<span id="cb31-3"><a href="#cb31-3"></a>gdp <span class="ot">&lt;-</span> gdp <span class="sc">|&gt;</span></span>
+<span id="cb31-4"><a href="#cb31-4"></a>    <span class="fu">filter</span>(<span class="fu">nchar</span>(country) <span class="sc">==</span> <span class="dv">2</span>)</span>
+<span id="cb31-5"><a href="#cb31-5"></a>gdp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 923 × 3
+   country  year   gdp
+   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
+ 1 AL       2000  2120
+ 2 AL       2001  2330
+ 3 AL       2002  2440
+ 4 AL       2003  2580
+ 5 AL       2004  2730
+ 6 AL       2005  2880
+ 7 AL       2006  3080
+ 8 AL       2007  3300
+ 9 AL       2008  3550
+10 AL       2009  3680
+# ℹ 913 more rows</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="qcard">
+<p><strong>Q10.</strong> In the dataset <code>gdp</code>, keep only the rows where the year is 2023. Then, sort these rows so that countries with higher values of per capita GDP appear first (i.e., arrange in descending order).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>gdp <span class="sc">|&gt;</span></span>
+<span id="cb33-2"><a href="#cb33-2"></a>    <span class="fu">filter</span>(...) <span class="sc">|&gt;</span></span>
+<span id="cb33-3"><a href="#cb33-3"></a>    <span class="fu">arrange</span>(...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn hint" data-step="1">
@@ -747,28 +869,33 @@ dbl (2): TIME_PERIOD, OBS_VALUE
 </div>
 <div class="reveal sol-box" data-reveal="2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>gdp <span class="sc">|&gt;</span></span>
-<span id="cb29-2"><a href="#cb29-2"></a>    <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2023</span>) <span class="sc">|&gt;</span></span>
-<span id="cb29-3"><a href="#cb29-3"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(gdp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>gdp <span class="sc">|&gt;</span></span>
+<span id="cb34-2"><a href="#cb34-2"></a>    <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2023</span>) <span class="sc">|&gt;</span></span>
+<span id="cb34-3"><a href="#cb34-3"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(gdp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 3
-  country  year    gdp
-  &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;
-1 NL       2023 52955.
-2 DE       2023 48485.
-3 FR       2023 39966.
-4 IT       2023 33580.
-5 ES       2023 30343.
-6 PT       2023 25152.</code></pre>
+<pre><code># A tibble: 36 × 3
+   country  year    gdp
+   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 LU       2023 102250
+ 2 IE       2023  87630
+ 3 CH       2023  82440
+ 4 NO       2023  66140
+ 5 IS       2023  61170
+ 6 DK       2023  56770
+ 7 NL       2023  50660
+ 8 SE       2023  47960
+ 9 AT       2023  45670
+10 BE       2023  44190
+# ℹ 26 more rows</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="qcard">
-<p><strong>Q10.</strong> In the dataset <code>gdp</code>, keep only the rows where the country is France.</p>
+<p><strong>Q11.</strong> In the dataset <code>gdp</code>, keep only the rows where the country is France.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>gdp <span class="sc">|&gt;</span></span>
-<span id="cb31-2"><a href="#cb31-2"></a>    <span class="fu">filter</span>(...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>gdp <span class="sc">|&gt;</span></span>
+<span id="cb36-2"><a href="#cb36-2"></a>    <span class="fu">filter</span>(...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
@@ -782,34 +909,31 @@ dbl (2): TIME_PERIOD, OBS_VALUE
 </div>
 <div class="reveal sol-box" data-reveal="1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>gdp <span class="sc">|&gt;</span> </span>
-<span id="cb32-2"><a href="#cb32-2"></a>    <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"FR"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>gdp <span class="sc">|&gt;</span> </span>
+<span id="cb37-2"><a href="#cb37-2"></a>    <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"FR"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 14 × 3
-   country  year    gdp
-   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;
- 1 FR       2010 32548.
- 2 FR       2011 33245.
- 3 FR       2012 32724.
- 4 FR       2013 32944.
- 5 FR       2014 35318.
- 6 FR       2015 35382.
- 7 FR       2016 35526.
- 8 FR       2017 36783.
- 9 FR       2018 36947.
-10 FR       2019 37796.
-11 FR       2020 38253.
-12 FR       2021 39174.
-13 FR       2022 39929.
-14 FR       2023 39966.</code></pre>
+<pre><code># A tibble: 26 × 3
+   country  year   gdp
+   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;
+ 1 FR       2000 32030
+ 2 FR       2001 32400
+ 3 FR       2002 32510
+ 4 FR       2003 32600
+ 5 FR       2004 33300
+ 6 FR       2005 33680
+ 7 FR       2006 34360
+ 8 FR       2007 35010
+ 9 FR       2008 34960
+10 FR       2009 33800
+# ℹ 16 more rows</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="qcard">
-<p><strong>Q11.</strong> Adapt the following instruction to join the two datasets <code>gdp</code> and <code>lifesat</code>, using the <code>inner_join()</code> function.</p>
+<p><strong>Q12.</strong> Adapt the following instruction to join the two datasets <code>gdp</code> and <code>lifesat</code>, using the <code>inner_join()</code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>combined_data <span class="ot">&lt;-</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>combined_data <span class="ot">&lt;-</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn hint" data-step="1">
@@ -829,34 +953,34 @@ dbl (2): TIME_PERIOD, OBS_VALUE
 </div>
 <div class="reveal sol-box" data-reveal="2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>combined_data <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(gdp, life_satisf, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"country"</span>, <span class="st">"year"</span>))</span>
-<span id="cb35-2"><a href="#cb35-2"></a>combined_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>combined_data <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(gdp, life_satisf, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"country"</span>, <span class="st">"year"</span>))</span>
+<span id="cb40-2"><a href="#cb40-2"></a>combined_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 84 × 4
-   country  year    gdp life_satisf
-   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;
- 1 FR       2010 32548.        6.72
- 2 IT       2010 26774.        6.59
- 3 DE       2010 38145.        7.17
- 4 ES       2010 24253.        6.67
- 5 NL       2010 42162.        7.94
- 6 PT       2010 19958.        6.42
- 7 FR       2011 33245.        7.13
- 8 IT       2011 27502.        6.45
- 9 DE       2011 39567.        7.32
-10 ES       2011 24455.        6.93
-# ℹ 74 more rows</code></pre>
+<pre><code># A tibble: 231 × 4
+   country  year   gdp life_satisf
+   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;
+ 1 AL       2018  4730         5.5
+ 2 AL       2021  5190         5.7
+ 3 AL       2022  5500         6  
+ 4 AT       2013 43080         7.8
+ 5 AT       2018 45140         8  
+ 6 AT       2021 44580         8  
+ 7 AT       2022 46430         7.9
+ 8 AT       2023 45670         7.7
+ 9 AT       2024 45140         7.6
+10 AT       2025 45390         7.7
+# ℹ 221 more rows</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="qcard">
-<p><strong>Q12.</strong> In the dataset <code>combined_data</code>, group the rows by country using <code>group_by()</code>. Then, for each country, compute the average per capita GDP and the average life satisfaction using <code>summarise()</code> and <code>mean()</code>. Lastly, create a new column that is a dummy variable: it should take the value 1 if the country’s average per capita GDP is greater than $35,000, and 0 otherwise. Use <code>mutate()</code> with <code>ifelse()</code> for this step.</p>
+<p><strong>Q13.</strong> In the dataset <code>combined_data</code>, group the rows by country using <code>group_by()</code>. Then, for each country, compute the average per capita GDP and the average life satisfaction using <code>summarise()</code> and <code>mean()</code>. Lastly, create a new column that is a dummy variable: it should take the value 1 if the country’s average per capita GDP is greater than $35,000, and 0 otherwise. Use <code>mutate()</code> with <code>ifelse()</code> for this step.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>combined_data <span class="sc">|&gt;</span></span>
-<span id="cb37-2"><a href="#cb37-2"></a>    <span class="fu">group_by</span>(...) <span class="sc">|&gt;</span></span>
-<span id="cb37-3"><a href="#cb37-3"></a>    <span class="fu">summarise</span>(...) <span class="sc">|&gt;</span></span>
-<span id="cb37-4"><a href="#cb37-4"></a>    <span class="fu">mutate</span>(...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>combined_data <span class="sc">|&gt;</span></span>
+<span id="cb42-2"><a href="#cb42-2"></a>    <span class="fu">group_by</span>(...) <span class="sc">|&gt;</span></span>
+<span id="cb42-3"><a href="#cb42-3"></a>    <span class="fu">summarise</span>(...) <span class="sc">|&gt;</span></span>
+<span id="cb42-4"><a href="#cb42-4"></a>    <span class="fu">mutate</span>(...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn hint" data-step="1">
@@ -881,32 +1005,37 @@ dbl (2): TIME_PERIOD, OBS_VALUE
 <p>For the dummy variable, use <code>mutate()</code> with <code>ifelse(condition, 1, 0)</code>.</p>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>summary_data <span class="ot">&lt;-</span> combined_data <span class="sc">|&gt;</span></span>
-<span id="cb38-2"><a href="#cb38-2"></a>    <span class="fu">group_by</span>(country) <span class="sc">|&gt;</span></span>
-<span id="cb38-3"><a href="#cb38-3"></a>    <span class="fu">summarise</span>(</span>
-<span id="cb38-4"><a href="#cb38-4"></a>        <span class="at">mean_gdp =</span> <span class="fu">mean</span>(gdp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb38-5"><a href="#cb38-5"></a>        <span class="at">mean_sat =</span> <span class="fu">mean</span>(life_satisf, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb38-6"><a href="#cb38-6"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb38-7"><a href="#cb38-7"></a>    <span class="fu">mutate</span>(<span class="at">high_gdp_dummy =</span> <span class="fu">ifelse</span>(mean_gdp <span class="sc">&gt;</span> <span class="dv">35000</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span>
-<span id="cb38-8"><a href="#cb38-8"></a>summary_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a>summary_data <span class="ot">&lt;-</span> combined_data <span class="sc">|&gt;</span></span>
+<span id="cb43-2"><a href="#cb43-2"></a>    <span class="fu">group_by</span>(country) <span class="sc">|&gt;</span></span>
+<span id="cb43-3"><a href="#cb43-3"></a>    <span class="fu">summarise</span>(</span>
+<span id="cb43-4"><a href="#cb43-4"></a>        <span class="at">mean_gdp =</span> <span class="fu">mean</span>(gdp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb43-5"><a href="#cb43-5"></a>        <span class="at">mean_sat =</span> <span class="fu">mean</span>(life_satisf, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb43-6"><a href="#cb43-6"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb43-7"><a href="#cb43-7"></a>    <span class="fu">mutate</span>(<span class="at">high_gdp_dummy =</span> <span class="fu">ifelse</span>(mean_gdp <span class="sc">&gt;</span> <span class="dv">35000</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb43-8"><a href="#cb43-8"></a>summary_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 4
-  country mean_gdp mean_sat high_gdp_dummy
-  &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;          &lt;dbl&gt;
-1 DE        43009.     7.34              1
-2 ES        27114.     6.87              0
-3 FR        36181.     6.96              1
-4 IT        30487.     6.59              0
-5 NL        47439.     7.91              1
-6 PT        22656.     6.41              0</code></pre>
+<pre><code># A tibble: 35 × 4
+   country mean_gdp mean_sat high_gdp_dummy
+   &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;          &lt;dbl&gt;
+ 1 AL         5140      5.73              0
+ 2 AT        45061.     7.81              1
+ 3 BE        42960      7.59              1
+ 4 BG        10250      5.7               0
+ 5 CH        80392.     7.9               1
+ 6 CY        27323.     7.04              0
+ 7 CZ        21310      7.31              0
+ 8 DE        43381.     7.03              1
+ 9 DK        56116.     7.67              1
+10 EE        21277.     7.07              0
+# ℹ 25 more rows</code></pre>
 </div>
 </div>
 </div>
 <div class="qcard">
-<p><strong>Q13.</strong> Export in a CSV file the dataset <code>combined_data</code> in your <code>out</code> data folder. Name the file <code>gdp-lifesat.csv</code>.</p>
+<p><strong>Q14.</strong> Export in a CSV file the dataset <code>combined_data</code> in your <code>out</code> data folder. Name the file <code>gdp-lifesat.csv</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>combined_data <span class="sc">|&gt;</span></span>
-<span id="cb40-2"><a href="#cb40-2"></a>    <span class="fu">write_csv</span>(...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a>combined_data <span class="sc">|&gt;</span></span>
+<span id="cb45-2"><a href="#cb45-2"></a>    <span class="fu">write_csv</span>(...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
@@ -920,13 +1049,13 @@ dbl (2): TIME_PERIOD, OBS_VALUE
 </div>
 <div class="reveal sol-box" data-reveal="1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a>combined_data <span class="sc">|&gt;</span></span>
-<span id="cb41-2"><a href="#cb41-2"></a>    <span class="fu">write_csv</span>(<span class="st">"data/out/gdp-lifesat.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a>combined_data <span class="sc">|&gt;</span></span>
+<span id="cb46-2"><a href="#cb46-2"></a>    <span class="fu">write_csv</span>(<span class="st">"data/out/gdp-lifesat.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
 <div class="qcard">
-<p><strong>Q14.</strong> If you replace <code>inner_join()</code> with <code>left_join()</code> in Q11, what would change? Explain the behavior of these two functions.</p>
+<p><strong>Q15.</strong> If you replace <code>inner_join()</code> with <code>left_join()</code> in Q11, what would change? Explain the behavior of these two functions.</p>
 <div class="cascade">
 <button class="step-btn hint" data-step="1">
 <span class="dot"></span>Hint 1
@@ -948,7 +1077,7 @@ dbl (2): TIME_PERIOD, OBS_VALUE
 </div>
 </div>
 <div class="qcard">
-<p><strong>Q15.</strong> Download an additional dataset from Eurostat. For example, the unemployment rate (ref <code>teilm020</code>). Add the values to the <code>combined_data</code> frame.</p>
+<p><strong>Q16.</strong> Download an additional dataset from Eurostat. For example, the unemployment rate (ref <code>teilm020</code>). Add the values to the <code>combined_data</code> frame.</p>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
 <span class="dot"></span>Show solution
@@ -962,12 +1091,12 @@ dbl (2): TIME_PERIOD, OBS_VALUE
 <div class="reveal sol-box" data-reveal="1">
 <p>Assuming the file has been processed similarly and matches our clean structure schema:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>unemp <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/raw/teilm020.csv"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb42-2"><a href="#cb42-2"></a>    <span class="fu">select</span>(geo, TIME_PERIOD, OBS_VALUE) <span class="sc">|&gt;</span></span>
-<span id="cb42-3"><a href="#cb42-3"></a>    <span class="fu">rename</span>(<span class="at">country =</span> geo, <span class="at">year =</span> TIME_PERIOD, <span class="at">unemployment =</span> OBS_VALUE)</span>
-<span id="cb42-4"><a href="#cb42-4"></a></span>
-<span id="cb42-5"><a href="#cb42-5"></a>combined_data <span class="ot">&lt;-</span> combined_data <span class="sc">|&gt;</span></span>
-<span id="cb42-6"><a href="#cb42-6"></a>    <span class="fu">left_join</span>(unemp, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"country"</span>, <span class="st">"year"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a>unemp <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/raw/teilm020.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb47-2"><a href="#cb47-2"></a>    <span class="fu">select</span>(geo, TIME_PERIOD, OBS_VALUE) <span class="sc">|&gt;</span></span>
+<span id="cb47-3"><a href="#cb47-3"></a>    <span class="fu">rename</span>(<span class="at">country =</span> geo, <span class="at">year =</span> TIME_PERIOD, <span class="at">unemployment =</span> OBS_VALUE)</span>
+<span id="cb47-4"><a href="#cb47-4"></a></span>
+<span id="cb47-5"><a href="#cb47-5"></a>combined_data <span class="ot">&lt;-</span> combined_data <span class="sc">|&gt;</span></span>
+<span id="cb47-6"><a href="#cb47-6"></a>    <span class="fu">left_join</span>(unemp, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"country"</span>, <span class="st">"year"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -1029,14 +1158,14 @@ dbl (2): TIME_PERIOD, OBS_VALUE
 </table>
 <p><strong>Examples in data filtering</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="co"># Keep rows where country is France AND the year is 2023</span></span>
-<span id="cb43-2"><a href="#cb43-2"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"FR"</span> <span class="sc">&amp;</span> year <span class="sc">==</span> <span class="dv">2023</span>)</span>
-<span id="cb43-3"><a href="#cb43-3"></a></span>
-<span id="cb43-4"><a href="#cb43-4"></a><span class="co"># Keep rows where country is France OR Italy</span></span>
-<span id="cb43-5"><a href="#cb43-5"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"FR"</span> <span class="sc">|</span> country <span class="sc">==</span> <span class="st">"IT"</span>)</span>
-<span id="cb43-6"><a href="#cb43-6"></a></span>
-<span id="cb43-7"><a href="#cb43-7"></a><span class="co"># Keep rows where country is NOT France</span></span>
-<span id="cb43-8"><a href="#cb43-8"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(country <span class="sc">!=</span> <span class="st">"FR"</span>)   <span class="co"># or: filter(!(country == "FR"))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a><span class="co"># Keep rows where country is France AND the year is 2023</span></span>
+<span id="cb48-2"><a href="#cb48-2"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"FR"</span> <span class="sc">&amp;</span> year <span class="sc">==</span> <span class="dv">2023</span>)</span>
+<span id="cb48-3"><a href="#cb48-3"></a></span>
+<span id="cb48-4"><a href="#cb48-4"></a><span class="co"># Keep rows where country is France OR Italy</span></span>
+<span id="cb48-5"><a href="#cb48-5"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"FR"</span> <span class="sc">|</span> country <span class="sc">==</span> <span class="st">"IT"</span>)</span>
+<span id="cb48-6"><a href="#cb48-6"></a></span>
+<span id="cb48-7"><a href="#cb48-7"></a><span class="co"># Keep rows where country is NOT France</span></span>
+<span id="cb48-8"><a href="#cb48-8"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(country <span class="sc">!=</span> <span class="st">"FR"</span>)   <span class="co"># or: filter(!(country == "FR"))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="advanced-logical-operators-and-set-membership" class="level4 tip">
@@ -1052,35 +1181,35 @@ dbl (2): TIME_PERIOD, OBS_VALUE
 </ul>
 <p><strong>Examples in data filtering</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a><span class="co"># --- Using %in% instead of multiple OR lines ---</span></span>
-<span id="cb44-2"><a href="#cb44-2"></a><span class="co"># Long way:</span></span>
-<span id="cb44-3"><a href="#cb44-3"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"FR"</span> <span class="sc">|</span> country <span class="sc">==</span> <span class="st">"IT"</span> <span class="sc">|</span> country <span class="sc">==</span> <span class="st">"DE"</span>)</span>
-<span id="cb44-4"><a href="#cb44-4"></a></span>
-<span id="cb44-5"><a href="#cb44-5"></a><span class="co"># Short, elegant way:</span></span>
-<span id="cb44-6"><a href="#cb44-6"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"FR"</span>, <span class="st">"IT"</span>, <span class="st">"DE"</span>))</span>
-<span id="cb44-7"><a href="#cb44-7"></a></span>
-<span id="cb44-8"><a href="#cb44-8"></a><span class="co"># --- Excluding an entire group (Not In) ---</span></span>
-<span id="cb44-9"><a href="#cb44-9"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span>(country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"FR"</span>, <span class="st">"IT"</span>, <span class="st">"DE"</span>)))</span>
-<span id="cb44-10"><a href="#cb44-10"></a></span>
-<span id="cb44-11"><a href="#cb44-11"></a><span class="co"># --- Understanding bracket negation ---</span></span>
-<span id="cb44-12"><a href="#cb44-12"></a><span class="co"># Exclude rows where it is France in the year 2023</span></span>
-<span id="cb44-13"><a href="#cb44-13"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span>(country <span class="sc">==</span> <span class="st">"FR"</span> <span class="sc">&amp;</span> year <span class="sc">==</span> <span class="dv">2023</span>))</span>
-<span id="cb44-14"><a href="#cb44-14"></a><span class="co"># ...equivalent to:</span></span>
-<span id="cb44-15"><a href="#cb44-15"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(country <span class="sc">!=</span> <span class="st">"FR"</span> <span class="sc">|</span> year <span class="sc">!=</span> <span class="dv">2023</span>)</span>
-<span id="cb44-16"><a href="#cb44-16"></a></span>
-<span id="cb44-17"><a href="#cb44-17"></a><span class="co"># Exclude rows that are either France OR Italy</span></span>
-<span id="cb44-18"><a href="#cb44-18"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span>(country <span class="sc">==</span> <span class="st">"FR"</span> <span class="sc">|</span> country <span class="sc">==</span> <span class="st">"IT"</span>))</span>
-<span id="cb44-19"><a href="#cb44-19"></a><span class="co"># ...equivalent to:</span></span>
-<span id="cb44-20"><a href="#cb44-20"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(country <span class="sc">!=</span> <span class="st">"FR"</span> <span class="sc">&amp;</span> country <span class="sc">!=</span> <span class="st">"IT"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a><span class="co"># --- Using %in% instead of multiple OR lines ---</span></span>
+<span id="cb49-2"><a href="#cb49-2"></a><span class="co"># Long way:</span></span>
+<span id="cb49-3"><a href="#cb49-3"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(country <span class="sc">==</span> <span class="st">"FR"</span> <span class="sc">|</span> country <span class="sc">==</span> <span class="st">"IT"</span> <span class="sc">|</span> country <span class="sc">==</span> <span class="st">"DE"</span>)</span>
+<span id="cb49-4"><a href="#cb49-4"></a></span>
+<span id="cb49-5"><a href="#cb49-5"></a><span class="co"># Short, elegant way:</span></span>
+<span id="cb49-6"><a href="#cb49-6"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"FR"</span>, <span class="st">"IT"</span>, <span class="st">"DE"</span>))</span>
+<span id="cb49-7"><a href="#cb49-7"></a></span>
+<span id="cb49-8"><a href="#cb49-8"></a><span class="co"># --- Excluding an entire group (Not In) ---</span></span>
+<span id="cb49-9"><a href="#cb49-9"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span>(country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"FR"</span>, <span class="st">"IT"</span>, <span class="st">"DE"</span>)))</span>
+<span id="cb49-10"><a href="#cb49-10"></a></span>
+<span id="cb49-11"><a href="#cb49-11"></a><span class="co"># --- Understanding bracket negation ---</span></span>
+<span id="cb49-12"><a href="#cb49-12"></a><span class="co"># Exclude rows where it is France in the year 2023</span></span>
+<span id="cb49-13"><a href="#cb49-13"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span>(country <span class="sc">==</span> <span class="st">"FR"</span> <span class="sc">&amp;</span> year <span class="sc">==</span> <span class="dv">2023</span>))</span>
+<span id="cb49-14"><a href="#cb49-14"></a><span class="co"># ...equivalent to:</span></span>
+<span id="cb49-15"><a href="#cb49-15"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(country <span class="sc">!=</span> <span class="st">"FR"</span> <span class="sc">|</span> year <span class="sc">!=</span> <span class="dv">2023</span>)</span>
+<span id="cb49-16"><a href="#cb49-16"></a></span>
+<span id="cb49-17"><a href="#cb49-17"></a><span class="co"># Exclude rows that are either France OR Italy</span></span>
+<span id="cb49-18"><a href="#cb49-18"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span>(country <span class="sc">==</span> <span class="st">"FR"</span> <span class="sc">|</span> country <span class="sc">==</span> <span class="st">"IT"</span>))</span>
+<span id="cb49-19"><a href="#cb49-19"></a><span class="co"># ...equivalent to:</span></span>
+<span id="cb49-20"><a href="#cb49-20"></a>tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(country <span class="sc">!=</span> <span class="st">"FR"</span> <span class="sc">&amp;</span> country <span class="sc">!=</span> <span class="st">"IT"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <div class="qcard">
-<p><strong>Q16. The vectorized <code>ifelse()</code> function.</strong></p>
+<p><strong>Q17. The vectorized <code>ifelse()</code> function.</strong></p>
 <p>We want to classify observations into two broad categories based on their reported life satisfaction. If the score in the <code>life_satisf</code> column is strictly greater than 7, the new row variable should display <code>"High"</code>. Otherwise, it should display <code>"Moderate or Low"</code>.</p>
 <p>Complete the following R code to create this new categorical variable named <code>happiness_status</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a>tb <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span> </span>
-<span id="cb45-2"><a href="#cb45-2"></a>    <span class="fu">mutate</span>(<span class="at">happiness_status =</span> <span class="fu">ifelse</span>(..., ..., ...))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a>tb <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span> </span>
+<span id="cb50-2"><a href="#cb50-2"></a>    <span class="fu">mutate</span>(<span class="at">happiness_status =</span> <span class="fu">ifelse</span>(..., ..., ...))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn hint" data-step="1">
@@ -1101,46 +1230,46 @@ dbl (2): TIME_PERIOD, OBS_VALUE
 <div class="reveal sol-box" data-reveal="2">
 <p>This continues our example from Part 2 — <code>tb</code> below is our <code>combined_data</code> object, renamed for consistency with Tutorials #2 and #3:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a>tb <span class="ot">&lt;-</span> combined_data</span>
-<span id="cb46-2"><a href="#cb46-2"></a></span>
-<span id="cb46-3"><a href="#cb46-3"></a>tb <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span> </span>
-<span id="cb46-4"><a href="#cb46-4"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb46-5"><a href="#cb46-5"></a>        <span class="at">happiness_status =</span> <span class="fu">ifelse</span>(</span>
-<span id="cb46-6"><a href="#cb46-6"></a>            life_satisf <span class="sc">&gt;</span> <span class="dv">7</span>, <span class="st">"High"</span>, <span class="st">"Moderate or Low"</span></span>
-<span id="cb46-7"><a href="#cb46-7"></a>        )</span>
-<span id="cb46-8"><a href="#cb46-8"></a>    )</span>
-<span id="cb46-9"><a href="#cb46-9"></a>tb <span class="sc">|&gt;</span> <span class="fu">select</span>(country, year, life_satisf, happiness_status)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a>tb <span class="ot">&lt;-</span> combined_data</span>
+<span id="cb51-2"><a href="#cb51-2"></a></span>
+<span id="cb51-3"><a href="#cb51-3"></a>tb <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span> </span>
+<span id="cb51-4"><a href="#cb51-4"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb51-5"><a href="#cb51-5"></a>        <span class="at">happiness_status =</span> <span class="fu">ifelse</span>(</span>
+<span id="cb51-6"><a href="#cb51-6"></a>            life_satisf <span class="sc">&gt;</span> <span class="dv">7</span>, <span class="st">"High"</span>, <span class="st">"Moderate or Low"</span></span>
+<span id="cb51-7"><a href="#cb51-7"></a>        )</span>
+<span id="cb51-8"><a href="#cb51-8"></a>    )</span>
+<span id="cb51-9"><a href="#cb51-9"></a>tb <span class="sc">|&gt;</span> <span class="fu">select</span>(country, year, life_satisf, happiness_status)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 84 × 4
+<pre><code># A tibble: 231 × 4
    country  year life_satisf happiness_status
    &lt;chr&gt;   &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;           
- 1 FR       2010        6.72 Moderate or Low 
- 2 IT       2010        6.59 Moderate or Low 
- 3 DE       2010        7.17 High            
- 4 ES       2010        6.67 Moderate or Low 
- 5 NL       2010        7.94 High            
- 6 PT       2010        6.42 Moderate or Low 
- 7 FR       2011        7.13 High            
- 8 IT       2011        6.45 Moderate or Low 
- 9 DE       2011        7.32 High            
-10 ES       2011        6.93 Moderate or Low 
-# ℹ 74 more rows</code></pre>
+ 1 AL       2018         5.5 Moderate or Low 
+ 2 AL       2021         5.7 Moderate or Low 
+ 3 AL       2022         6   Moderate or Low 
+ 4 AT       2013         7.8 High            
+ 5 AT       2018         8   High            
+ 6 AT       2021         8   High            
+ 7 AT       2022         7.9 High            
+ 8 AT       2023         7.7 High            
+ 9 AT       2024         7.6 High            
+10 AT       2025         7.7 High            
+# ℹ 221 more rows</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="qcard">
-<p><strong>Q17. The flow-control <code>if</code> / <code>else</code> block.</strong></p>
+<p><strong>Q18. The flow-control <code>if</code> / <code>else</code> block.</strong></p>
 <p>Imagine you are writing an automated data pipeline script. You want R to print a warning message directly in the console if the overall mean per capita GDP of your clean sample dataset surpasses a specific baseline threshold (e.g., $40,000).</p>
 <p>Analyze the code script below and explain exactly what message will be printed to the console if the variable <code>mean_gdp</code> happens to be exactly 42,500:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a>mean_gdp <span class="ot">&lt;-</span> <span class="dv">42500</span></span>
-<span id="cb48-2"><a href="#cb48-2"></a></span>
-<span id="cb48-3"><a href="#cb48-3"></a><span class="cf">if</span> (mean_gdp <span class="sc">&gt;</span> <span class="dv">40000</span>) {</span>
-<span id="cb48-4"><a href="#cb48-4"></a>    <span class="fu">print</span>(<span class="st">"Warning: Global average living standards are high."</span>)</span>
-<span id="cb48-5"><a href="#cb48-5"></a>} <span class="cf">else</span> {</span>
-<span id="cb48-6"><a href="#cb48-6"></a>    <span class="fu">print</span>(<span class="st">"Global average living standards remain below the critical threshold."</span>)</span>
-<span id="cb48-7"><a href="#cb48-7"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>mean_gdp <span class="ot">&lt;-</span> <span class="dv">42500</span></span>
+<span id="cb53-2"><a href="#cb53-2"></a></span>
+<span id="cb53-3"><a href="#cb53-3"></a><span class="cf">if</span> (mean_gdp <span class="sc">&gt;</span> <span class="dv">40000</span>) {</span>
+<span id="cb53-4"><a href="#cb53-4"></a>    <span class="fu">print</span>(<span class="st">"Warning: Global average living standards are high."</span>)</span>
+<span id="cb53-5"><a href="#cb53-5"></a>} <span class="cf">else</span> {</span>
+<span id="cb53-6"><a href="#cb53-6"></a>    <span class="fu">print</span>(<span class="st">"Global average living standards remain below the critical threshold."</span>)</span>
+<span id="cb53-7"><a href="#cb53-7"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn hint" data-step="1">
@@ -1161,13 +1290,13 @@ dbl (2): TIME_PERIOD, OBS_VALUE
 <div class="reveal sol-box" data-reveal="2">
 <p>Since the value stored in <code>mean_gdp</code> (42,500) is strictly greater than 40,000, the scalar condition evaluates to <strong>TRUE</strong>. R immediately executes the first code block and prints:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a>mean_gdp <span class="ot">&lt;-</span> <span class="dv">42500</span></span>
-<span id="cb49-2"><a href="#cb49-2"></a></span>
-<span id="cb49-3"><a href="#cb49-3"></a><span class="cf">if</span> (mean_gdp <span class="sc">&gt;</span> <span class="dv">40000</span>) {</span>
-<span id="cb49-4"><a href="#cb49-4"></a>    <span class="fu">print</span>(<span class="st">"Warning: Global average living standards are high."</span>)</span>
-<span id="cb49-5"><a href="#cb49-5"></a>} <span class="cf">else</span> {</span>
-<span id="cb49-6"><a href="#cb49-6"></a>    <span class="fu">print</span>(<span class="st">"Global average living standards remain below the critical threshold."</span>)</span>
-<span id="cb49-7"><a href="#cb49-7"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1"></a>mean_gdp <span class="ot">&lt;-</span> <span class="dv">42500</span></span>
+<span id="cb54-2"><a href="#cb54-2"></a></span>
+<span id="cb54-3"><a href="#cb54-3"></a><span class="cf">if</span> (mean_gdp <span class="sc">&gt;</span> <span class="dv">40000</span>) {</span>
+<span id="cb54-4"><a href="#cb54-4"></a>    <span class="fu">print</span>(<span class="st">"Warning: Global average living standards are high."</span>)</span>
+<span id="cb54-5"><a href="#cb54-5"></a>} <span class="cf">else</span> {</span>
+<span id="cb54-6"><a href="#cb54-6"></a>    <span class="fu">print</span>(<span class="st">"Global average living standards remain below the critical threshold."</span>)</span>
+<span id="cb54-7"><a href="#cb54-7"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Warning: Global average living standards are high."</code></pre>
 </div>
@@ -1176,12 +1305,12 @@ dbl (2): TIME_PERIOD, OBS_VALUE
 </div>
 </div>
 <div class="qcard">
-<p><strong>Q18. A typical error.</strong></p>
+<p><strong>Q19. A typical error.</strong></p>
 <p>A student attempts to alter individual row values inside their data frame using a standard procedural <code>if</code> block like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a><span class="cf">if</span> (tb<span class="sc">$</span>life_satisf <span class="sc">&gt;</span> <span class="dv">7</span>) {</span>
-<span id="cb51-2"><a href="#cb51-2"></a>    tb<span class="sc">$</span>status <span class="ot">=</span> <span class="st">"High"</span></span>
-<span id="cb51-3"><a href="#cb51-3"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1"></a><span class="cf">if</span> (tb<span class="sc">$</span>life_satisf <span class="sc">&gt;</span> <span class="dv">7</span>) {</span>
+<span id="cb56-2"><a href="#cb56-2"></a>    tb<span class="sc">$</span>status <span class="ot">=</span> <span class="st">"High"</span></span>
+<span id="cb56-3"><a href="#cb56-3"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>R executes this but throws a clear warning message in the console stating: <em>“the condition has length &gt; 1 and only the first element will be used”</em>.</p>
 <p>Explain conceptually why standard <code>if</code> blocks fail when applied to complete data frame tables, and why using a vectorized tool like <code>ifelse()</code> from Q16 is mandatory here.</p>
@@ -1205,13 +1334,13 @@ dbl (2): TIME_PERIOD, OBS_VALUE
 <p>The standard procedural <code>if (condition)</code> statement in base R is engineered to evaluate only a single, individual TRUE/FALSE item (a scalar value) to choose a track for the whole script. However, <code>tb$life_satisf &gt; 7</code> does not return one single answer: it creates a vector containing many TRUE/FALSE elements (one for every country/year row). The procedural <code>if</code> statement looks only at the very first row element to decide, and ignores the rest of the dataset. To mutate data frames row-by-row based on attributes, we must always use a vectorized alternative like <code>ifelse()</code> or <code>dplyr::case_when()</code>.</p>
 <p>Below, we reproduce the exact message R raises if you try to run this code as written (using <code>tryCatch()</code> only so this demonstration doesn’t stop the rendering of the document — depending on your R version, this shows up as a warning or, in recent versions of R, as a hard error):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1"></a><span class="fu">tryCatch</span>(</span>
-<span id="cb52-2"><a href="#cb52-2"></a>    <span class="cf">if</span> (tb<span class="sc">$</span>life_satisf <span class="sc">&gt;</span> <span class="dv">7</span>) {</span>
-<span id="cb52-3"><a href="#cb52-3"></a>        tb<span class="sc">$</span>status <span class="ot">&lt;-</span> <span class="st">"High"</span></span>
-<span id="cb52-4"><a href="#cb52-4"></a>    },</span>
-<span id="cb52-5"><a href="#cb52-5"></a>    <span class="at">warning =</span> <span class="cf">function</span>(w) <span class="fu">cat</span>(<span class="st">"Warning caught:"</span>, <span class="fu">conditionMessage</span>(w), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>),</span>
-<span id="cb52-6"><a href="#cb52-6"></a>    <span class="at">error =</span> <span class="cf">function</span>(e) <span class="fu">cat</span>(<span class="st">"Error caught:"</span>, <span class="fu">conditionMessage</span>(e), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb52-7"><a href="#cb52-7"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a><span class="fu">tryCatch</span>(</span>
+<span id="cb57-2"><a href="#cb57-2"></a>    <span class="cf">if</span> (tb<span class="sc">$</span>life_satisf <span class="sc">&gt;</span> <span class="dv">7</span>) {</span>
+<span id="cb57-3"><a href="#cb57-3"></a>        tb<span class="sc">$</span>status <span class="ot">&lt;-</span> <span class="st">"High"</span></span>
+<span id="cb57-4"><a href="#cb57-4"></a>    },</span>
+<span id="cb57-5"><a href="#cb57-5"></a>    <span class="at">warning =</span> <span class="cf">function</span>(w) <span class="fu">cat</span>(<span class="st">"Warning caught:"</span>, <span class="fu">conditionMessage</span>(w), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>),</span>
+<span id="cb57-6"><a href="#cb57-6"></a>    <span class="at">error =</span> <span class="cf">function</span>(e) <span class="fu">cat</span>(<span class="st">"Error caught:"</span>, <span class="fu">conditionMessage</span>(e), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb57-7"><a href="#cb57-7"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Error caught: the condition has length &gt; 1 </code></pre>
 </div>
@@ -1293,25 +1422,25 @@ x_2 = \frac{-b + \sqrt{\Delta}}{2a}.
 <div class="reveal sol-box" data-reveal="2">
 <p>A possible solution is:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1"></a><span class="co">#' Discriminant of a quadratic polynomial</span></span>
-<span id="cb54-2"><a href="#cb54-2"></a><span class="co">#' </span></span>
-<span id="cb54-3"><a href="#cb54-3"></a><span class="co">#' @param a The coefficient of \eqn{x^2}, \eqn{a \ne 0}.</span></span>
-<span id="cb54-4"><a href="#cb54-4"></a><span class="co">#' @param b The linear coefficent.</span></span>
-<span id="cb54-5"><a href="#cb54-5"></a><span class="co">#' @param c The constant term.</span></span>
-<span id="cb54-6"><a href="#cb54-6"></a><span class="co">#' </span></span>
-<span id="cb54-7"><a href="#cb54-7"></a><span class="co">#' @description Computes the discriminant of the quadratic polynomial</span></span>
-<span id="cb54-8"><a href="#cb54-8"></a><span class="co">#' \deqn{ax^2 + bx + c = 0,}</span></span>
-<span id="cb54-9"><a href="#cb54-9"></a><span class="co">#' i.e., \deqn{\Delta = b^2 - 4ac.}</span></span>
-<span id="cb54-10"><a href="#cb54-10"></a><span class="co">#' @returns The quadratic discriminant.</span></span>
-<span id="cb54-11"><a href="#cb54-11"></a>quadratic_discriminant <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b, c) {</span>
-<span id="cb54-12"><a href="#cb54-12"></a>    delta <span class="ot">&lt;-</span> b<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> <span class="dv">4</span> <span class="sc">*</span> a <span class="sc">*</span> c</span>
-<span id="cb54-13"><a href="#cb54-13"></a></span>
-<span id="cb54-14"><a href="#cb54-14"></a>    delta</span>
-<span id="cb54-15"><a href="#cb54-15"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1"></a><span class="co">#' Discriminant of a quadratic polynomial</span></span>
+<span id="cb59-2"><a href="#cb59-2"></a><span class="co">#' </span></span>
+<span id="cb59-3"><a href="#cb59-3"></a><span class="co">#' @param a The coefficient of \eqn{x^2}, \eqn{a \ne 0}.</span></span>
+<span id="cb59-4"><a href="#cb59-4"></a><span class="co">#' @param b The linear coefficent.</span></span>
+<span id="cb59-5"><a href="#cb59-5"></a><span class="co">#' @param c The constant term.</span></span>
+<span id="cb59-6"><a href="#cb59-6"></a><span class="co">#' </span></span>
+<span id="cb59-7"><a href="#cb59-7"></a><span class="co">#' @description Computes the discriminant of the quadratic polynomial</span></span>
+<span id="cb59-8"><a href="#cb59-8"></a><span class="co">#' \deqn{ax^2 + bx + c = 0,}</span></span>
+<span id="cb59-9"><a href="#cb59-9"></a><span class="co">#' i.e., \deqn{\Delta = b^2 - 4ac.}</span></span>
+<span id="cb59-10"><a href="#cb59-10"></a><span class="co">#' @returns The quadratic discriminant.</span></span>
+<span id="cb59-11"><a href="#cb59-11"></a>quadratic_discriminant <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b, c) {</span>
+<span id="cb59-12"><a href="#cb59-12"></a>    delta <span class="ot">&lt;-</span> b<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> <span class="dv">4</span> <span class="sc">*</span> a <span class="sc">*</span> c</span>
+<span id="cb59-13"><a href="#cb59-13"></a></span>
+<span id="cb59-14"><a href="#cb59-14"></a>    delta</span>
+<span id="cb59-15"><a href="#cb59-15"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a><span class="fu">quadratic_discriminant</span>(<span class="at">a =</span> <span class="dv">1</span>, <span class="at">b =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">c =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a><span class="fu">quadratic_discriminant</span>(<span class="at">a =</span> <span class="dv">1</span>, <span class="at">b =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">c =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1</code></pre>
 </div>
@@ -1352,51 +1481,51 @@ x_2 = \frac{-b + \sqrt{\Delta}}{2a}.
 <div class="reveal sol-box" data-reveal="3">
 <p>A possible solution is:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1"></a><span class="co">#' Compute the real roots of a quadratic equation</span></span>
-<span id="cb57-2"><a href="#cb57-2"></a><span class="co">#' </span></span>
-<span id="cb57-3"><a href="#cb57-3"></a><span class="co">#' @param a The coefficient of \eqn{x^2}, \eqn{a \ne 0}.</span></span>
-<span id="cb57-4"><a href="#cb57-4"></a><span class="co">#' @param b The linear coefficient.</span></span>
-<span id="cb57-5"><a href="#cb57-5"></a><span class="co">#' @param c The constant term.</span></span>
-<span id="cb57-6"><a href="#cb57-6"></a><span class="co">#' </span></span>
-<span id="cb57-7"><a href="#cb57-7"></a><span class="co">#' @description Solve a quadratic equation of the form</span></span>
-<span id="cb57-8"><a href="#cb57-8"></a><span class="co">#' \deqn{ax^2 + bx + c = 0,}</span></span>
-<span id="cb57-9"><a href="#cb57-9"></a><span class="co">#' where \eqn{a \ne 0}. Complex solutions are ignored in this function.</span></span>
-<span id="cb57-10"><a href="#cb57-10"></a><span class="co">#' @returns Depending on the discriminant \eqn{\Delta}, returns:</span></span>
-<span id="cb57-11"><a href="#cb57-11"></a><span class="co">#' * If \eqn{\Delta &gt; 0}: the two real roots,</span></span>
-<span id="cb57-12"><a href="#cb57-12"></a><span class="co">#' * If \eqn{\Delta = 0}: the real root,</span></span>
-<span id="cb57-13"><a href="#cb57-13"></a><span class="co">#' * If \eqn{\Delta &lt; 0}: returns `NA`.</span></span>
-<span id="cb57-14"><a href="#cb57-14"></a><span class="co">#' @md</span></span>
-<span id="cb57-15"><a href="#cb57-15"></a>solve_quadratic <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b, c) {</span>
-<span id="cb57-16"><a href="#cb57-16"></a></span>
-<span id="cb57-17"><a href="#cb57-17"></a>    <span class="cf">if</span> (a <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb57-18"><a href="#cb57-18"></a>        <span class="fu">stop</span>(<span class="st">"The coefficient a must be different from 0."</span>)</span>
-<span id="cb57-19"><a href="#cb57-19"></a>    }</span>
-<span id="cb57-20"><a href="#cb57-20"></a></span>
-<span id="cb57-21"><a href="#cb57-21"></a>    delta <span class="ot">&lt;-</span> b<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> <span class="dv">4</span> <span class="sc">*</span> a <span class="sc">*</span> c</span>
-<span id="cb57-22"><a href="#cb57-22"></a></span>
-<span id="cb57-23"><a href="#cb57-23"></a>    <span class="cf">if</span> (delta <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb57-24"><a href="#cb57-24"></a>        x1 <span class="ot">&lt;-</span> (<span class="sc">-</span>b <span class="sc">-</span> <span class="fu">sqrt</span>(delta)) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> a)</span>
-<span id="cb57-25"><a href="#cb57-25"></a>        x2 <span class="ot">&lt;-</span> (<span class="sc">-</span>b <span class="sc">+</span> <span class="fu">sqrt</span>(delta)) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> a)</span>
-<span id="cb57-26"><a href="#cb57-26"></a>        <span class="fu">return</span>(<span class="fu">c</span>(x1, x2))</span>
-<span id="cb57-27"><a href="#cb57-27"></a>    } <span class="cf">else</span> <span class="cf">if</span> (delta <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb57-28"><a href="#cb57-28"></a>        x <span class="ot">&lt;-</span> <span class="sc">-</span>b <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> a)</span>
-<span id="cb57-29"><a href="#cb57-29"></a>        <span class="fu">return</span>(x)</span>
-<span id="cb57-30"><a href="#cb57-30"></a>    } <span class="cf">else</span> {</span>
-<span id="cb57-31"><a href="#cb57-31"></a>        <span class="co"># Delta &lt; 0</span></span>
-<span id="cb57-32"><a href="#cb57-32"></a>        <span class="fu">return</span>(<span class="cn">NA</span>)</span>
-<span id="cb57-33"><a href="#cb57-33"></a>    }</span>
-<span id="cb57-34"><a href="#cb57-34"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a><span class="co">#' Compute the real roots of a quadratic equation</span></span>
+<span id="cb62-2"><a href="#cb62-2"></a><span class="co">#' </span></span>
+<span id="cb62-3"><a href="#cb62-3"></a><span class="co">#' @param a The coefficient of \eqn{x^2}, \eqn{a \ne 0}.</span></span>
+<span id="cb62-4"><a href="#cb62-4"></a><span class="co">#' @param b The linear coefficient.</span></span>
+<span id="cb62-5"><a href="#cb62-5"></a><span class="co">#' @param c The constant term.</span></span>
+<span id="cb62-6"><a href="#cb62-6"></a><span class="co">#' </span></span>
+<span id="cb62-7"><a href="#cb62-7"></a><span class="co">#' @description Solve a quadratic equation of the form</span></span>
+<span id="cb62-8"><a href="#cb62-8"></a><span class="co">#' \deqn{ax^2 + bx + c = 0,}</span></span>
+<span id="cb62-9"><a href="#cb62-9"></a><span class="co">#' where \eqn{a \ne 0}. Complex solutions are ignored in this function.</span></span>
+<span id="cb62-10"><a href="#cb62-10"></a><span class="co">#' @returns Depending on the discriminant \eqn{\Delta}, returns:</span></span>
+<span id="cb62-11"><a href="#cb62-11"></a><span class="co">#' * If \eqn{\Delta &gt; 0}: the two real roots,</span></span>
+<span id="cb62-12"><a href="#cb62-12"></a><span class="co">#' * If \eqn{\Delta = 0}: the real root,</span></span>
+<span id="cb62-13"><a href="#cb62-13"></a><span class="co">#' * If \eqn{\Delta &lt; 0}: returns `NA`.</span></span>
+<span id="cb62-14"><a href="#cb62-14"></a><span class="co">#' @md</span></span>
+<span id="cb62-15"><a href="#cb62-15"></a>solve_quadratic <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b, c) {</span>
+<span id="cb62-16"><a href="#cb62-16"></a></span>
+<span id="cb62-17"><a href="#cb62-17"></a>    <span class="cf">if</span> (a <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb62-18"><a href="#cb62-18"></a>        <span class="fu">stop</span>(<span class="st">"The coefficient a must be different from 0."</span>)</span>
+<span id="cb62-19"><a href="#cb62-19"></a>    }</span>
+<span id="cb62-20"><a href="#cb62-20"></a></span>
+<span id="cb62-21"><a href="#cb62-21"></a>    delta <span class="ot">&lt;-</span> b<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> <span class="dv">4</span> <span class="sc">*</span> a <span class="sc">*</span> c</span>
+<span id="cb62-22"><a href="#cb62-22"></a></span>
+<span id="cb62-23"><a href="#cb62-23"></a>    <span class="cf">if</span> (delta <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb62-24"><a href="#cb62-24"></a>        x1 <span class="ot">&lt;-</span> (<span class="sc">-</span>b <span class="sc">-</span> <span class="fu">sqrt</span>(delta)) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> a)</span>
+<span id="cb62-25"><a href="#cb62-25"></a>        x2 <span class="ot">&lt;-</span> (<span class="sc">-</span>b <span class="sc">+</span> <span class="fu">sqrt</span>(delta)) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> a)</span>
+<span id="cb62-26"><a href="#cb62-26"></a>        <span class="fu">return</span>(<span class="fu">c</span>(x1, x2))</span>
+<span id="cb62-27"><a href="#cb62-27"></a>    } <span class="cf">else</span> <span class="cf">if</span> (delta <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb62-28"><a href="#cb62-28"></a>        x <span class="ot">&lt;-</span> <span class="sc">-</span>b <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> a)</span>
+<span id="cb62-29"><a href="#cb62-29"></a>        <span class="fu">return</span>(x)</span>
+<span id="cb62-30"><a href="#cb62-30"></a>    } <span class="cf">else</span> {</span>
+<span id="cb62-31"><a href="#cb62-31"></a>        <span class="co"># Delta &lt; 0</span></span>
+<span id="cb62-32"><a href="#cb62-32"></a>        <span class="fu">return</span>(<span class="cn">NA</span>)</span>
+<span id="cb62-33"><a href="#cb62-33"></a>    }</span>
+<span id="cb62-34"><a href="#cb62-34"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1"></a><span class="fu">solve_quadratic</span>(<span class="at">a =</span> <span class="dv">1</span>, <span class="at">b =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">c =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1"></a><span class="fu">solve_quadratic</span>(<span class="at">a =</span> <span class="dv">1</span>, <span class="at">b =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">c =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1 2</code></pre>
 </div>
 </div>
 <p>Another example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a><span class="fu">solve_quadratic</span>(<span class="at">a =</span> <span class="dv">1</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">c =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1"></a><span class="fu">solve_quadratic</span>(<span class="at">a =</span> <span class="dv">1</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">c =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] NA</code></pre>
 </div>
@@ -1436,59 +1565,59 @@ x_2 = \frac{-b + \sqrt{\Delta}}{2a}.
 <div class="reveal sol-box" data-reveal="3">
 <p>A possible final version is:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1"></a><span class="co">#' Compute the real roots of a quadratic equation</span></span>
-<span id="cb62-2"><a href="#cb62-2"></a><span class="co">#' </span></span>
-<span id="cb62-3"><a href="#cb62-3"></a><span class="co">#' @param a The coefficient of \eqn{x^2}, \eqn{a \ne 0}.</span></span>
-<span id="cb62-4"><a href="#cb62-4"></a><span class="co">#' @param b The linear coefficient.</span></span>
-<span id="cb62-5"><a href="#cb62-5"></a><span class="co">#' @param c The constant term.</span></span>
-<span id="cb62-6"><a href="#cb62-6"></a><span class="co">#' @param digits Optional integer specifying the number of decimal places.</span></span>
-<span id="cb62-7"><a href="#cb62-7"></a><span class="co">#'   Defaults to `NULL`, in which case no rounding is performed.</span></span>
-<span id="cb62-8"><a href="#cb62-8"></a><span class="co">#' @param verbose Logical. If `TRUE`, prints the value of the discriminant.</span></span>
-<span id="cb62-9"><a href="#cb62-9"></a><span class="co">#'   Defaults to `FALSE`.</span></span>
-<span id="cb62-10"><a href="#cb62-10"></a><span class="co">#' </span></span>
-<span id="cb62-11"><a href="#cb62-11"></a><span class="co">#' @description Solve a quadratic equation of the form</span></span>
-<span id="cb62-12"><a href="#cb62-12"></a><span class="co">#' \deqn{ax^2 + bx + c = 0,}</span></span>
-<span id="cb62-13"><a href="#cb62-13"></a><span class="co">#' where \eqn{a \ne 0}. Complex solutions are ignored in this function.</span></span>
-<span id="cb62-14"><a href="#cb62-14"></a><span class="co">#' @returns Depending on the discriminant \eqn{\Delta}, returns:</span></span>
-<span id="cb62-15"><a href="#cb62-15"></a><span class="co">#' * If \eqn{\Delta &gt; 0}: the two real roots,</span></span>
-<span id="cb62-16"><a href="#cb62-16"></a><span class="co">#' * If \eqn{\Delta = 0}: the real root,</span></span>
-<span id="cb62-17"><a href="#cb62-17"></a><span class="co">#' * If \eqn{\Delta &lt; 0}: returns `NA`.</span></span>
-<span id="cb62-18"><a href="#cb62-18"></a><span class="co">#' @md</span></span>
-<span id="cb62-19"><a href="#cb62-19"></a>solve_quadratic <span class="ot">&lt;-</span> <span class="cf">function</span>(a,</span>
-<span id="cb62-20"><a href="#cb62-20"></a>                            b,</span>
-<span id="cb62-21"><a href="#cb62-21"></a>                            c,</span>
-<span id="cb62-22"><a href="#cb62-22"></a>                            <span class="at">digits =</span> <span class="cn">NULL</span>,</span>
-<span id="cb62-23"><a href="#cb62-23"></a>                            <span class="at">verbose =</span> <span class="cn">FALSE</span>) {</span>
-<span id="cb62-24"><a href="#cb62-24"></a>    <span class="cf">if</span> (a <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb62-25"><a href="#cb62-25"></a>        <span class="fu">stop</span>(<span class="st">"The coefficient a must be different from 0."</span>)</span>
-<span id="cb62-26"><a href="#cb62-26"></a>    }</span>
-<span id="cb62-27"><a href="#cb62-27"></a></span>
-<span id="cb62-28"><a href="#cb62-28"></a>    delta <span class="ot">&lt;-</span> b<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> <span class="dv">4</span> <span class="sc">*</span> a <span class="sc">*</span> c</span>
-<span id="cb62-29"><a href="#cb62-29"></a></span>
-<span id="cb62-30"><a href="#cb62-30"></a>    <span class="cf">if</span> (verbose <span class="sc">==</span> <span class="cn">TRUE</span>) {</span>
-<span id="cb62-31"><a href="#cb62-31"></a>        <span class="fu">cat</span>(<span class="st">"Discriminant:"</span>, delta, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb62-32"><a href="#cb62-32"></a>    }</span>
-<span id="cb62-33"><a href="#cb62-33"></a></span>
-<span id="cb62-34"><a href="#cb62-34"></a>    <span class="cf">if</span> (delta <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb62-35"><a href="#cb62-35"></a>        x1 <span class="ot">&lt;-</span> (<span class="sc">-</span>b <span class="sc">-</span> <span class="fu">sqrt</span>(delta)) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> a)</span>
-<span id="cb62-36"><a href="#cb62-36"></a>        x2 <span class="ot">&lt;-</span> (<span class="sc">-</span>b <span class="sc">+</span> <span class="fu">sqrt</span>(delta)) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> a)</span>
-<span id="cb62-37"><a href="#cb62-37"></a>        roots <span class="ot">&lt;-</span> base<span class="sc">::</span><span class="fu">c</span>(x1, x2)</span>
-<span id="cb62-38"><a href="#cb62-38"></a>    } <span class="cf">else</span> <span class="cf">if</span> (delta <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb62-39"><a href="#cb62-39"></a>        roots <span class="ot">&lt;-</span> <span class="sc">-</span>b <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> a)</span>
-<span id="cb62-40"><a href="#cb62-40"></a>    } <span class="cf">else</span> {</span>
-<span id="cb62-41"><a href="#cb62-41"></a>        <span class="fu">return</span>(<span class="cn">NA</span>)</span>
-<span id="cb62-42"><a href="#cb62-42"></a>    }</span>
-<span id="cb62-43"><a href="#cb62-43"></a></span>
-<span id="cb62-44"><a href="#cb62-44"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(digits)) {</span>
-<span id="cb62-45"><a href="#cb62-45"></a>        roots <span class="ot">&lt;-</span> <span class="fu">round</span>(roots, digits)</span>
-<span id="cb62-46"><a href="#cb62-46"></a>    }</span>
-<span id="cb62-47"><a href="#cb62-47"></a></span>
-<span id="cb62-48"><a href="#cb62-48"></a>    roots</span>
-<span id="cb62-49"><a href="#cb62-49"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1"></a><span class="co">#' Compute the real roots of a quadratic equation</span></span>
+<span id="cb67-2"><a href="#cb67-2"></a><span class="co">#' </span></span>
+<span id="cb67-3"><a href="#cb67-3"></a><span class="co">#' @param a The coefficient of \eqn{x^2}, \eqn{a \ne 0}.</span></span>
+<span id="cb67-4"><a href="#cb67-4"></a><span class="co">#' @param b The linear coefficient.</span></span>
+<span id="cb67-5"><a href="#cb67-5"></a><span class="co">#' @param c The constant term.</span></span>
+<span id="cb67-6"><a href="#cb67-6"></a><span class="co">#' @param digits Optional integer specifying the number of decimal places.</span></span>
+<span id="cb67-7"><a href="#cb67-7"></a><span class="co">#'   Defaults to `NULL`, in which case no rounding is performed.</span></span>
+<span id="cb67-8"><a href="#cb67-8"></a><span class="co">#' @param verbose Logical. If `TRUE`, prints the value of the discriminant.</span></span>
+<span id="cb67-9"><a href="#cb67-9"></a><span class="co">#'   Defaults to `FALSE`.</span></span>
+<span id="cb67-10"><a href="#cb67-10"></a><span class="co">#' </span></span>
+<span id="cb67-11"><a href="#cb67-11"></a><span class="co">#' @description Solve a quadratic equation of the form</span></span>
+<span id="cb67-12"><a href="#cb67-12"></a><span class="co">#' \deqn{ax^2 + bx + c = 0,}</span></span>
+<span id="cb67-13"><a href="#cb67-13"></a><span class="co">#' where \eqn{a \ne 0}. Complex solutions are ignored in this function.</span></span>
+<span id="cb67-14"><a href="#cb67-14"></a><span class="co">#' @returns Depending on the discriminant \eqn{\Delta}, returns:</span></span>
+<span id="cb67-15"><a href="#cb67-15"></a><span class="co">#' * If \eqn{\Delta &gt; 0}: the two real roots,</span></span>
+<span id="cb67-16"><a href="#cb67-16"></a><span class="co">#' * If \eqn{\Delta = 0}: the real root,</span></span>
+<span id="cb67-17"><a href="#cb67-17"></a><span class="co">#' * If \eqn{\Delta &lt; 0}: returns `NA`.</span></span>
+<span id="cb67-18"><a href="#cb67-18"></a><span class="co">#' @md</span></span>
+<span id="cb67-19"><a href="#cb67-19"></a>solve_quadratic <span class="ot">&lt;-</span> <span class="cf">function</span>(a,</span>
+<span id="cb67-20"><a href="#cb67-20"></a>                            b,</span>
+<span id="cb67-21"><a href="#cb67-21"></a>                            c,</span>
+<span id="cb67-22"><a href="#cb67-22"></a>                            <span class="at">digits =</span> <span class="cn">NULL</span>,</span>
+<span id="cb67-23"><a href="#cb67-23"></a>                            <span class="at">verbose =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb67-24"><a href="#cb67-24"></a>    <span class="cf">if</span> (a <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb67-25"><a href="#cb67-25"></a>        <span class="fu">stop</span>(<span class="st">"The coefficient a must be different from 0."</span>)</span>
+<span id="cb67-26"><a href="#cb67-26"></a>    }</span>
+<span id="cb67-27"><a href="#cb67-27"></a></span>
+<span id="cb67-28"><a href="#cb67-28"></a>    delta <span class="ot">&lt;-</span> b<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> <span class="dv">4</span> <span class="sc">*</span> a <span class="sc">*</span> c</span>
+<span id="cb67-29"><a href="#cb67-29"></a></span>
+<span id="cb67-30"><a href="#cb67-30"></a>    <span class="cf">if</span> (verbose <span class="sc">==</span> <span class="cn">TRUE</span>) {</span>
+<span id="cb67-31"><a href="#cb67-31"></a>        <span class="fu">cat</span>(<span class="st">"Discriminant:"</span>, delta, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb67-32"><a href="#cb67-32"></a>    }</span>
+<span id="cb67-33"><a href="#cb67-33"></a></span>
+<span id="cb67-34"><a href="#cb67-34"></a>    <span class="cf">if</span> (delta <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb67-35"><a href="#cb67-35"></a>        x1 <span class="ot">&lt;-</span> (<span class="sc">-</span>b <span class="sc">-</span> <span class="fu">sqrt</span>(delta)) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> a)</span>
+<span id="cb67-36"><a href="#cb67-36"></a>        x2 <span class="ot">&lt;-</span> (<span class="sc">-</span>b <span class="sc">+</span> <span class="fu">sqrt</span>(delta)) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> a)</span>
+<span id="cb67-37"><a href="#cb67-37"></a>        roots <span class="ot">&lt;-</span> base<span class="sc">::</span><span class="fu">c</span>(x1, x2)</span>
+<span id="cb67-38"><a href="#cb67-38"></a>    } <span class="cf">else</span> <span class="cf">if</span> (delta <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb67-39"><a href="#cb67-39"></a>        roots <span class="ot">&lt;-</span> <span class="sc">-</span>b <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> a)</span>
+<span id="cb67-40"><a href="#cb67-40"></a>    } <span class="cf">else</span> {</span>
+<span id="cb67-41"><a href="#cb67-41"></a>        <span class="fu">return</span>(<span class="cn">NA</span>)</span>
+<span id="cb67-42"><a href="#cb67-42"></a>    }</span>
+<span id="cb67-43"><a href="#cb67-43"></a></span>
+<span id="cb67-44"><a href="#cb67-44"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(digits)) {</span>
+<span id="cb67-45"><a href="#cb67-45"></a>        roots <span class="ot">&lt;-</span> <span class="fu">round</span>(roots, digits)</span>
+<span id="cb67-46"><a href="#cb67-46"></a>    }</span>
+<span id="cb67-47"><a href="#cb67-47"></a></span>
+<span id="cb67-48"><a href="#cb67-48"></a>    roots</span>
+<span id="cb67-49"><a href="#cb67-49"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1"></a><span class="fu">solve_quadratic</span>(<span class="at">a =</span> <span class="dv">1</span>, <span class="at">b =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">c =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1"></a><span class="fu">solve_quadratic</span>(<span class="at">a =</span> <span class="dv">1</span>, <span class="at">b =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">c =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.381966 2.618034</code></pre>
 </div>
@@ -1496,7 +1625,7 @@ x_2 = \frac{-b + \sqrt{\Delta}}{2a}.
 <p>returns the two real roots without rounding.</p>
 <p>With the optional argument <code>digits</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1"></a><span class="fu">solve_quadratic</span>(<span class="at">a =</span> <span class="dv">1</span>, <span class="at">b =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">c =</span> <span class="dv">1</span>, <span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1"></a><span class="fu">solve_quadratic</span>(<span class="at">a =</span> <span class="dv">1</span>, <span class="at">b =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">c =</span> <span class="dv">1</span>, <span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.38 2.62</code></pre>
 </div>
@@ -1504,7 +1633,7 @@ x_2 = \frac{-b + \sqrt{\Delta}}{2a}.
 <p>the function returns the roots rounded to two decimal places.</p>
 <p>With the optional argument <code>verbose</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1"></a><span class="fu">solve_quadratic</span>(<span class="at">a =</span> <span class="dv">1</span>, <span class="at">b =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">c =</span> <span class="dv">1</span>, <span class="at">digits =</span> <span class="dv">2</span>, <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1"></a><span class="fu">solve_quadratic</span>(<span class="at">a =</span> <span class="dv">1</span>, <span class="at">b =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">c =</span> <span class="dv">1</span>, <span class="at">digits =</span> <span class="dv">2</span>, <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Discriminant: 5 </code></pre>
 </div>

@@ -1,0 +1,119 @@
+---
+title: "Quick Recap: Creating an RStudio Project"
+subtitle: "Introduction to programming for data analysis"
+author:
+  - name: Ewen Gallic
+    email: ewen.gallic@univ-amu.fr
+    affiliations:
+      - name: AMSE, Aix Marseille University
+format:
+  html:
+    css: styles.css
+    include-in-header: _fonts.html
+    include-before-body: _topbar.html
+    include-after-body: _hints-script.html
+    toc: true
+    toc-location: left
+    toc-title: "On this page"
+    number-sections: false
+    page-layout: article
+    anchor-sections: true
+    code-line-numbers: true
+    highlight-style: github
+---
+
+
+::: {.path-crumb}
+M1 Economics / Intro to Programming / <span class="here">recap-rstudio-project</span>
+:::
+
+::: {.hero-tree}
+project.Rproj/<br>
+&nbsp;&nbsp;<span class="dir">data/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">raw/</span><span class="cursor"></span>
+:::
+
+::: {.objective}
+#### Objective of this recap
+
+Before starting any analysis, you need a properly organized RStudio project. This short recap walks you through:
+
+1. creating a new RStudio project,
+2. building the standard folder structure used throughout the course.
+:::
+
+## Setup
+
+Adopt the tree structure presented below for every new project you create in this course. Note that launching your session via `project.Rproj` sets your active working directory to the folder containing it.
+
+::: {.hero-tree style="display:block;"}
+<span class="dir">Root/</span><br>
+&nbsp;&nbsp;<span class="dir">data/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">raw/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">tmp/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">out/</span><br>
+&nbsp;&nbsp;<span class="dir">functions/</span><br>
+&nbsp;&nbsp;<span class="dir">scripts/</span><br>
+&nbsp;&nbsp;<span class="dir">notebooks/</span><br>
+&nbsp;&nbsp;<span class="dir">figs/</span><br>
+&nbsp;&nbsp;<span class="dir">tables/</span><br>
+&nbsp;&nbsp;<span class="dir">references/</span><br>
+&nbsp;&nbsp;<span class="file">project.Rproj</span>
+:::
+
+::: {.qcard}
+**Step 1. Open RStudio**
+
+Launch RStudio on your machine.
+:::
+
+::: {.qcard}
+**Step 2. Create a new project**
+
+* `File` → `New Project...`
+* Choose **New Directory**
+* Name your project (e.g. `session-2`)
+:::
+
+::: {.qcard}
+**Step 3. Create the project structure**
+
+In the R console, run:
+
+```{r}
+#| eval: false
+#| echo: true
+dir.create("data")
+dir.create("data/raw")
+dir.create("data/tmp")
+dir.create("data/out")
+dir.create("functions")
+dir.create("scripts")
+dir.create("notebooks")
+dir.create("figs")
+dir.create("tables")
+dir.create("references")
+```
+:::
+
+::: {.tip}
+#### Check your setup
+
+Once the folders are created, you can confirm everything is in place directly from the R console:
+
+```{r}
+#| eval: false
+getwd()      # should point to the folder containing project.Rproj
+list.files() # should list all the folders you just created
+```
+:::
+
+<div class="text-center">
+  <a href="index.html" class="btn btn-success">
+    {{< fa house >}} Course homepage
+  </a>
+</div>
+
+---
+
+*Introduction to Programming for Data Analysis — Master 1 in Economics*

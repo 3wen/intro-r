@@ -75,7 +75,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="tutorial-2_files/libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
 
 
 <link rel="stylesheet" href="styles.css">
@@ -94,7 +94,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#plot-distributions" id="toc-plot-distributions" class="nav-link" data-scroll-target="#plot-distributions">Plot Distributions</a></li>
   <li><a href="#summary-statistics" id="toc-summary-statistics" class="nav-link" data-scroll-target="#summary-statistics">Summary Statistics</a></li>
   <li><a href="#rank-countries-by-gdp-in-2023" id="toc-rank-countries-by-gdp-in-2023" class="nav-link" data-scroll-target="#rank-countries-by-gdp-in-2023">Rank countries by GDP in 2023</a></li>
-  <li><a href="#rank-countries-by-change-in-gdp-between-2014-and-2023" id="toc-rank-countries-by-change-in-gdp-between-2014-and-2023" class="nav-link" data-scroll-target="#rank-countries-by-change-in-gdp-between-2014-and-2023">Rank countries by change in GDP between 2014 and 2023</a></li>
+  <li><a href="#rank-countries-by-change-in-gdp-between-2013-and-2023" id="toc-rank-countries-by-change-in-gdp-between-2013-and-2023" class="nav-link" data-scroll-target="#rank-countries-by-change-in-gdp-between-2013-and-2023">Rank countries by change in GDP between 2013 and 2023</a></li>
   <li><a href="#evolution-of-gdp-in-france-and-italy" id="toc-evolution-of-gdp-in-france-and-italy" class="nav-link" data-scroll-target="#evolution-of-gdp-in-france-and-italy">Evolution of GDP in France and Italy</a></li>
   </ul>
 </nav>
@@ -267,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <span id="cb3-2"><a href="#cb3-2"></a><span class="co"># Assuming the file was moved to the data output folder of the project root</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a>tb <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/out/gdp-lifesat.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Rows: 84 Columns: 4
+<pre><code>Rows: 231 Columns: 4
 ── Column specification ────────────────────────────────────────────────────────
 Delimiter: ","
 chr (1): country
@@ -278,20 +278,20 @@ dbl (3): year, gdp, life_satisf
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>tb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 84 × 4
-   country  year    gdp life_satisf
-   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;
- 1 FR       2010 32548.        6.72
- 2 IT       2010 26774.        6.59
- 3 DE       2010 38145.        7.17
- 4 ES       2010 24253.        6.67
- 5 NL       2010 42162.        7.94
- 6 PT       2010 19958.        6.42
- 7 FR       2011 33245.        7.13
- 8 IT       2011 27502.        6.45
- 9 DE       2011 39567.        7.32
-10 ES       2011 24455.        6.93
-# ℹ 74 more rows</code></pre>
+<pre><code># A tibble: 231 × 4
+   country  year   gdp life_satisf
+   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;
+ 1 AL       2018  4730         5.5
+ 2 AL       2021  5190         5.7
+ 3 AL       2022  5500         6  
+ 4 AT       2013 43080         7.8
+ 5 AT       2018 45140         8  
+ 6 AT       2021 44580         8  
+ 7 AT       2022 46430         7.9
+ 8 AT       2023 45670         7.7
+ 9 AT       2024 45140         7.6
+10 AT       2025 45390         7.7
+# ℹ 221 more rows</code></pre>
 </div>
 </div>
 </div>
@@ -393,6 +393,10 @@ dbl (3): year, gdp, life_satisf
 <span id="cb9-6"><a href="#cb9-6"></a>    <span class="at">title =</span> <span class="st">"Histogram of Overall life satisfaction"</span></span>
 <span id="cb9-7"><a href="#cb9-7"></a>  ) <span class="sc">+</span></span>
 <span id="cb9-8"><a href="#cb9-8"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 3 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -409,11 +413,11 @@ dbl (3): year, gdp, life_satisf
 <div class="qcard">
 <p><strong>Q5.</strong> Examine and evaluate the following instructions. Then, explain what they do.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>summary_stats_base <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a>  <span class="fu">select</span>(gdp, life_satisf) <span class="sc">|&gt;</span></span>
-<span id="cb10-3"><a href="#cb10-3"></a>  <span class="fu">summary</span>()</span>
-<span id="cb10-4"><a href="#cb10-4"></a></span>
-<span id="cb10-5"><a href="#cb10-5"></a><span class="fu">print</span>(summary_stats_base)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>summary_stats_base <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">select</span>(gdp, life_satisf) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">summary</span>()</span>
+<span id="cb11-4"><a href="#cb11-4"></a></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="fu">print</span>(summary_stats_base)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
@@ -429,13 +433,14 @@ dbl (3): year, gdp, life_satisf
 <p>This pipeline of instructions extracts the features <code>gdp</code> and <code>life_satisf</code> from the data frame <code>tb</code> and passes them directly into R’s base summary function <code>summary()</code>. This returns the descriptive quantities (Minimum, 1st Quartile, Median, Mean, 3rd Quartile, Maximum) alongside missing item flags (<code>NA</code>s) per variable.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>      gdp         life_satisf   
- Min.   :19737   Min.   :6.190  
- 1st Qu.:26864   1st Qu.:6.628  
- Median :33021   Median :6.875  
- Mean   :34481   Mean   :7.013  
- 3rd Qu.:42175   3rd Qu.:7.322  
- Max.   :52955   Max.   :8.100  </code></pre>
+<pre><code>      gdp          life_satisf   
+ Min.   :  4730   Min.   :4.800  
+ 1st Qu.: 16000   1st Qu.:6.800  
+ Median : 23310   Median :7.200  
+ Mean   : 32362   Mean   :7.108  
+ 3rd Qu.: 44210   3rd Qu.:7.600  
+ Max.   :107570   Max.   :8.100  
+                  NAs    :3      </code></pre>
 </div>
 </div>
 </div>
@@ -467,27 +472,27 @@ dbl (3): year, gdp, life_satisf
 <div class="reveal sol-box" data-reveal="3">
 <p>Using tidyverse strategies to explicitly construct long summaries:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb12-2"><a href="#cb12-2"></a></span>
-<span id="cb12-3"><a href="#cb12-3"></a>summary_stats <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">select</span>(gdp, life_satisf) <span class="sc">|&gt;</span></span>
-<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb12-6"><a href="#cb12-6"></a>    <span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"var"</span>, <span class="at">values_to =</span> <span class="st">"val"</span></span>
-<span id="cb12-7"><a href="#cb12-7"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb12-8"><a href="#cb12-8"></a>  <span class="fu">group_by</span>(var) <span class="sc">|&gt;</span></span>
-<span id="cb12-9"><a href="#cb12-9"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb12-10"><a href="#cb12-10"></a>    <span class="at">mean =</span> <span class="fu">round</span>(<span class="fu">mean</span>(val, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>),</span>
-<span id="cb12-11"><a href="#cb12-11"></a>    <span class="at">sd   =</span> <span class="fu">round</span>(<span class="fu">sd</span>(val, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>),</span>
-<span id="cb12-12"><a href="#cb12-12"></a>    <span class="at">min  =</span> <span class="fu">round</span>(<span class="fu">min</span>(val, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>),</span>
-<span id="cb12-13"><a href="#cb12-13"></a>    <span class="at">max  =</span> <span class="fu">round</span>(<span class="fu">max</span>(val, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>)</span>
-<span id="cb12-14"><a href="#cb12-14"></a>  )</span>
-<span id="cb12-15"><a href="#cb12-15"></a>summary_stats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb13-2"><a href="#cb13-2"></a></span>
+<span id="cb13-3"><a href="#cb13-3"></a>summary_stats <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>  <span class="fu">select</span>(gdp, life_satisf) <span class="sc">|&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb13-6"><a href="#cb13-6"></a>    <span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">"var"</span>, <span class="at">values_to =</span> <span class="st">"val"</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>  <span class="fu">group_by</span>(var) <span class="sc">|&gt;</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb13-10"><a href="#cb13-10"></a>    <span class="at">mean =</span> <span class="fu">round</span>(<span class="fu">mean</span>(val, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>),</span>
+<span id="cb13-11"><a href="#cb13-11"></a>    <span class="at">sd   =</span> <span class="fu">round</span>(<span class="fu">sd</span>(val, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>),</span>
+<span id="cb13-12"><a href="#cb13-12"></a>    <span class="at">min  =</span> <span class="fu">round</span>(<span class="fu">min</span>(val, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>),</span>
+<span id="cb13-13"><a href="#cb13-13"></a>    <span class="at">max  =</span> <span class="fu">round</span>(<span class="fu">max</span>(val, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="dv">2</span>)</span>
+<span id="cb13-14"><a href="#cb13-14"></a>  )</span>
+<span id="cb13-15"><a href="#cb13-15"></a>summary_stats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 5
-  var             mean      sd      min     max
-  &lt;chr&gt;          &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;
-1 gdp         34481.   9116.   19737.   52955. 
-2 life_satisf     7.01    0.52     6.19     8.1</code></pre>
+  var             mean       sd    min      max
+  &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;
+1 gdp         32362.   23512.   4730   107570  
+2 life_satisf     7.11     0.67    4.8      8.1</code></pre>
 </div>
 </div>
 </div>
@@ -495,8 +500,8 @@ dbl (3): year, gdp, life_satisf
 <div class="qcard">
 <p><strong>Q7.</strong> Examine and evaluate the following instruction. Then, explain what it does.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">names</span>(summary_stats) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"var"</span>, <span class="st">"mean"</span>, <span class="st">"sd"</span>, <span class="st">"min"</span>, <span class="st">"max"</span>)</span>
-<span id="cb14-2"><a href="#cb14-2"></a>summary_stats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">names</span>(summary_stats) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"var"</span>, <span class="st">"mean"</span>, <span class="st">"sd"</span>, <span class="st">"min"</span>, <span class="st">"max"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2"></a>summary_stats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
@@ -513,10 +518,10 @@ dbl (3): year, gdp, life_satisf
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 5
-  var             mean      sd      min     max
-  &lt;chr&gt;          &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;
-1 gdp         34481.   9116.   19737.   52955. 
-2 life_satisf     7.01    0.52     6.19     8.1</code></pre>
+  var             mean       sd    min      max
+  &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;
+1 gdp         32362.   23512.   4730   107570  
+2 life_satisf     7.11     0.67    4.8      8.1</code></pre>
 </div>
 </div>
 </div>
@@ -524,10 +529,10 @@ dbl (3): year, gdp, life_satisf
 <div class="qcard">
 <p><strong>Q8.</strong> Print the content of the object <code>summary_stats</code> as a LaTeX-formatted table. To do so, use the <code>{stargazer}</code> package. Adapt the following code:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">install.packages</span>(<span class="st">"stargazer"</span>)</span>
-<span id="cb16-2"><a href="#cb16-2"></a><span class="fu">library</span>(stargazer)</span>
-<span id="cb16-3"><a href="#cb16-3"></a>?stargazer</span>
-<span id="cb16-4"><a href="#cb16-4"></a>summary_stats_latex <span class="ot">&lt;-</span> <span class="fu">stargazer</span>(...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">install.packages</span>(<span class="st">"stargazer"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb17-3"><a href="#cb17-3"></a>?stargazer</span>
+<span id="cb17-4"><a href="#cb17-4"></a>summary_stats_latex <span class="ot">&lt;-</span> <span class="fu">stargazer</span>(...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Save the LaTeX table into a file named <code>summary_stats.tex</code> inside your output data subfolder.</p>
 <div class="cascade">
@@ -545,7 +550,7 @@ dbl (3): year, gdp, life_satisf
 </div>
 <div class="reveal sol-box" data-reveal="2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">library</span>(stargazer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">library</span>(stargazer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
 Please cite as: </code></pre>
@@ -556,16 +561,16 @@ Please cite as: </code></pre>
 <div class="cell-output cell-output-stderr">
 <pre><code> R package version 5.2.3. https://CRAN.R-project.org/package=stargazer </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">stargazer</span>(</span>
-<span id="cb21-2"><a href="#cb21-2"></a>  summary_stats,</span>
-<span id="cb21-3"><a href="#cb21-3"></a>  <span class="at">summary =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb21-4"><a href="#cb21-4"></a>  <span class="at">type =</span> <span class="st">"latex"</span>, </span>
-<span id="cb21-5"><a href="#cb21-5"></a>  <span class="at">out =</span> <span class="st">"data/out/summary_stats.tex"</span></span>
-<span id="cb21-6"><a href="#cb21-6"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">stargazer</span>(</span>
+<span id="cb22-2"><a href="#cb22-2"></a>  summary_stats,</span>
+<span id="cb22-3"><a href="#cb22-3"></a>  <span class="at">summary =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb22-4"><a href="#cb22-4"></a>  <span class="at">type =</span> <span class="st">"latex"</span>, </span>
+<span id="cb22-5"><a href="#cb22-5"></a>  <span class="at">out =</span> <span class="st">"data/out/summary_stats.tex"</span></span>
+<span id="cb22-6"><a href="#cb22-6"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 % Table created by stargazer v.5.2.3 by Marek Hlavac, Social Policy Institute. E-mail: marek.hlavac at gmail.com
-% Date and time: Sat, Aug 22, 2026 - 23:47:50
+% Date and time: Thu, Sep 17, 2026 - 08:02:17
 \begin{table}[!htbp] \centering 
   \caption{} 
   \label{} 
@@ -574,8 +579,8 @@ Please cite as: </code></pre>
 \hline \\[-1.8ex] 
  &amp; var &amp; mean &amp; sd &amp; min &amp; max \\ 
 \hline \\[-1.8ex] 
-1 &amp; gdp &amp; 34480.95 &amp; 9116.3 &amp; 19737.4 &amp; 52955.4 \\ 
-2 &amp; life\_satisf &amp; 7.01 &amp; 0.52 &amp; 6.19 &amp; 8.1 \\ 
+1 &amp; gdp &amp; 32361.69 &amp; 23511.96 &amp; 4730 &amp; 107570 \\ 
+2 &amp; life\_satisf &amp; 7.11 &amp; 0.67 &amp; 4.8 &amp; 8.1 \\ 
 \hline \\[-1.8ex] 
 \end{tabular} 
 \end{table} </code></pre>
@@ -589,8 +594,8 @@ Please cite as: </code></pre>
 <div class="qcard">
 <p><strong>Q9.</strong> Create an object called <code>tb_2023</code> that contains only the rows of the dataset where the year is 2023.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>tb_2023 <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a>    ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>tb_2023 <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>    ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
@@ -604,19 +609,24 @@ Please cite as: </code></pre>
 </div>
 <div class="reveal sol-box" data-reveal="1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>tb_2023 <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span> </span>
-<span id="cb24-2"><a href="#cb24-2"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2023</span>)</span>
-<span id="cb24-3"><a href="#cb24-3"></a>tb_2023</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>tb_2023 <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span> </span>
+<span id="cb25-2"><a href="#cb25-2"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2023</span>)</span>
+<span id="cb25-3"><a href="#cb25-3"></a>tb_2023</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 4
-  country  year    gdp life_satisf
-  &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;
-1 FR       2023 39966.        7.18
-2 IT       2023 33580.        6.71
-3 DE       2023 48485.        7.55
-4 ES       2023 30343.        7.17
-5 NL       2023 52955.        7.91
-6 PT       2023 25152.        6.63</code></pre>
+<pre><code># A tibble: 33 × 4
+   country  year   gdp life_satisf
+   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;
+ 1 AT       2023 45670         7.7
+ 2 BE       2023 44190         7.7
+ 3 BG       2023 10950         5.9
+ 4 CH       2023 82440         7.8
+ 5 CY       2023 29320         7.4
+ 6 CZ       2023 21680         7.4
+ 7 DE       2023 43770         7  
+ 8 DK       2023 56770         7.5
+ 9 EE       2023 21580         7.2
+10 EL       2023 18600         6.9
+# ℹ 23 more rows</code></pre>
 </div>
 </div>
 </div>
@@ -624,19 +634,19 @@ Please cite as: </code></pre>
 <div class="qcard">
 <p><strong>Q10.</strong> Examine and evaluate the following instruction. Then, explain what it does.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(</span>
-<span id="cb26-2"><a href="#cb26-2"></a>  <span class="at">data =</span> tb_2023, </span>
-<span id="cb26-3"><a href="#cb26-3"></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(country, gdp), <span class="at">y =</span> gdp)</span>
-<span id="cb26-4"><a href="#cb26-4"></a>) <span class="sc">+</span></span>
-<span id="cb26-5"><a href="#cb26-5"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
-<span id="cb26-6"><a href="#cb26-6"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb26-7"><a href="#cb26-7"></a>  <span class="fu">labs</span>(</span>
-<span id="cb26-8"><a href="#cb26-8"></a>    <span class="at">title =</span> <span class="st">"GDP by Country in 2023"</span>,</span>
-<span id="cb26-9"><a href="#cb26-9"></a>    <span class="at">x =</span> <span class="st">"Country"</span>,</span>
-<span id="cb26-10"><a href="#cb26-10"></a>    <span class="at">y =</span> <span class="st">"GDP"</span></span>
-<span id="cb26-11"><a href="#cb26-11"></a>  ) <span class="sc">+</span></span>
-<span id="cb26-12"><a href="#cb26-12"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb26-13"><a href="#cb26-13"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(</span>
+<span id="cb27-2"><a href="#cb27-2"></a>  <span class="at">data =</span> tb_2023, </span>
+<span id="cb27-3"><a href="#cb27-3"></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(country, gdp), <span class="at">y =</span> gdp)</span>
+<span id="cb27-4"><a href="#cb27-4"></a>) <span class="sc">+</span></span>
+<span id="cb27-5"><a href="#cb27-5"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb27-6"><a href="#cb27-6"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb27-7"><a href="#cb27-7"></a>  <span class="fu">labs</span>(</span>
+<span id="cb27-8"><a href="#cb27-8"></a>    <span class="at">title =</span> <span class="st">"GDP by Country in 2023"</span>,</span>
+<span id="cb27-9"><a href="#cb27-9"></a>    <span class="at">x =</span> <span class="st">"Country"</span>,</span>
+<span id="cb27-10"><a href="#cb27-10"></a>    <span class="at">y =</span> <span class="st">"GDP"</span></span>
+<span id="cb27-11"><a href="#cb27-11"></a>  ) <span class="sc">+</span></span>
+<span id="cb27-12"><a href="#cb27-12"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb27-13"><a href="#cb27-13"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
@@ -662,9 +672,9 @@ Please cite as: </code></pre>
 </div>
 </div>
 <div class="qcard">
-<p><strong>Q11.</strong> Create an object called <code>data_filtered</code> that contains only the rows of the dataset where the year is either 2014 or 2023.</p>
+<p><strong>Q11.</strong> Create an object called <code>data_filtered</code> that contains only the rows of the dataset where the year is either 2013 or 2023.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>data_filtered <span class="ot">&lt;-</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>data_filtered <span class="ot">&lt;-</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn hint" data-step="1">
@@ -684,25 +694,24 @@ Please cite as: </code></pre>
 </div>
 <div class="reveal sol-box" data-reveal="2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>data_filtered <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span> </span>
-<span id="cb28-2"><a href="#cb28-2"></a>  <span class="fu">filter</span>(year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2014</span>, <span class="dv">2023</span>))</span>
-<span id="cb28-3"><a href="#cb28-3"></a>data_filtered</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>data_filtered <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span> </span>
+<span id="cb29-2"><a href="#cb29-2"></a>  <span class="fu">filter</span>(year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2013</span>, <span class="dv">2023</span>))</span>
+<span id="cb29-3"><a href="#cb29-3"></a>data_filtered</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 12 × 4
-   country  year    gdp life_satisf
-   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;
- 1 FR       2014 35318.        7.01
- 2 IT       2014 28988.        6.6 
- 3 DE       2014 40937.        7.28
- 4 ES       2014 25215.        6.8 
- 5 NL       2014 45544         7.81
- 6 PT       2014 21344         6.3 
- 7 FR       2023 39966.        7.18
- 8 IT       2023 33580.        6.71
- 9 DE       2023 48485.        7.55
-10 ES       2023 30343.        7.17
-11 NL       2023 52955.        7.91
-12 PT       2023 25152.        6.63</code></pre>
+<pre><code># A tibble: 67 × 4
+   country  year   gdp life_satisf
+   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;
+ 1 AT       2013 43080         7.8
+ 2 AT       2023 45670         7.7
+ 3 BE       2013 39440         7.5
+ 4 BE       2023 44190         7.7
+ 5 BG       2013  7600         4.8
+ 6 BG       2023 10950         5.9
+ 7 CH       2013 74650         8  
+ 8 CH       2023 82440         7.8
+ 9 CY       2013 20830         6.2
+10 CY       2023 29320         7.4
+# ℹ 57 more rows</code></pre>
 </div>
 </div>
 </div>
@@ -710,8 +719,8 @@ Please cite as: </code></pre>
 <div class="qcard">
 <p><strong>Q12.</strong> Examine and evaluate the following instruction. Then, explain what it does.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>data_filtered <span class="sc">|&gt;</span></span>
-<span id="cb30-2"><a href="#cb30-2"></a>  <span class="fu">arrange</span>(year, <span class="fu">desc</span>(gdp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>data_filtered <span class="sc">|&gt;</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a>  <span class="fu">arrange</span>(year, <span class="fu">desc</span>(gdp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
@@ -727,31 +736,30 @@ Please cite as: </code></pre>
 <p>It sorts rows first chronologically by <code>year</code>, then sorts the observations in descending order of cross-sectional <code>gdp</code> within each temporal block.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 12 × 4
+<pre><code># A tibble: 67 × 4
    country  year    gdp life_satisf
    &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;
- 1 NL       2014 45544         7.81
- 2 DE       2014 40937.        7.28
- 3 FR       2014 35318.        7.01
- 4 IT       2014 28988.        6.6 
- 5 ES       2014 25215.        6.8 
- 6 PT       2014 21344         6.3 
- 7 NL       2023 52955.        7.91
- 8 DE       2023 48485.        7.55
- 9 FR       2023 39966.        7.18
-10 IT       2023 33580.        6.71
-11 ES       2023 30343.        7.17
-12 PT       2023 25152.        6.63</code></pre>
+ 1 LU       2013 102010         7.4
+ 2 CH       2013  74650         8  
+ 3 NO       2013  60260         7.9
+ 4 IS       2013  52880         8  
+ 5 DK       2013  49750         8  
+ 6 IE       2013  44830         7.5
+ 7 NL       2013  44230         7.8
+ 8 SE       2013  43770         7.9
+ 9 AT       2013  43080         7.8
+10 FI       2013  41020         8  
+# ℹ 57 more rows</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="qcard">
-<p><strong>Q13.</strong> Create a barplot ranking countries in decreasing order of GDP, with two panels: the left panel for year 2014, the right panel for year 2023. The plot should have:</p>
+<p><strong>Q13.</strong> Create a barplot ranking countries in decreasing order of GDP, with two panels: the left panel for year 2013, the right panel for year 2023. The plot should have:</p>
 <ol type="1">
 <li>the x-axis titled “GDP”,</li>
 <li>no y-axis title,</li>
-<li>the main title “GDP by Country in 2014 and 2023”.</li>
+<li>the main title “GDP by Country in 2013 and 2023”.</li>
 </ol>
 <div class="cascade">
 <button class="step-btn hint" data-step="1">
@@ -771,16 +779,16 @@ Please cite as: </code></pre>
 </div>
 <div class="reveal sol-box" data-reveal="2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> data_filtered, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(country, gdp), <span class="at">y =</span> gdp)) <span class="sc">+</span></span>
-<span id="cb32-2"><a href="#cb32-2"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
-<span id="cb32-3"><a href="#cb32-3"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb32-4"><a href="#cb32-4"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>year) <span class="sc">+</span> <span class="co"># Splitting into panels by year</span></span>
-<span id="cb32-5"><a href="#cb32-5"></a>  <span class="fu">labs</span>(</span>
-<span id="cb32-6"><a href="#cb32-6"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb32-7"><a href="#cb32-7"></a>    <span class="at">y =</span> <span class="st">"GDP"</span>,</span>
-<span id="cb32-8"><a href="#cb32-8"></a>    <span class="at">title =</span> <span class="st">"GDP by Country in 2014 and 2023"</span></span>
-<span id="cb32-9"><a href="#cb32-9"></a>  ) <span class="sc">+</span></span>
-<span id="cb32-10"><a href="#cb32-10"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> data_filtered, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(country, gdp), <span class="at">y =</span> gdp)) <span class="sc">+</span></span>
+<span id="cb33-2"><a href="#cb33-2"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb33-3"><a href="#cb33-3"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb33-4"><a href="#cb33-4"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>year) <span class="sc">+</span> <span class="co"># Splitting into panels by year</span></span>
+<span id="cb33-5"><a href="#cb33-5"></a>  <span class="fu">labs</span>(</span>
+<span id="cb33-6"><a href="#cb33-6"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb33-7"><a href="#cb33-7"></a>    <span class="at">y =</span> <span class="st">"GDP"</span>,</span>
+<span id="cb33-8"><a href="#cb33-8"></a>    <span class="at">title =</span> <span class="st">"GDP by Country in 2013 and 2023"</span></span>
+<span id="cb33-9"><a href="#cb33-9"></a>  ) <span class="sc">+</span></span>
+<span id="cb33-10"><a href="#cb33-10"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -792,12 +800,12 @@ Please cite as: </code></pre>
 </div>
 </div>
 </section>
-<section id="rank-countries-by-change-in-gdp-between-2014-and-2023" class="level2">
-<h2 class="anchored" data-anchor-id="rank-countries-by-change-in-gdp-between-2014-and-2023">Rank countries by change in GDP between 2014 and 2023</h2>
+<section id="rank-countries-by-change-in-gdp-between-2013-and-2023" class="level2">
+<h2 class="anchored" data-anchor-id="rank-countries-by-change-in-gdp-between-2013-and-2023">Rank countries by change in GDP between 2013 and 2023</h2>
 <div class="qcard">
-<p><strong>Q14.</strong> Create a new variable called <code>change_gdp</code> that measures the within-country change in GDP between 2014 and 2023.</p>
+<p><strong>Q14.</strong> Create a new variable called <code>change_gdp</code> that measures the within-country change in GDP between 2013 and 2023.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>tb <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>tb <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn hint" data-step="1">
@@ -819,27 +827,32 @@ Please cite as: </code></pre>
 <p>This is a within-country comparison across years, so you need one row per country: reshape the data with <code>pivot_wider()</code> so that each year’s GDP becomes its own column.</p>
 </div>
 <div class="reveal hint-box" data-reveal="2">
-<p><code>pivot_wider(names_from = year, values_from = gdp, names_prefix = "gdp_")</code> gives you columns <code>gdp_2014</code> and <code>gdp_2023</code>. Then simply subtract them with <code>mutate()</code>.</p>
+<p><code>pivot_wider(names_from = year, values_from = gdp, names_prefix = "gdp_")</code> gives you columns <code>gdp_2013</code> and <code>gdp_2023</code>. Then simply subtract them with <code>mutate()</code>.</p>
 </div>
 <div class="reveal sol-box" data-reveal="3">
 <p>To extract delta values properly across years from wide or long frames:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>tb_change <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span></span>
-<span id="cb34-2"><a href="#cb34-2"></a>  <span class="fu">filter</span>(year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2014</span>, <span class="dv">2023</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb34-3"><a href="#cb34-3"></a>  <span class="fu">select</span>(country, year, gdp) <span class="sc">|&gt;</span></span>
-<span id="cb34-4"><a href="#cb34-4"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> gdp, <span class="at">names_prefix =</span> <span class="st">"gdp_"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb34-5"><a href="#cb34-5"></a>  <span class="fu">mutate</span>(<span class="at">change_gdp =</span> gdp_2023 <span class="sc">-</span> gdp_2014)</span>
-<span id="cb34-6"><a href="#cb34-6"></a>tb_change</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>tb_change <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span></span>
+<span id="cb35-2"><a href="#cb35-2"></a>  <span class="fu">filter</span>(year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2013</span>, <span class="dv">2023</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb35-3"><a href="#cb35-3"></a>  <span class="fu">select</span>(country, year, gdp) <span class="sc">|&gt;</span></span>
+<span id="cb35-4"><a href="#cb35-4"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> year, <span class="at">values_from =</span> gdp, <span class="at">names_prefix =</span> <span class="st">"gdp_"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb35-5"><a href="#cb35-5"></a>  <span class="fu">mutate</span>(<span class="at">change_gdp =</span> gdp_2023 <span class="sc">-</span> gdp_2013)</span>
+<span id="cb35-6"><a href="#cb35-6"></a>tb_change</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 4
-  country gdp_2014 gdp_2023 change_gdp
-  &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
-1 FR        35318.   39966.      4648.
-2 IT        28988.   33580.      4592.
-3 DE        40937.   48485.      7548 
-4 ES        25215.   30343.      5128.
-5 NL        45544    52955.      7411.
-6 PT        21344    25152.      3808.</code></pre>
+<pre><code># A tibble: 34 × 4
+   country gdp_2013 gdp_2023 change_gdp
+   &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
+ 1 AT         43080    45670       2590
+ 2 BE         39440    44190       4750
+ 3 BG          7600    10950       3350
+ 4 CH         74650    82440       7790
+ 5 CY         20830    29320       8490
+ 6 CZ         17970    21680       3710
+ 7 DE         40160    43770       3610
+ 8 DK         49750    56770       7020
+ 9 EE         17630    21580       3950
+10 EL         15800    18600       2800
+# ℹ 24 more rows</code></pre>
 </div>
 </div>
 </div>
@@ -847,8 +860,8 @@ Please cite as: </code></pre>
 <div class="qcard">
 <p><strong>Q15.</strong> Examine and evaluate the following instruction. Then, explain what it does.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>tb_2023 <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2023</span>)</span>
-<span id="cb36-2"><a href="#cb36-2"></a>tb_2023</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>tb_2023 <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2023</span>)</span>
+<span id="cb37-2"><a href="#cb37-2"></a>tb_2023</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
@@ -864,25 +877,30 @@ Please cite as: </code></pre>
 <p>It isolates cross-sectional observations from 2023 from the data frame <code>tb</code> and assigns the resulting data frame in an object named <code>tb_2023</code>.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 4
-  country  year    gdp life_satisf
-  &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;
-1 FR       2023 39966.        7.18
-2 IT       2023 33580.        6.71
-3 DE       2023 48485.        7.55
-4 ES       2023 30343.        7.17
-5 NL       2023 52955.        7.91
-6 PT       2023 25152.        6.63</code></pre>
+<pre><code># A tibble: 33 × 4
+   country  year   gdp life_satisf
+   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;
+ 1 AT       2023 45670         7.7
+ 2 BE       2023 44190         7.7
+ 3 BG       2023 10950         5.9
+ 4 CH       2023 82440         7.8
+ 5 CY       2023 29320         7.4
+ 6 CZ       2023 21680         7.4
+ 7 DE       2023 43770         7  
+ 8 DK       2023 56770         7.5
+ 9 EE       2023 21580         7.2
+10 EL       2023 18600         6.9
+# ℹ 23 more rows</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="qcard">
-<p><strong>Q16.</strong> Create a barplot ranking countries in decreasing order of their change in GDP (between 2014 and 2023). The plot should have:</p>
+<p><strong>Q16.</strong> Create a barplot ranking countries in decreasing order of their change in GDP (between 2013 and 2023). The plot should have:</p>
 <ul>
 <li>the x-axis titled “Change in GDP”,</li>
 <li>no y-axis title,</li>
-<li>the main title “Change in GDP by Country between 2014 and 2023”.</li>
+<li>the main title “Change in GDP by Country between 2013 and 2023”.</li>
 </ul>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
@@ -896,15 +914,19 @@ Please cite as: </code></pre>
 </div>
 <div class="reveal sol-box" data-reveal="1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> tb_change, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(country, change_gdp), <span class="at">y =</span> change_gdp)) <span class="sc">+</span></span>
-<span id="cb38-2"><a href="#cb38-2"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
-<span id="cb38-3"><a href="#cb38-3"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb38-4"><a href="#cb38-4"></a>  <span class="fu">labs</span>(</span>
-<span id="cb38-5"><a href="#cb38-5"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb38-6"><a href="#cb38-6"></a>    <span class="at">y =</span> <span class="st">"Change in GDP"</span>,</span>
-<span id="cb38-7"><a href="#cb38-7"></a>    <span class="at">title =</span> <span class="st">"Change in GDP by Country between 2014 and 2023"</span></span>
-<span id="cb38-8"><a href="#cb38-8"></a>  ) <span class="sc">+</span></span>
-<span id="cb38-9"><a href="#cb38-9"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> tb_change, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(country, change_gdp), <span class="at">y =</span> change_gdp)) <span class="sc">+</span></span>
+<span id="cb39-2"><a href="#cb39-2"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb39-3"><a href="#cb39-3"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb39-4"><a href="#cb39-4"></a>  <span class="fu">labs</span>(</span>
+<span id="cb39-5"><a href="#cb39-5"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb39-6"><a href="#cb39-6"></a>    <span class="at">y =</span> <span class="st">"Change in GDP"</span>,</span>
+<span id="cb39-7"><a href="#cb39-7"></a>    <span class="at">title =</span> <span class="st">"Change in GDP by Country between 2013 and 2023"</span></span>
+<span id="cb39-8"><a href="#cb39-8"></a>  ) <span class="sc">+</span></span>
+<span id="cb39-9"><a href="#cb39-9"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1 row containing missing values or values outside the scale range
+(`geom_bar()`).</code></pre>
+</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -921,7 +943,7 @@ Please cite as: </code></pre>
 <div class="qcard">
 <p><strong>Q17.</strong> Create an object called <code>tb_france_italy</code> that contains rows of the dataset <code>tb</code> where the country is either “France” or “Italy”.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>tb_france_italy <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a>tb_france_italy <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
@@ -935,24 +957,27 @@ Please cite as: </code></pre>
 </div>
 <div class="reveal sol-box" data-reveal="1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>tb_france_italy <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span> </span>
-<span id="cb40-2"><a href="#cb40-2"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"FR"</span>, <span class="st">"IT"</span>))</span>
-<span id="cb40-3"><a href="#cb40-3"></a>tb_france_italy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>tb_france_italy <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span> </span>
+<span id="cb42-2"><a href="#cb42-2"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"FR"</span>, <span class="st">"IT"</span>))</span>
+<span id="cb42-3"><a href="#cb42-3"></a>tb_france_italy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 28 × 4
-   country  year    gdp life_satisf
-   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;
- 1 FR       2010 32548.        6.72
- 2 IT       2010 26774.        6.59
- 3 FR       2011 33245.        7.13
- 4 IT       2011 27502.        6.45
- 5 FR       2012 32724.        6.77
- 6 IT       2012 27968.        6.32
- 7 FR       2013 32944.        6.81
- 8 IT       2013 29148         6.84
- 9 FR       2014 35318.        7.01
-10 IT       2014 28988.        6.6 
-# ℹ 18 more rows</code></pre>
+<pre><code># A tibble: 14 × 4
+   country  year   gdp life_satisf
+   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;
+ 1 FR       2013 34990         7.1
+ 2 FR       2018 36570         7.3
+ 3 FR       2021 36460         6.8
+ 4 FR       2022 37280         7  
+ 5 FR       2023 37730         7.1
+ 6 FR       2024 38180         7.1
+ 7 FR       2025 38360         7.1
+ 8 IT       2013 28920         6.6
+ 9 IT       2018 30470         7  
+10 IT       2021 30760         7.2
+11 IT       2022 32310         7.2
+12 IT       2023 32630         7.2
+13 IT       2024 32900         7.2
+14 IT       2025 33080         7.1</code></pre>
 </div>
 </div>
 </div>
@@ -984,17 +1009,17 @@ Please cite as: </code></pre>
 </div>
 <div class="reveal sol-box" data-reveal="3">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> tb_france_italy, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> gdp, <span class="at">color =</span> country, <span class="at">group =</span> country)) <span class="sc">+</span></span>
-<span id="cb42-2"><a href="#cb42-2"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb42-3"><a href="#cb42-3"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb42-4"><a href="#cb42-4"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"FR"</span> <span class="ot">=</span> <span class="st">"#0055A4"</span>, <span class="st">"IT"</span> <span class="ot">=</span> <span class="st">"#009246"</span>)) <span class="sc">+</span></span>
-<span id="cb42-5"><a href="#cb42-5"></a>  <span class="fu">labs</span>(</span>
-<span id="cb42-6"><a href="#cb42-6"></a>    <span class="at">x =</span> <span class="st">"Year"</span>,</span>
-<span id="cb42-7"><a href="#cb42-7"></a>    <span class="at">y =</span> <span class="st">"GDP"</span>,</span>
-<span id="cb42-8"><a href="#cb42-8"></a>    <span class="at">title =</span> <span class="st">"Evolution of GDP in France and Italy"</span></span>
-<span id="cb42-9"><a href="#cb42-9"></a>  ) <span class="sc">+</span></span>
-<span id="cb42-10"><a href="#cb42-10"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb42-11"><a href="#cb42-11"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> tb_france_italy, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> gdp, <span class="at">color =</span> country, <span class="at">group =</span> country)) <span class="sc">+</span></span>
+<span id="cb44-2"><a href="#cb44-2"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb44-3"><a href="#cb44-3"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb44-4"><a href="#cb44-4"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"FR"</span> <span class="ot">=</span> <span class="st">"#0055A4"</span>, <span class="st">"IT"</span> <span class="ot">=</span> <span class="st">"#009246"</span>)) <span class="sc">+</span></span>
+<span id="cb44-5"><a href="#cb44-5"></a>  <span class="fu">labs</span>(</span>
+<span id="cb44-6"><a href="#cb44-6"></a>    <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb44-7"><a href="#cb44-7"></a>    <span class="at">y =</span> <span class="st">"GDP"</span>,</span>
+<span id="cb44-8"><a href="#cb44-8"></a>    <span class="at">title =</span> <span class="st">"Evolution of GDP in France and Italy"</span></span>
+<span id="cb44-9"><a href="#cb44-9"></a>  ) <span class="sc">+</span></span>
+<span id="cb44-10"><a href="#cb44-10"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb44-11"><a href="#cb44-11"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">

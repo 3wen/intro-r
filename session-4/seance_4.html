@@ -6,7 +6,9 @@
 <script src="seance_4_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="seance_4_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="seance_4_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="seance_4_files/libs/quarto-html/quarto-syntax-highlighting-86daaaaad7353f9cc0c554efc1dd6d94.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="seance_4_files/libs/quarto-html/quarto-syntax-highlighting-86daaaaad7353f9cc0c554efc1dd6d94.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="seance_4_files/libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
+<link href="seance_4_files/libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.6.40">
 
   <meta name="author" content="Ulrich Aiounou">
@@ -360,8 +362,10 @@ p = \mathbb{P}\big[ \mid T_\nu \mid \geq \mid t_{\text{obs}}\mid \big] = 2 \time
 <h2>Application to GDP and life satisfaction</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
+<p>In the <a href="tutorial-1.html">first tutorial</a>, you created a CSV file with life satisfaction and per capita GDP for multiple countries, on an annual basis, with data originally from Eurostat.</p>
+<p><a href="data/out/gdp_lifesat.csv" class="btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" download=""><i class="fa-solid fa-download" aria-label="download"></i> gdp_lifesat.csv</a></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>tb <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/out/gdp_lifesatisf.csv"</span>)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>tb <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/out/gdp_lifesat.csv"</span>)</span>
 <span id="cb1-2"><a href=""></a>happy <span class="ot">&lt;-</span> <span class="fu">filter</span>(tb, </span>
 <span id="cb1-3"><a href=""></a>  life_satisf <span class="sc">&gt;=</span> <span class="dv">7</span>, year <span class="sc">==</span> <span class="dv">2018</span></span>
 <span id="cb1-4"><a href=""></a>  )</span>
@@ -377,19 +381,200 @@ p = \mathbb{P}\big[ \mid T_\nu \mid \geq \mid t_{\text{obs}}\mid \big] = 2 \time
     Welch Two Sample t-test
 
 data:  happy$gdp and unhappy$gdp
-t = 3.7208, df = 3.4399, p-value = 0.02669
+t = 5.9988, df = 26.295, p-value = 2.36e-06
 alternative hypothesis: true difference in means is not equal to 0
 95 percent confidence interval:
-  3249.704 28710.630
+ 19591.33 39999.32
 sample estimates:
 mean of x mean of y 
- 43502.17  27522.00 </code></pre>
+ 41377.83  11582.50 </code></pre>
 </div>
 </div>
 <ul>
 <li>What do you conclude?</li>
 </ul>
 </div></div>
+</section>
+<section id="computing-the-statistics-by-hand-14" class="slide level2">
+<h2>Computing the statistics “by hand” (1/4)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Before computing <span class="math inline">\(T\)</span>, we need the mean, variance and size of each group:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>mean_happy   <span class="ot">&lt;-</span> <span class="fu">mean</span>(happy<span class="sc">$</span>gdp)</span>
+<span id="cb3-2"><a href=""></a>mean_unhappy <span class="ot">&lt;-</span> <span class="fu">mean</span>(unhappy<span class="sc">$</span>gdp)</span>
+<span id="cb3-3"><a href=""></a>var_happy    <span class="ot">&lt;-</span> <span class="fu">var</span>(happy<span class="sc">$</span>gdp)</span>
+<span id="cb3-4"><a href=""></a>var_unhappy  <span class="ot">&lt;-</span> <span class="fu">var</span>(unhappy<span class="sc">$</span>gdp)</span>
+<span id="cb3-5"><a href=""></a>n_happy      <span class="ot">&lt;-</span> <span class="fu">nrow</span>(happy)</span>
+<span id="cb3-6"><a href=""></a>n_unhappy    <span class="ot">&lt;-</span> <span class="fu">nrow</span>(unhappy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">tibble</span>(</span>
+<span id="cb4-2"><a href=""></a>  <span class="at">group =</span> <span class="fu">c</span>(<span class="st">"happy"</span>, <span class="st">"unhappy"</span>),</span>
+<span id="cb4-3"><a href=""></a>  <span class="at">mean  =</span> <span class="fu">c</span>(mean_happy, mean_unhappy),</span>
+<span id="cb4-4"><a href=""></a>  <span class="at">var   =</span> <span class="fu">c</span>(var_happy, var_unhappy),</span>
+<span id="cb4-5"><a href=""></a>  <span class="at">n     =</span> <span class="fu">c</span>(n_happy, n_unhappy)</span>
+<span id="cb4-6"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+  group     mean        var     n
+  &lt;chr&gt;    &lt;dbl&gt;      &lt;dbl&gt; &lt;int&gt;
+1 happy   41378. 513342763.    23
+2 unhappy 11582.  28207402.    12</code></pre>
+</div>
+</div>
+</div></div>
+</section>
+<section id="computing-the-statistics-by-hand-24" class="slide level2">
+<h2>Computing the statistics “by hand” (2/4)</h2>
+<p>We can now plug these into the <span class="math inline">\(T\)</span>-statistic formula: <span class="math display">\[
+T = \frac{\overline{X}_1 - \overline{X}_2}{\sqrt{\tfrac{s_1^2}{n_1} + \tfrac{s_2^2}{n_2}}}
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>t_obs <span class="ot">&lt;-</span> (mean_happy <span class="sc">-</span> mean_unhappy) <span class="sc">/</span> </span>
+<span id="cb6-2"><a href=""></a>  <span class="fu">sqrt</span>(var_happy<span class="sc">/</span>n_happy <span class="sc">+</span> var_unhappy<span class="sc">/</span>n_unhappy)</span>
+<span id="cb6-3"><a href=""></a>t_obs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5.998805</code></pre>
+</div>
+</div>
+<ul>
+<li>Compare this to the <code>t = ...</code> reported by <code>t.test()</code>: it matches!</li>
+</ul>
+</section>
+<section id="computing-the-statistics-by-hand-34" class="slide level2">
+<h2>Computing the statistics “by hand” (3/4)</h2>
+<p>Since the two groups don’t have equal variances, the <span class="gras-firstCol">degrees of freedom</span> are <strong>not</strong> simply <span class="math inline">\(n_1 + n_2 - 2\)</span>. The Welch–Satterthwaite approximation is used instead: <span class="math display">\[
+\nu = \frac{\left(\tfrac{s_1^2}{n_1} + \tfrac{s_2^2}{n_2}\right)^2}{\dfrac{(s_1^2/n_1)^2}{n_1-1} + \dfrac{(s_2^2/n_2)^2}{n_2-1}}
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>num <span class="ot">&lt;-</span> (var_happy<span class="sc">/</span>n_happy <span class="sc">+</span> var_unhappy<span class="sc">/</span>n_unhappy)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb8-2"><a href=""></a>denom <span class="ot">&lt;-</span> </span>
+<span id="cb8-3"><a href=""></a>  (var_happy<span class="sc">/</span>n_happy)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> (n_happy <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb8-4"><a href=""></a>  (var_unhappy<span class="sc">/</span>n_unhappy)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> (n_unhappy <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb8-5"><a href=""></a>df_obs <span class="ot">&lt;-</span> num <span class="sc">/</span> denom</span>
+<span id="cb8-6"><a href=""></a>df_obs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 26.29469</code></pre>
+</div>
+</div>
+<ul>
+<li>Again, this matches the <code>df = ...</code> reported by <code>t.test()</code>.</li>
+</ul>
+</section>
+<section id="computing-the-statistics-by-hand-44" class="slide level2">
+<h2>Computing the statistics “by hand” (4/4)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><code>qt(p, df)</code> is the <strong>quantile function</strong> of the Student’s <span class="math inline">\(t\)</span>-distribution: it returns the value <span class="math inline">\(t^\star\)</span> such that <span class="math inline">\(\mathbb{P}[T_{\nu} \le t^\star] = p\)</span>.</li>
+<li>To get the critical value <span class="math inline">\(t_{1-\alpha/2,\,\nu}\)</span> for a two-sided test at level <span class="math inline">\(\alpha\)</span>:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb10-2"><a href=""></a>t_crit <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> alpha<span class="sc">/</span><span class="dv">2</span>, <span class="at">df =</span> df_obs)</span>
+<span id="cb10-3"><a href=""></a>t_crit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.054409</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">abs</span>(t_obs) <span class="sc">&gt;</span> t_crit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>Since <span class="math inline">\(|T| &gt; t_{1-\alpha/2,\,\nu}\)</span>, we reject <span class="math inline">\(\text{H}_0\)</span> at the 5% level: happy and unhappy countries do not have the same average GDP.</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb14-2"><a href=""></a>t_crit <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> alpha <span class="sc">/</span> <span class="dv">2</span>, <span class="at">df =</span> df_obs)</span>
+<span id="cb14-3"><a href=""></a></span>
+<span id="cb14-4"><a href=""></a><span class="co"># x-range for the graph</span></span>
+<span id="cb14-5"><a href=""></a>x_max <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">abs</span>(t_obs), t_crit) <span class="sc">+</span> <span class="fl">1.5</span></span>
+<span id="cb14-6"><a href=""></a></span>
+<span id="cb14-7"><a href=""></a>curve_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="sc">-</span>x_max, x_max, <span class="at">by =</span> .<span class="dv">01</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb14-8"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">y =</span> <span class="fu">dt</span>(x, <span class="at">df =</span> df_obs))</span>
+<span id="cb14-9"><a href=""></a></span>
+<span id="cb14-10"><a href=""></a><span class="co"># Rejection area</span></span>
+<span id="cb14-11"><a href=""></a>reject_data <span class="ot">&lt;-</span> curve_data <span class="sc">|&gt;</span></span>
+<span id="cb14-12"><a href=""></a>  <span class="fu">filter</span>(<span class="fu">abs</span>(x) <span class="sc">&gt;=</span> t_crit)</span>
+<span id="cb14-13"><a href=""></a></span>
+<span id="cb14-14"><a href=""></a><span class="fu">ggplot</span>(curve_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb14-15"><a href=""></a>  <span class="co"># rejection regions (both tails), shaded</span></span>
+<span id="cb14-16"><a href=""></a>  <span class="fu">geom_area</span>(</span>
+<span id="cb14-17"><a href=""></a>    <span class="at">data =</span> reject_data,</span>
+<span id="cb14-18"><a href=""></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">group =</span> x <span class="sc">&gt;</span> <span class="dv">0</span>),</span>
+<span id="cb14-19"><a href=""></a>    <span class="at">fill =</span> <span class="st">"#D55E00"</span>, <span class="at">alpha =</span> .<span class="dv">25</span></span>
+<span id="cb14-20"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb14-21"><a href=""></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span> <span class="co"># density curve</span></span>
+<span id="cb14-22"><a href=""></a>  <span class="co"># critical values \pm t_crit</span></span>
+<span id="cb14-23"><a href=""></a>  <span class="fu">geom_vline</span>(</span>
+<span id="cb14-24"><a href=""></a>    <span class="at">xintercept =</span> <span class="fu">c</span>(<span class="sc">-</span>t_crit, t_crit),</span>
+<span id="cb14-25"><a href=""></a>    <span class="at">colour =</span> <span class="st">"#D55E00"</span>, <span class="at">linetype =</span> <span class="st">"dotted"</span>, <span class="at">linewidth =</span> .<span class="dv">7</span></span>
+<span id="cb14-26"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb14-27"><a href=""></a>  <span class="co"># observed statistic</span></span>
+<span id="cb14-28"><a href=""></a>  <span class="fu">geom_vline</span>(</span>
+<span id="cb14-29"><a href=""></a>    <span class="at">xintercept =</span> t_obs,</span>
+<span id="cb14-30"><a href=""></a>    <span class="at">colour =</span> <span class="st">"#0072B2"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">linewidth =</span> .<span class="dv">9</span></span>
+<span id="cb14-31"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb14-32"><a href=""></a>  <span class="co"># labels</span></span>
+<span id="cb14-33"><a href=""></a>  <span class="fu">annotate</span>(</span>
+<span id="cb14-34"><a href=""></a>    <span class="at">geom =</span> <span class="st">"label"</span>, </span>
+<span id="cb14-35"><a href=""></a>    <span class="at">x =</span> t_obs, <span class="at">y =</span> <span class="fu">max</span>(curve_data<span class="sc">$</span>y) <span class="sc">*</span> .<span class="dv">95</span>,</span>
+<span id="cb14-36"><a href=""></a>    <span class="at">label =</span> <span class="fu">str_c</span>(<span class="st">"t[obs] == "</span>, <span class="fu">round</span>(t_obs, <span class="dv">2</span>)),</span>
+<span id="cb14-37"><a href=""></a>    <span class="at">parse =</span> <span class="cn">TRUE</span>, <span class="at">colour =</span> <span class="st">"#0072B2"</span>, <span class="at">fill =</span> <span class="st">"white"</span></span>
+<span id="cb14-38"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb14-39"><a href=""></a>  <span class="fu">annotate</span>(</span>
+<span id="cb14-40"><a href=""></a>    <span class="at">geom =</span> <span class="st">"text"</span>, </span>
+<span id="cb14-41"><a href=""></a>    <span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span>t_crit, t_crit), <span class="at">y =</span> <span class="sc">-</span><span class="fu">max</span>(curve_data<span class="sc">$</span>y) <span class="sc">*</span> .<span class="dv">03</span>,</span>
+<span id="cb14-42"><a href=""></a>    <span class="at">label =</span> <span class="fu">str_c</span>(<span class="fu">c</span>(<span class="st">"-"</span>, <span class="st">"+"</span>), <span class="fu">round</span>(t_crit, <span class="dv">2</span>)),</span>
+<span id="cb14-43"><a href=""></a>    <span class="at">colour =</span> <span class="st">"#D55E00"</span>, <span class="at">size =</span> <span class="fl">3.5</span></span>
+<span id="cb14-44"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb14-45"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb14-46"><a href=""></a>    <span class="at">title =</span> <span class="st">"Student's t-distribution under H0"</span>,</span>
+<span id="cb14-47"><a href=""></a>    <span class="at">subtitle =</span> <span class="fu">str_c</span>(</span>
+<span id="cb14-48"><a href=""></a>      <span class="st">"df = "</span>, <span class="fu">round</span>(df_obs, <span class="dv">1</span>),</span>
+<span id="cb14-49"><a href=""></a>      <span class="st">", shaded areas: rejection region at α = "</span>, alpha</span>
+<span id="cb14-50"><a href=""></a>    ),</span>
+<span id="cb14-51"><a href=""></a>    <span class="at">x =</span> <span class="st">"t"</span>, </span>
+<span id="cb14-52"><a href=""></a>    <span class="at">y =</span> <span class="st">"Density"</span></span>
+<span id="cb14-53"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb14-54"><a href=""></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb14-55"><a href=""></a>  <span class="fu">theme</span>(<span class="at">plot.title.position =</span> <span class="st">"plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-9-1.png" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="bonus-recovering-the-p-value-with-pt" class="slide level2">
+<h2>Bonus: recovering the p-value with <code>pt()</code></h2>
+<ul>
+<li><code>pt(q, df)</code> is the <strong>cumulative distribution function</strong> (CDF): it returns <span class="math inline">\(\mathbb{P}[T_{\nu} \le q]\)</span>.</li>
+<li>Recall the p-value formula from before: <span class="math display">\[
+p = 2 \times \mathbb{P}\big[T_\nu \ge |t_{\text{obs}}|\big]
+\]</span></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>p_value <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">pt</span>(<span class="fu">abs</span>(t_obs), <span class="at">df =</span> df_obs))</span>
+<span id="cb15-2"><a href=""></a>p_value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.360036e-06</code></pre>
+</div>
+</div>
+<ul>
+<li>This matchs the <code>p-value = ...</code> reported by <code>t.test()</code>.</li>
+<li><code>qt()</code> and <code>pt()</code> are inverses of each other: <code>qt(pt(x, df), df) == x</code>.</li>
+</ul>
 </section></section>
 <section>
 <section id="linear-regression" class="title-slide slide level1 part center">
@@ -423,28 +608,28 @@ mean of x mean of y
 <div class="columns">
 <div class="column" style="width:60%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">ggplot</span>(</span>
-<span id="cb3-2"><a href=""></a>  <span class="at">data =</span> tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2018</span>),</span>
-<span id="cb3-3"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> gdp, <span class="at">y =</span> life_satisf)</span>
-<span id="cb3-4"><a href=""></a>) <span class="sc">+</span></span>
-<span id="cb3-5"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb3-6"><a href=""></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb3-7"><a href=""></a>  <span class="fu">labs</span>(</span>
-<span id="cb3-8"><a href=""></a>    <span class="at">x =</span> <span class="st">"Real per capita GDP in 2013 (2020 Euro)"</span>,</span>
-<span id="cb3-9"><a href=""></a>    <span class="at">y =</span> <span class="st">"Life satisfaction"</span></span>
-<span id="cb3-10"><a href=""></a>  ) <span class="sc">+</span></span>
-<span id="cb3-11"><a href=""></a>  <span class="fu">scale_x_continuous</span>(</span>
-<span id="cb3-12"><a href=""></a>    <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_number</span>(</span>
-<span id="cb3-13"><a href=""></a>      <span class="at">suffix =</span> <span class="st">""</span>, <span class="at">scale =</span> <span class="dv">1</span>, <span class="at">big.mark =</span> <span class="st">","</span></span>
-<span id="cb3-14"><a href=""></a>    )</span>
-<span id="cb3-15"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb17-2"><a href=""></a>  <span class="at">data =</span> tb <span class="sc">|&gt;</span> <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2018</span>),</span>
+<span id="cb17-3"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> gdp, <span class="at">y =</span> life_satisf)</span>
+<span id="cb17-4"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb17-5"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb17-6"><a href=""></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb17-7"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb17-8"><a href=""></a>    <span class="at">x =</span> <span class="st">"Real per capita GDP in 2013 (2020 Euro)"</span>,</span>
+<span id="cb17-9"><a href=""></a>    <span class="at">y =</span> <span class="st">"Life satisfaction"</span></span>
+<span id="cb17-10"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb17-11"><a href=""></a>  <span class="fu">scale_x_continuous</span>(</span>
+<span id="cb17-12"><a href=""></a>    <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_number</span>(</span>
+<span id="cb17-13"><a href=""></a>      <span class="at">suffix =</span> <span class="st">""</span>, <span class="at">scale =</span> <span class="dv">1</span>, <span class="at">big.mark =</span> <span class="st">","</span></span>
+<span id="cb17-14"><a href=""></a>    )</span>
+<span id="cb17-15"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:40%;">
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-5-1.png" width="864"></p>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-12-1.png" width="864"></p>
 <figcaption>Relationship between life satisfaction and per capita GDP, with OLS regression line (in blue).</figcaption>
 </figure>
 </div>
@@ -507,7 +692,7 @@ mean of x mean of y
 <li>For example, in the dataset <code>sim1</code> included in the <code>modelr</code> package, there are two variables, <code>y</code> and <code>x</code>. If we want to explain the variations of <code>y</code> by the variations of <code>x</code>, we write:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>mod_sim1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">data =</span> modelr<span class="sc">::</span>sim1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a>mod_sim1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> y <span class="sc">~</span> x, <span class="at">data =</span> modelr<span class="sc">::</span>sim1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="the-estimated-model" class="slide level2">
@@ -516,7 +701,7 @@ mean of x mean of y
 <li>When we print the object returned by <code class="sourceCode r"><span class="fu">lm</span>()</code> in the console, we have:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>mod_sim1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a>mod_sim1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -537,17 +722,17 @@ Coefficients:
 <li>The coefficients of the model, estimated with OLS, can be accessed using the <code class="sourceCode r"><span class="fu">coef</span>()</code> function.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">coef</span>(mod_sim1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a><span class="fu">coef</span>(mod_sim1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept)           x 
    4.220822    2.051533 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">coef</span>(mod_sim1)[<span class="st">"(Intercept)"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a><span class="fu">coef</span>(mod_sim1)[<span class="st">"(Intercept)"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept) 
    4.220822 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">coef</span>(mod_sim1)[<span class="st">"x"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a><span class="fu">coef</span>(mod_sim1)[<span class="st">"x"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       x 
 2.051533 </code></pre>
@@ -558,7 +743,7 @@ Coefficients:
 <h2>A Linear Regression with R: Predictions</h2>
 <p>Instead of computing the predicted values using the extracted values of the coefficients and the matrix of explanatory variables, <code>R</code> offers the function <code class="sourceCode r"><span class="fu">predict</span>()</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">predict</span>(mod_sim1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">predict</span>(mod_sim1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        1         2         3         4         5         6         7         8 
  6.272355  6.272355  6.272355  8.323888  8.323888  8.323888 10.375421 10.375421 
@@ -575,7 +760,7 @@ Coefficients:
 <h2>A Linear Regression with R: Residuals</h2>
 <p>Similarly, for the residuals, <code>R</code> provides the <code class="sourceCode r"><span class="fu">residuals</span>()</code> function:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">residuals</span>(mod_sim1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="fu">residuals</span>(mod_sim1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           1            2            3            4            5            6 
 -2.072442018  1.238279125 -4.146882207  0.664969362  1.919217378  2.972935148 
@@ -594,7 +779,7 @@ Coefficients:
 <h2>A Linear Regression with R: Summary</h2>
 <p>The <code class="sourceCode r"><span class="fu">summary</span>()</code> function applied to a linear regression model provides a lot of useful information on model fit:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="fu">summary</span>(mod_sim1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a><span class="fu">summary</span>(mod_sim1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -629,10 +814,10 @@ F-statistic: 214.7 on 1 and 28 DF,  p-value: 1.173e-14</code></pre>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="fu">library</span>(stargazer)</span>
-<span id="cb19-2"><a href=""></a><span class="fu">stargazer</span>(mod_sim1, <span class="at">type =</span> <span class="st">"text"</span>)</span>
-<span id="cb19-3"><a href=""></a><span class="fu">stargazer</span>(mod_sim1, <span class="at">type =</span> <span class="st">"html"</span>)</span>
-<span id="cb19-4"><a href=""></a><span class="fu">stargazer</span>(mod_sim1, <span class="at">type =</span> <span class="st">"latex"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb33-2"><a href=""></a><span class="fu">stargazer</span>(mod_sim1, <span class="at">type =</span> <span class="st">"text"</span>)</span>
+<span id="cb33-3"><a href=""></a><span class="fu">stargazer</span>(mod_sim1, <span class="at">type =</span> <span class="st">"html"</span>)</span>
+<span id="cb33-4"><a href=""></a><span class="fu">stargazer</span>(mod_sim1, <span class="at">type =</span> <span class="st">"latex"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Using <code class="sourceCode r">type <span class="ot">=</span> <span class="st">"text"</span></code> (as shown on the right-hand side) is convenient for looking at your results in the console. However, in a report, prefer another format.</p>
 </div><div class="column" style="width:50%;">
@@ -672,19 +857,19 @@ Note:               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <div class="columns">
 <div class="column" style="width:60%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a><span class="fu">ggplot</span>(</span>
-<span id="cb21-2"><a href=""></a>  <span class="at">data =</span> sim1 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
-<span id="cb21-3"><a href=""></a>    <span class="at">pred =</span> <span class="fu">predict</span>(</span>
-<span id="cb21-4"><a href=""></a>      mod_sim1, <span class="at">newdata =</span> sim1</span>
-<span id="cb21-5"><a href=""></a>    )</span>
-<span id="cb21-6"><a href=""></a>  )</span>
-<span id="cb21-7"><a href=""></a>) <span class="sc">+</span></span>
-<span id="cb21-8"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
-<span id="cb21-9"><a href=""></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb21-10"><a href=""></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> pred),</span>
-<span id="cb21-11"><a href=""></a>    <span class="at">colour=</span> <span class="st">"dodgerblue"</span>, </span>
-<span id="cb21-12"><a href=""></a>    <span class="at">linewidth =</span> <span class="dv">1</span></span>
-<span id="cb21-13"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb35-2"><a href=""></a>  <span class="at">data =</span> sim1 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb35-3"><a href=""></a>    <span class="at">pred =</span> <span class="fu">predict</span>(</span>
+<span id="cb35-4"><a href=""></a>      mod_sim1, <span class="at">newdata =</span> sim1</span>
+<span id="cb35-5"><a href=""></a>    )</span>
+<span id="cb35-6"><a href=""></a>  )</span>
+<span id="cb35-7"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb35-8"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb35-9"><a href=""></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb35-10"><a href=""></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> pred),</span>
+<span id="cb35-11"><a href=""></a>    <span class="at">colour=</span> <span class="st">"dodgerblue"</span>, </span>
+<span id="cb35-12"><a href=""></a>    <span class="at">linewidth =</span> <span class="dv">1</span></span>
+<span id="cb35-13"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The blue line traces the predicted values from <code>mod_sim1</code> across the range of <code>x</code>.</p>
 </div><div class="column" style="width:40%;">
@@ -692,7 +877,7 @@ Note:               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-15-1.png" width="864"></p>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-22-1.png" width="864"></p>
 </figure>
 </div>
 </div>
@@ -704,20 +889,20 @@ Note:               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">ggplot</span>(</span>
-<span id="cb22-2"><a href=""></a>  <span class="at">data =</span> sim1 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
-<span id="cb22-3"><a href=""></a>    <span class="at">resid =</span> <span class="fu">residuals</span>(mod_sim1)</span>
-<span id="cb22-4"><a href=""></a>  )</span>
-<span id="cb22-5"><a href=""></a>) <span class="sc">+</span></span>
-<span id="cb22-6"><a href=""></a>  <span class="fu">geom_histogram</span>(</span>
-<span id="cb22-7"><a href=""></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> resid),</span>
-<span id="cb22-8"><a href=""></a>    <span class="at">binwidth =</span> <span class="fl">0.5</span>, <span class="at">colour =</span> <span class="st">"white"</span></span>
-<span id="cb22-9"><a href=""></a>  ) <span class="sc">+</span></span>
-<span id="cb22-10"><a href=""></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Residuals"</span>, <span class="at">y =</span> <span class="st">"Count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb36-2"><a href=""></a>  <span class="at">data =</span> sim1 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb36-3"><a href=""></a>    <span class="at">resid =</span> <span class="fu">residuals</span>(mod_sim1)</span>
+<span id="cb36-4"><a href=""></a>  )</span>
+<span id="cb36-5"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb36-6"><a href=""></a>  <span class="fu">geom_histogram</span>(</span>
+<span id="cb36-7"><a href=""></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> resid),</span>
+<span id="cb36-8"><a href=""></a>    <span class="at">binwidth =</span> <span class="fl">0.5</span>, <span class="at">colour =</span> <span class="st">"white"</span></span>
+<span id="cb36-9"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb36-10"><a href=""></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Residuals"</span>, <span class="at">y =</span> <span class="st">"Count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-16-1.png" width="864"></p>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-23-1.png" width="864"></p>
 </figure>
 </div>
 </div>
@@ -744,17 +929,17 @@ Note:               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a><span class="fu">ggplot</span>(</span>
-<span id="cb23-2"><a href=""></a>  <span class="at">data =</span> sim1 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
-<span id="cb23-3"><a href=""></a>    <span class="at">resid =</span> <span class="fu">residuals</span>(mod_sim1)</span>
-<span id="cb23-4"><a href=""></a>  ),</span>
-<span id="cb23-5"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">sample =</span> y)</span>
-<span id="cb23-6"><a href=""></a>) <span class="sc">+</span> <span class="fu">stat_qq</span>() <span class="sc">+</span> <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
-<span id="cb23-7"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Normal QQ plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb37-2"><a href=""></a>  <span class="at">data =</span> sim1 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb37-3"><a href=""></a>    <span class="at">resid =</span> <span class="fu">residuals</span>(mod_sim1)</span>
+<span id="cb37-4"><a href=""></a>  ),</span>
+<span id="cb37-5"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">sample =</span> y)</span>
+<span id="cb37-6"><a href=""></a>) <span class="sc">+</span> <span class="fu">stat_qq</span>() <span class="sc">+</span> <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb37-7"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Normal QQ plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-17-1.png" width="864"></p>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-24-1.png" width="864"></p>
 </figure>
 </div>
 </div>
@@ -768,20 +953,20 @@ Note:               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="fu">ggplot</span>(</span>
-<span id="cb24-2"><a href=""></a>  <span class="at">data =</span> sim1 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
-<span id="cb24-3"><a href=""></a>    <span class="at">resid =</span> <span class="fu">residuals</span>(mod_sim1)</span>
-<span id="cb24-4"><a href=""></a>  )</span>
-<span id="cb24-5"><a href=""></a>) <span class="sc">+</span></span>
-<span id="cb24-6"><a href=""></a>  <span class="fu">geom_ref_line</span>(<span class="at">h =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb24-7"><a href=""></a>  <span class="fu">geom_point</span>(</span>
-<span id="cb24-8"><a href=""></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> resid),</span>
-<span id="cb24-9"><a href=""></a>  ) <span class="sc">+</span></span>
-<span id="cb24-10"><a href=""></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Residuals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb38-2"><a href=""></a>  <span class="at">data =</span> sim1 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb38-3"><a href=""></a>    <span class="at">resid =</span> <span class="fu">residuals</span>(mod_sim1)</span>
+<span id="cb38-4"><a href=""></a>  )</span>
+<span id="cb38-5"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb38-6"><a href=""></a>  <span class="fu">geom_ref_line</span>(<span class="at">h =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb38-7"><a href=""></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb38-8"><a href=""></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> resid),</span>
+<span id="cb38-9"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb38-10"><a href=""></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Residuals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-18-1.png" width="864"></p>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-25-1.png" width="864"></p>
 </figure>
 </div>
 </div>
@@ -815,7 +1000,7 @@ Note:               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 <li>The reference category will thus be <code class="sourceCode r"><span class="st">"a"</span></code>.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> sim2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> sim2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -835,11 +1020,11 @@ Coefficients:
 <div class="tab-content">
 <div id="tabset-1-1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">lm</span>(</span>
-<span id="cb27-2"><a href=""></a>  y <span class="sc">~</span> x,</span>
-<span id="cb27-3"><a href=""></a>  <span class="at">data =</span> sim2 <span class="sc">|&gt;</span> </span>
-<span id="cb27-4"><a href=""></a>    <span class="fu">mutate</span>(<span class="at">x =</span> <span class="fu">factor</span>(x, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"c"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"d"</span>))),</span>
-<span id="cb27-5"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a><span class="fu">lm</span>(</span>
+<span id="cb41-2"><a href=""></a>  y <span class="sc">~</span> x,</span>
+<span id="cb41-3"><a href=""></a>  <span class="at">data =</span> sim2 <span class="sc">|&gt;</span> </span>
+<span id="cb41-4"><a href=""></a>    <span class="fu">mutate</span>(<span class="at">x =</span> <span class="fu">factor</span>(x, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"c"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"d"</span>))),</span>
+<span id="cb41-5"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -854,11 +1039,11 @@ Coefficients:
 </div>
 <div id="tabset-1-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="fu">lm</span>(</span>
-<span id="cb29-2"><a href=""></a>  y <span class="sc">~</span> x,</span>
-<span id="cb29-3"><a href=""></a>  <span class="at">data =</span> sim2 <span class="sc">|&gt;</span> </span>
-<span id="cb29-4"><a href=""></a>    <span class="fu">mutate</span>(<span class="at">x =</span> <span class="fu">fct_relevel</span>(x, <span class="st">"c"</span>))</span>
-<span id="cb29-5"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href=""></a><span class="fu">lm</span>(</span>
+<span id="cb43-2"><a href=""></a>  y <span class="sc">~</span> x,</span>
+<span id="cb43-3"><a href=""></a>  <span class="at">data =</span> sim2 <span class="sc">|&gt;</span> </span>
+<span id="cb43-4"><a href=""></a>    <span class="fu">mutate</span>(<span class="at">x =</span> <span class="fu">fct_relevel</span>(x, <span class="st">"c"</span>))</span>
+<span id="cb43-5"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -878,21 +1063,21 @@ Coefficients:
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a>mod_sim2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> sim2)</span>
-<span id="cb31-2"><a href=""></a><span class="fu">ggplot</span>(</span>
-<span id="cb31-3"><a href=""></a>  <span class="at">data =</span> sim2 <span class="sc">|&gt;</span> </span>
-<span id="cb31-4"><a href=""></a>    <span class="fu">mutate</span>(<span class="at">pred =</span> <span class="fu">predict</span>(mod_sim2)),</span>
-<span id="cb31-5"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x)</span>
-<span id="cb31-6"><a href=""></a>)<span class="sc">+</span></span>
-<span id="cb31-7"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">y =</span> y)) <span class="sc">+</span></span>
-<span id="cb31-8"><a href=""></a>  <span class="fu">geom_point</span>(</span>
-<span id="cb31-9"><a href=""></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">y =</span> pred),</span>
-<span id="cb31-10"><a href=""></a>    <span class="at">colour =</span> <span class="st">"red"</span></span>
-<span id="cb31-11"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href=""></a>mod_sim2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> sim2)</span>
+<span id="cb45-2"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb45-3"><a href=""></a>  <span class="at">data =</span> sim2 <span class="sc">|&gt;</span> </span>
+<span id="cb45-4"><a href=""></a>    <span class="fu">mutate</span>(<span class="at">pred =</span> <span class="fu">predict</span>(mod_sim2)),</span>
+<span id="cb45-5"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x)</span>
+<span id="cb45-6"><a href=""></a>)<span class="sc">+</span></span>
+<span id="cb45-7"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb45-8"><a href=""></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb45-9"><a href=""></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">y =</span> pred),</span>
+<span id="cb45-10"><a href=""></a>    <span class="at">colour =</span> <span class="st">"red"</span></span>
+<span id="cb45-11"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-22-1.png" width="864"></p>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-29-1.png" width="864"></p>
 </figure>
 </div>
 </div>
@@ -912,18 +1097,18 @@ Coefficients:
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="co"># the sim3 dataset is from {modelr}</span></span>
-<span id="cb32-2"><a href=""></a><span class="fu">ggplot</span>(</span>
-<span id="cb32-3"><a href=""></a>  <span class="at">data =</span> sim3, </span>
-<span id="cb32-4"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
-<span id="cb32-5"><a href=""></a>    <span class="at">x =</span> x1, <span class="at">y =</span> y, <span class="at">colour =</span> x2)</span>
-<span id="cb32-6"><a href=""></a>  ) <span class="sc">+</span></span>
-<span id="cb32-7"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb32-8"><a href=""></a>  <span class="fu">geom_smooth</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a><span class="co"># the sim3 dataset is from {modelr}</span></span>
+<span id="cb46-2"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb46-3"><a href=""></a>  <span class="at">data =</span> sim3, </span>
+<span id="cb46-4"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
+<span id="cb46-5"><a href=""></a>    <span class="at">x =</span> x1, <span class="at">y =</span> y, <span class="at">colour =</span> x2)</span>
+<span id="cb46-6"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb46-7"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb46-8"><a href=""></a>  <span class="fu">geom_smooth</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-23-1.png" width="864"></p>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-30-1.png" width="864"></p>
 </figure>
 </div>
 </div>
@@ -960,7 +1145,7 @@ y_i = \gamma_0 + \gamma_1 x_{1,i} + \gamma_2 x_{2,i}
 <section id="interaction-between-continuous-and-categorical-variables" class="slide level2">
 <h2>Interaction Between Continuous and Categorical Variables</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a>(mod_bench <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">data =</span> sim3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a>(mod_bench <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">data =</span> sim3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -970,7 +1155,7 @@ Coefficients:
 (Intercept)           x1          x2b          x2c          x2d  
      1.8717      -0.1967       2.8878       4.8057       2.3596  </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>(mod_interact <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">*</span> x2, <span class="at">data =</span> sim3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href=""></a>(mod_interact <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">*</span> x2, <span class="at">data =</span> sim3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -987,25 +1172,25 @@ Coefficients:
 <section id="visualize-the-slopes-in-a-graph" class="slide level2">
 <h2>Visualize the Slopes in a Graph</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37" data-code-line-numbers="3,13,14,15,16,17,18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a><span class="fu">ggplot</span>(</span>
-<span id="cb37-2"><a href=""></a>  <span class="at">data =</span> sim3 <span class="sc">|&gt;</span> </span>
-<span id="cb37-3"><a href=""></a>    modelr<span class="sc">::</span><span class="fu">gather_predictions</span>(mod_bench, mod_interact) <span class="sc">|&gt;</span> </span>
-<span id="cb37-4"><a href=""></a>    <span class="fu">mutate</span>(</span>
-<span id="cb37-5"><a href=""></a>      <span class="at">model =</span> <span class="fu">factor</span>(</span>
-<span id="cb37-6"><a href=""></a>        model, </span>
-<span id="cb37-7"><a href=""></a>        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"mod_bench"</span>, <span class="st">"mod_interact"</span>), </span>
-<span id="cb37-8"><a href=""></a>        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Benchmark"</span>, <span class="st">"Interaction~between~x[1]~and~x[2]"</span>))</span>
-<span id="cb37-9"><a href=""></a>    ),</span>
-<span id="cb37-10"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x1, <span class="at">y =</span> y, <span class="at">colour =</span> x2)</span>
-<span id="cb37-11"><a href=""></a>) <span class="sc">+</span></span>
-<span id="cb37-12"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb37-13"><a href=""></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> pred)) <span class="sc">+</span></span>
-<span id="cb37-14"><a href=""></a>  <span class="fu">facet_wrap</span>(</span>
-<span id="cb37-15"><a href=""></a>    <span class="sc">~</span> model, </span>
-<span id="cb37-16"><a href=""></a>    <span class="at">labeller =</span> <span class="fu">labeller</span>(</span>
-<span id="cb37-17"><a href=""></a>      <span class="at">model =</span> label_parsed</span>
-<span id="cb37-18"><a href=""></a>    )</span>
-<span id="cb37-19"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51" data-code-line-numbers="3,13,14,15,16,17,18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb51-2"><a href=""></a>  <span class="at">data =</span> sim3 <span class="sc">|&gt;</span> </span>
+<span id="cb51-3"><a href=""></a>    modelr<span class="sc">::</span><span class="fu">gather_predictions</span>(mod_bench, mod_interact) <span class="sc">|&gt;</span> </span>
+<span id="cb51-4"><a href=""></a>    <span class="fu">mutate</span>(</span>
+<span id="cb51-5"><a href=""></a>      <span class="at">model =</span> <span class="fu">factor</span>(</span>
+<span id="cb51-6"><a href=""></a>        model, </span>
+<span id="cb51-7"><a href=""></a>        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"mod_bench"</span>, <span class="st">"mod_interact"</span>), </span>
+<span id="cb51-8"><a href=""></a>        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Benchmark"</span>, <span class="st">"Interaction~between~x[1]~and~x[2]"</span>))</span>
+<span id="cb51-9"><a href=""></a>    ),</span>
+<span id="cb51-10"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x1, <span class="at">y =</span> y, <span class="at">colour =</span> x2)</span>
+<span id="cb51-11"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb51-12"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb51-13"><a href=""></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> pred)) <span class="sc">+</span></span>
+<span id="cb51-14"><a href=""></a>  <span class="fu">facet_wrap</span>(</span>
+<span id="cb51-15"><a href=""></a>    <span class="sc">~</span> model, </span>
+<span id="cb51-16"><a href=""></a>    <span class="at">labeller =</span> <span class="fu">labeller</span>(</span>
+<span id="cb51-17"><a href=""></a>      <span class="at">model =</span> label_parsed</span>
+<span id="cb51-18"><a href=""></a>    )</span>
+<span id="cb51-19"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 </section>
@@ -1013,32 +1198,32 @@ Coefficients:
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-25-1.png" width="864"></p>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-32-1.png" width="864"></p>
 </figure>
 </div>
 </div>
 </div></section><section id="a-quick-glance-at-the-residuals" class="slide level2">
 <h2>A Quick Glance at the Residuals</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38" data-code-line-numbers="10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a><span class="fu">ggplot</span>(</span>
-<span id="cb38-2"><a href=""></a>  <span class="at">data =</span> sim3 <span class="sc">|&gt;</span> </span>
-<span id="cb38-3"><a href=""></a>    modelr<span class="sc">::</span><span class="fu">gather_residuals</span>(mod_bench, mod_interact) <span class="sc">|&gt;</span> </span>
-<span id="cb38-4"><a href=""></a>    <span class="fu">mutate</span>(</span>
-<span id="cb38-5"><a href=""></a>      <span class="at">model =</span> <span class="fu">factor</span>(</span>
-<span id="cb38-6"><a href=""></a>        model, </span>
-<span id="cb38-7"><a href=""></a>        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"mod_bench"</span>, <span class="st">"mod_interact"</span>), </span>
-<span id="cb38-8"><a href=""></a>        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Benchmark"</span>, <span class="st">"Interaction~between~x[1]~and~x[2]"</span>))</span>
-<span id="cb38-9"><a href=""></a>    ),</span>
-<span id="cb38-10"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x1, <span class="at">y =</span> resid, <span class="at">colour =</span> x2)</span>
-<span id="cb38-11"><a href=""></a>) <span class="sc">+</span></span>
-<span id="cb38-12"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb38-13"><a href=""></a>  <span class="fu">facet_grid</span>(</span>
-<span id="cb38-14"><a href=""></a>    model <span class="sc">~</span> x2,</span>
-<span id="cb38-15"><a href=""></a>    <span class="at">labeller =</span> <span class="fu">labeller</span>(</span>
-<span id="cb38-16"><a href=""></a>      <span class="at">model =</span> label_parsed</span>
-<span id="cb38-17"><a href=""></a>    )</span>
-<span id="cb38-18"><a href=""></a>  ) <span class="sc">+</span></span>
-<span id="cb38-19"><a href=""></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"residuals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52" data-code-line-numbers="10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb52-2"><a href=""></a>  <span class="at">data =</span> sim3 <span class="sc">|&gt;</span> </span>
+<span id="cb52-3"><a href=""></a>    modelr<span class="sc">::</span><span class="fu">gather_residuals</span>(mod_bench, mod_interact) <span class="sc">|&gt;</span> </span>
+<span id="cb52-4"><a href=""></a>    <span class="fu">mutate</span>(</span>
+<span id="cb52-5"><a href=""></a>      <span class="at">model =</span> <span class="fu">factor</span>(</span>
+<span id="cb52-6"><a href=""></a>        model, </span>
+<span id="cb52-7"><a href=""></a>        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"mod_bench"</span>, <span class="st">"mod_interact"</span>), </span>
+<span id="cb52-8"><a href=""></a>        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Benchmark"</span>, <span class="st">"Interaction~between~x[1]~and~x[2]"</span>))</span>
+<span id="cb52-9"><a href=""></a>    ),</span>
+<span id="cb52-10"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x1, <span class="at">y =</span> resid, <span class="at">colour =</span> x2)</span>
+<span id="cb52-11"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb52-12"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb52-13"><a href=""></a>  <span class="fu">facet_grid</span>(</span>
+<span id="cb52-14"><a href=""></a>    model <span class="sc">~</span> x2,</span>
+<span id="cb52-15"><a href=""></a>    <span class="at">labeller =</span> <span class="fu">labeller</span>(</span>
+<span id="cb52-16"><a href=""></a>      <span class="at">model =</span> label_parsed</span>
+<span id="cb52-17"><a href=""></a>    )</span>
+<span id="cb52-18"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb52-19"><a href=""></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"residuals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 </section>
@@ -1046,14 +1231,14 @@ Coefficients:
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-26-1.png" width="864"></p>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-33-1.png" width="864"></p>
 </figure>
 </div>
 </div>
 </div></section><section id="interaction-between-two-continuous-variables" class="slide level2">
 <h2>Interaction Between Two Continuous Variables</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a>(mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">data =</span> sim4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href=""></a>(mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">data =</span> sim4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1063,7 +1248,7 @@ Coefficients:
 (Intercept)           x1           x2  
     0.03546      1.82167     -2.78252  </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a>(mod2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">*</span> x2, <span class="at">data =</span> sim4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href=""></a>(mod2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">*</span> x2, <span class="at">data =</span> sim4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1078,7 +1263,7 @@ Coefficients:
 <section id="interaction-between-two-continuous-variables-1" class="slide level2">
 <h2>Interaction Between Two Continuous Variables</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href=""></a>modelr<span class="sc">::</span><span class="fu">gather_predictions</span>(<span class="at">data =</span> sim4, mod1, mod2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href=""></a>modelr<span class="sc">::</span><span class="fu">gather_predictions</span>(<span class="at">data =</span> sim4, mod1, mod2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 600 × 6
    model    x1     x2   rep       y   pred
@@ -1100,26 +1285,26 @@ Coefficients:
 <section id="interaction-between-two-continuous-variables-2" class="slide level2">
 <h2>Interaction Between Two Continuous Variables</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href=""></a><span class="fu">ggplot</span>(</span>
-<span id="cb45-2"><a href=""></a>  <span class="at">data =</span> sim4 <span class="sc">|&gt;</span> </span>
-<span id="cb45-3"><a href=""></a>    modelr<span class="sc">::</span><span class="fu">gather_predictions</span>(mod1, mod2) <span class="sc">|&gt;</span> </span>
-<span id="cb45-4"><a href=""></a>    <span class="fu">mutate</span>(</span>
-<span id="cb45-5"><a href=""></a>      <span class="at">model =</span> <span class="fu">factor</span>(</span>
-<span id="cb45-6"><a href=""></a>        model, </span>
-<span id="cb45-7"><a href=""></a>        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"mod1"</span>, <span class="st">"mod2"</span>), </span>
-<span id="cb45-8"><a href=""></a>        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Benchmark"</span>, <span class="st">"Interaction~between~x[1]~and~x[2]"</span>))</span>
-<span id="cb45-9"><a href=""></a>    ),</span>
-<span id="cb45-10"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x1, <span class="at">y =</span> pred, <span class="at">color =</span> x2, <span class="at">group =</span> x2)</span>
-<span id="cb45-11"><a href=""></a>) <span class="sc">+</span></span>
-<span id="cb45-12"><a href=""></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
-<span id="cb45-13"><a href=""></a>  <span class="fu">facet_wrap</span>( <span class="sc">~</span> model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href=""></a><span class="fu">ggplot</span>(</span>
+<span id="cb59-2"><a href=""></a>  <span class="at">data =</span> sim4 <span class="sc">|&gt;</span> </span>
+<span id="cb59-3"><a href=""></a>    modelr<span class="sc">::</span><span class="fu">gather_predictions</span>(mod1, mod2) <span class="sc">|&gt;</span> </span>
+<span id="cb59-4"><a href=""></a>    <span class="fu">mutate</span>(</span>
+<span id="cb59-5"><a href=""></a>      <span class="at">model =</span> <span class="fu">factor</span>(</span>
+<span id="cb59-6"><a href=""></a>        model, </span>
+<span id="cb59-7"><a href=""></a>        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"mod1"</span>, <span class="st">"mod2"</span>), </span>
+<span id="cb59-8"><a href=""></a>        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Benchmark"</span>, <span class="st">"Interaction~between~x[1]~and~x[2]"</span>))</span>
+<span id="cb59-9"><a href=""></a>    ),</span>
+<span id="cb59-10"><a href=""></a>  <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> x1, <span class="at">y =</span> pred, <span class="at">color =</span> x2, <span class="at">group =</span> x2)</span>
+<span id="cb59-11"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb59-12"><a href=""></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
+<span id="cb59-13"><a href=""></a>  <span class="fu">facet_wrap</span>( <span class="sc">~</span> model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 </section><section id="interaction-between-two-continuous-variables-2-output" class="slide level2 output-location-slide"><h2>Interaction Between Two Continuous Variables</h2><div class="cell output-location-slide">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-29-1.png" width="864"></p>
+<p><img data-src="seance_4_files/figure-revealjs/unnamed-chunk-36-1.png" width="864"></p>
 </figure>
 </div>
 </div>
@@ -1152,7 +1337,7 @@ y_i = \beta_0 + \beta_1 x_i + \beta_2x_i^2 + \varepsilon_i, \quad \varepsilon_i 
 <li>The following <span class="hl-blue">formula</span> will be used:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a>y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href=""></a>y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>y ~ x + I(x^2)</code></pre>
 </div>
@@ -1161,7 +1346,7 @@ y_i = \beta_0 + \beta_1 x_i + \beta_2x_i^2 + \varepsilon_i, \quad \varepsilon_i 
 <li>Alternatively, one can use the <code class="sourceCode r"><span class="fu">poly</span>()</code> function (polynomials):</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a>y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="dv">2</span>, <span class="at">raw =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href=""></a>y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="dv">2</span>, <span class="at">raw =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>y ~ poly(x, 2, raw = TRUE)</code></pre>
 </div>
@@ -1185,22 +1370,22 @@ y_i = \beta_0 + \beta_1 x_i + \beta_2x_i^2 + \varepsilon_i, \quad \varepsilon_i 
 <h2>Example</h2>
 <p>The dataset containing real per capita GDP merged with the dataset giving life satisfaction, both downloaded from Eurostat (see <a href="tutorial-1.html">tutorial 1</a>) contains annual values (from 2010 to 2023) for multiple countries (6).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a>tb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href=""></a>tb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 84 × 4
-   country  year    gdp life_satisf
-   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;
- 1 FR       2010 32548.        6.72
- 2 IT       2010 26774.        6.59
- 3 DE       2010 38145.        7.17
- 4 ES       2010 24253.        6.67
- 5 NL       2010 42162.        7.94
- 6 PT       2010 19958.        6.42
- 7 FR       2011 33245.        7.13
- 8 IT       2011 27502.        6.45
- 9 DE       2011 39567.        7.32
-10 ES       2011 24455.        6.93
-# ℹ 74 more rows</code></pre>
+<pre><code># A tibble: 231 × 4
+   country  year   gdp life_satisf
+   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;
+ 1 AL       2018  4730         5.5
+ 2 AL       2021  5190         5.7
+ 3 AL       2022  5500         6  
+ 4 AT       2013 43080         7.8
+ 5 AT       2018 45140         8  
+ 6 AT       2021 44580         8  
+ 7 AT       2022 46430         7.9
+ 8 AT       2023 45670         7.7
+ 9 AT       2024 45140         7.6
+10 AT       2025 45390         7.7
+# ℹ 221 more rows</code></pre>
 </div>
 </div>
 </section>
@@ -1244,20 +1429,20 @@ y_i = \beta_0 + \beta_1 x_i + \beta_2x_i^2 + \varepsilon_i, \quad \varepsilon_i 
 <h2>Implementation in R: Pooled OLS</h2>
 <p>The FE model estimated with the <code class="sourceCode r"><span class="fu">lm</span>()</code> function:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a>mod_fe <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb52-2"><a href=""></a>  life <span class="sc">~</span> gdp <span class="sc">+</span> <span class="fu">factor</span>(year),</span>
-<span id="cb52-3"><a href=""></a>  <span class="at">data =</span> panel_data</span>
-<span id="cb52-4"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href=""></a>mod_fe <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb66-2"><a href=""></a>  life <span class="sc">~</span> gdp <span class="sc">+</span> <span class="fu">factor</span>(year),</span>
+<span id="cb66-3"><a href=""></a>  <span class="at">data =</span> panel_data</span>
+<span id="cb66-4"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Using the <code>{plm}</code> package:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href=""></a><span class="fu">library</span>(plm)</span>
-<span id="cb53-2"><a href=""></a>tb_pdata <span class="ot">&lt;-</span> <span class="fu">pdata.frame</span>(tb, <span class="at">index =</span> <span class="fu">c</span>(<span class="st">"country"</span>, <span class="st">"year"</span>))</span>
-<span id="cb53-3"><a href=""></a>mod_fe_plm <span class="ot">&lt;-</span> <span class="fu">plm</span>(</span>
-<span id="cb53-4"><a href=""></a>  life_satisf <span class="sc">~</span> gdp <span class="sc">+</span> <span class="fu">factor</span>(year),</span>
-<span id="cb53-5"><a href=""></a>  <span class="at">data =</span> tb_pdata,</span>
-<span id="cb53-6"><a href=""></a>  <span class="at">model =</span> <span class="st">"pooling"</span></span>
-<span id="cb53-7"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href=""></a><span class="fu">library</span>(plm)</span>
+<span id="cb67-2"><a href=""></a>tb_pdata <span class="ot">&lt;-</span> <span class="fu">pdata.frame</span>(tb, <span class="at">index =</span> <span class="fu">c</span>(<span class="st">"country"</span>, <span class="st">"year"</span>))</span>
+<span id="cb67-3"><a href=""></a>mod_fe_plm <span class="ot">&lt;-</span> <span class="fu">plm</span>(</span>
+<span id="cb67-4"><a href=""></a>  life_satisf <span class="sc">~</span> gdp <span class="sc">+</span> <span class="fu">factor</span>(year),</span>
+<span id="cb67-5"><a href=""></a>  <span class="at">data =</span> tb_pdata,</span>
+<span id="cb67-6"><a href=""></a>  <span class="at">model =</span> <span class="st">"pooling"</span></span>
+<span id="cb67-7"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="with-country-fixed-effects" class="slide level2">
@@ -1304,19 +1489,19 @@ y_i = \beta_0 + \beta_1 x_i + \beta_2x_i^2 + \varepsilon_i, \quad \varepsilon_i 
 <h2>Implementation in R</h2>
 <p>With the <code class="sourceCode r"><span class="fu">lm</span>()</code> function:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a>mod_twfe_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb54-2"><a href=""></a>  life_satisf <span class="sc">~</span> gdp <span class="sc">+</span> <span class="fu">factor</span>(country) <span class="sc">+</span> <span class="fu">factor</span>(year),</span>
-<span id="cb54-3"><a href=""></a>  <span class="at">data =</span> tb</span>
-<span id="cb54-4"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href=""></a>mod_twfe_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb68-2"><a href=""></a>  life_satisf <span class="sc">~</span> gdp <span class="sc">+</span> <span class="fu">factor</span>(country) <span class="sc">+</span> <span class="fu">factor</span>(year),</span>
+<span id="cb68-3"><a href=""></a>  <span class="at">data =</span> tb</span>
+<span id="cb68-4"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>With the <code class="sourceCode r"><span class="fu">plm</span>()</code> function:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href=""></a>mod_twfe <span class="ot">&lt;-</span> <span class="fu">plm</span>(</span>
-<span id="cb55-2"><a href=""></a>  life_satisf <span class="sc">~</span> gdp,</span>
-<span id="cb55-3"><a href=""></a>  <span class="at">data =</span> tb_pdata,</span>
-<span id="cb55-4"><a href=""></a>  <span class="at">model =</span> <span class="st">"within"</span>,</span>
-<span id="cb55-5"><a href=""></a>  <span class="at">effect =</span> <span class="st">"twoways"</span></span>
-<span id="cb55-6"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href=""></a>mod_twfe <span class="ot">&lt;-</span> <span class="fu">plm</span>(</span>
+<span id="cb69-2"><a href=""></a>  life_satisf <span class="sc">~</span> gdp,</span>
+<span id="cb69-3"><a href=""></a>  <span class="at">data =</span> tb_pdata,</span>
+<span id="cb69-4"><a href=""></a>  <span class="at">model =</span> <span class="st">"within"</span>,</span>
+<span id="cb69-5"><a href=""></a>  <span class="at">effect =</span> <span class="st">"twoways"</span></span>
+<span id="cb69-6"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="package-for-estimations-with-multiple-fixed-effects" class="slide level2">
@@ -1327,12 +1512,12 @@ y_i = \beta_0 + \beta_1 x_i + \beta_2x_i^2 + \varepsilon_i, \quad \varepsilon_i 
 <li>A cool vignette for the package: <a href="https://cran.r-project.org/web/packages/fixest/vignettes/fixest_walkthrough.html">🌐 Fast Fixed-Effects Estimation: Short Introduction</a></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href=""></a><span class="fu">library</span>(fixest)</span>
-<span id="cb56-2"><a href=""></a>mod_fe_fixest <span class="ot">&lt;-</span> <span class="fu">feols</span>(life_satisf <span class="sc">~</span> gdp <span class="sc">|</span> year, <span class="at">data =</span> tb)</span>
-<span id="cb56-3"><a href=""></a><span class="fu">etable</span>(mod_fe_fixest)</span>
-<span id="cb56-4"><a href=""></a></span>
-<span id="cb56-5"><a href=""></a>mod_twfe_fixest <span class="ot">&lt;-</span> <span class="fu">feols</span>(life_satisf <span class="sc">~</span> gdp <span class="sc">|</span> year <span class="sc">+</span> country, <span class="at">data =</span> tb)</span>
-<span id="cb56-6"><a href=""></a><span class="fu">etable</span>(mod_twfe_fixest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href=""></a><span class="fu">library</span>(fixest)</span>
+<span id="cb70-2"><a href=""></a>mod_fe_fixest <span class="ot">&lt;-</span> <span class="fu">feols</span>(life_satisf <span class="sc">~</span> gdp <span class="sc">|</span> year, <span class="at">data =</span> tb)</span>
+<span id="cb70-3"><a href=""></a><span class="fu">etable</span>(mod_fe_fixest)</span>
+<span id="cb70-4"><a href=""></a></span>
+<span id="cb70-5"><a href=""></a>mod_twfe_fixest <span class="ot">&lt;-</span> <span class="fu">feols</span>(life_satisf <span class="sc">~</span> gdp <span class="sc">|</span> year <span class="sc">+</span> country, <span class="at">data =</span> tb)</span>
+<span id="cb70-6"><a href=""></a><span class="fu">etable</span>(mod_twfe_fixest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="exercises" class="slide level2 exercise">

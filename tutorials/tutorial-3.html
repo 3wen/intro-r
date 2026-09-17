@@ -75,7 +75,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="tutorial-3_files/libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -287,7 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <span id="cb2-2"><a href="#cb2-2"></a><span class="co"># Import data path from your project repository structure</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a>tb <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/out/gdp-lifesat.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Rows: 84 Columns: 4
+<pre><code>Rows: 231 Columns: 4
 ── Column specification ────────────────────────────────────────────────────────
 Delimiter: ","
 chr (1): country
@@ -298,20 +298,20 @@ dbl (3): year, gdp, life_satisf
 </div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>tb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 84 × 4
-   country  year    gdp life_satisf
-   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;
- 1 FR       2010 32548.        6.72
- 2 IT       2010 26774.        6.59
- 3 DE       2010 38145.        7.17
- 4 ES       2010 24253.        6.67
- 5 NL       2010 42162.        7.94
- 6 PT       2010 19958.        6.42
- 7 FR       2011 33245.        7.13
- 8 IT       2011 27502.        6.45
- 9 DE       2011 39567.        7.32
-10 ES       2011 24455.        6.93
-# ℹ 74 more rows</code></pre>
+<pre><code># A tibble: 231 × 4
+   country  year   gdp life_satisf
+   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;
+ 1 AL       2018  4730         5.5
+ 2 AL       2021  5190         5.7
+ 3 AL       2022  5500         6  
+ 4 AT       2013 43080         7.8
+ 5 AT       2018 45140         8  
+ 6 AT       2021 44580         8  
+ 7 AT       2022 46430         7.9
+ 8 AT       2023 45670         7.7
+ 9 AT       2024 45140         7.6
+10 AT       2025 45390         7.7
+# ℹ 221 more rows</code></pre>
 </div>
 </div>
 </div>
@@ -349,6 +349,10 @@ dbl (3): year, gdp, life_satisf
 <span id="cb6-6"><a href="#cb6-6"></a>        <span class="at">title =</span> <span class="st">"Per capita GDP vs. Overall Life Satisfaction"</span></span>
 <span id="cb6-7"><a href="#cb6-7"></a>    ) <span class="sc">+</span></span>
 <span id="cb6-8"><a href="#cb6-8"></a>    <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 3 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -379,17 +383,25 @@ dbl (3): year, gdp, life_satisf
 </div>
 <div class="reveal sol-box" data-reveal="2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> tb, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> gdp, <span class="at">y =</span> life_satisf)) <span class="sc">+</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>    <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a>    <span class="fu">labs</span>(</span>
-<span id="cb7-5"><a href="#cb7-5"></a>        <span class="at">x =</span> <span class="st">"Per capita GDP"</span>,</span>
-<span id="cb7-6"><a href="#cb7-6"></a>        <span class="at">y =</span> <span class="st">"Overall Life Satisfaction"</span>,</span>
-<span id="cb7-7"><a href="#cb7-7"></a>        <span class="at">title =</span> <span class="st">"Per capita GDP vs. Overall Life Satisfaction (Linear)"</span></span>
-<span id="cb7-8"><a href="#cb7-8"></a>    ) <span class="sc">+</span></span>
-<span id="cb7-9"><a href="#cb7-9"></a>    <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> tb, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> gdp, <span class="at">y =</span> life_satisf)) <span class="sc">+</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>    <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">se =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>    <span class="fu">labs</span>(</span>
+<span id="cb8-5"><a href="#cb8-5"></a>        <span class="at">x =</span> <span class="st">"Per capita GDP"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6"></a>        <span class="at">y =</span> <span class="st">"Overall Life Satisfaction"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7"></a>        <span class="at">title =</span> <span class="st">"Per capita GDP vs. Overall Life Satisfaction (Linear)"</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>    ) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a>    <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 3 rows containing non-finite outside the scale range
+(`stat_smooth()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 3 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -421,17 +433,25 @@ dbl (3): year, gdp, life_satisf
 </div>
 <div class="reveal sol-box" data-reveal="2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> tb, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> gdp, <span class="at">y =</span> life_satisf)) <span class="sc">+</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>    <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a>    <span class="fu">geom_smooth</span>(</span>
-<span id="cb9-4"><a href="#cb9-4"></a>        <span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">se =</span> <span class="cn">TRUE</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a>    ) <span class="sc">+</span></span>
-<span id="cb9-6"><a href="#cb9-6"></a>    <span class="fu">labs</span>(</span>
-<span id="cb9-7"><a href="#cb9-7"></a>        <span class="at">x =</span> <span class="st">"Per capita GDP"</span>,</span>
-<span id="cb9-8"><a href="#cb9-8"></a>        <span class="at">y =</span> <span class="st">"Overall Life Satisfaction"</span>,</span>
-<span id="cb9-9"><a href="#cb9-9"></a>        <span class="at">title =</span> <span class="st">"Per capita GDP vs. Overall Life Satisfaction (Quadratic)"</span></span>
-<span id="cb9-10"><a href="#cb9-10"></a>    ) <span class="sc">+</span></span>
-<span id="cb9-11"><a href="#cb9-11"></a>    <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> tb, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> gdp, <span class="at">y =</span> life_satisf)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>    <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>    <span class="fu">geom_smooth</span>(</span>
+<span id="cb12-4"><a href="#cb12-4"></a>        <span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">se =</span> <span class="cn">TRUE</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>    ) <span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a>    <span class="fu">labs</span>(</span>
+<span id="cb12-7"><a href="#cb12-7"></a>        <span class="at">x =</span> <span class="st">"Per capita GDP"</span>,</span>
+<span id="cb12-8"><a href="#cb12-8"></a>        <span class="at">y =</span> <span class="st">"Overall Life Satisfaction"</span>,</span>
+<span id="cb12-9"><a href="#cb12-9"></a>        <span class="at">title =</span> <span class="st">"Per capita GDP vs. Overall Life Satisfaction (Quadratic)"</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a>    ) <span class="sc">+</span></span>
+<span id="cb12-11"><a href="#cb12-11"></a>    <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 3 rows containing non-finite outside the scale range
+(`stat_smooth()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 3 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -472,30 +492,30 @@ dbl (3): year, gdp, life_satisf
 <div class="reveal sol-box" data-reveal="3">
 <p>Because this is panel data, we must sort chronologically and group by country before calculating changes to avoid mixed metrics between borders:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>tb <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a>    <span class="fu">arrange</span>(country, year) <span class="sc">|&gt;</span></span>
-<span id="cb10-3"><a href="#cb10-3"></a>    <span class="fu">group_by</span>(country) <span class="sc">|&gt;</span></span>
-<span id="cb10-4"><a href="#cb10-4"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb10-5"><a href="#cb10-5"></a>        <span class="at">gdp_yoy =</span> gdp <span class="sc">-</span> <span class="fu">lag</span>(gdp),</span>
-<span id="cb10-6"><a href="#cb10-6"></a>        <span class="at">life_satisf_yoy =</span> life_satisf <span class="sc">-</span> <span class="fu">lag</span>(life_satisf)</span>
-<span id="cb10-7"><a href="#cb10-7"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb10-8"><a href="#cb10-8"></a>    <span class="fu">ungroup</span>()</span>
-<span id="cb10-9"><a href="#cb10-9"></a>tb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>tb <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>    <span class="fu">arrange</span>(country, year) <span class="sc">|&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a>    <span class="fu">group_by</span>(country) <span class="sc">|&gt;</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb15-5"><a href="#cb15-5"></a>        <span class="at">gdp_yoy =</span> gdp <span class="sc">-</span> <span class="fu">lag</span>(gdp),</span>
+<span id="cb15-6"><a href="#cb15-6"></a>        <span class="at">life_satisf_yoy =</span> life_satisf <span class="sc">-</span> <span class="fu">lag</span>(life_satisf)</span>
+<span id="cb15-7"><a href="#cb15-7"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a>    <span class="fu">ungroup</span>()</span>
+<span id="cb15-9"><a href="#cb15-9"></a>tb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 84 × 6
-   country  year    gdp life_satisf gdp_yoy life_satisf_yoy
-   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;           &lt;dbl&gt;
- 1 DE       2010 38145.        7.17     NA          NA     
- 2 DE       2011 39567.        7.32   1422.          0.150 
- 3 DE       2012 39467.        7.25   -101.         -0.0700
- 4 DE       2013 40157.        7.16    691.         -0.0900
- 5 DE       2014 40937.        7.28    780.          0.120 
- 6 DE       2015 42214         7.22   1277.         -0.0600
- 7 DE       2016 41594.        7.34   -620.          0.120 
- 8 DE       2017 42773.        7.16   1178.         -0.180 
- 9 DE       2018 44209.        7.58   1436.          0.42  
-10 DE       2019 45112.        7.37    903.         -0.21  
-# ℹ 74 more rows</code></pre>
+<pre><code># A tibble: 231 × 6
+   country  year   gdp life_satisf gdp_yoy life_satisf_yoy
+   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;           &lt;dbl&gt;
+ 1 AL       2018  4730         5.5      NA         NA     
+ 2 AL       2021  5190         5.7     460          0.200 
+ 3 AL       2022  5500         6       310          0.300 
+ 4 AT       2013 43080         7.8      NA         NA     
+ 5 AT       2018 45140         8      2060          0.200 
+ 6 AT       2021 44580         8      -560          0     
+ 7 AT       2022 46430         7.9    1850         -0.1000
+ 8 AT       2023 45670         7.7    -760         -0.200 
+ 9 AT       2024 45140         7.6    -530         -0.100 
+10 AT       2025 45390         7.7     250          0.100 
+# ℹ 221 more rows</code></pre>
 </div>
 </div>
 </div>
@@ -520,24 +540,24 @@ dbl (3): year, gdp, life_satisf
 </div>
 <div class="reveal sol-box" data-reveal="1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> tb, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> gdp_yoy, <span class="at">y =</span> life_satisf_yoy)) <span class="sc">+</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a>    <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb12-3"><a href="#cb12-3"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a>    <span class="fu">labs</span>(</span>
-<span id="cb12-5"><a href="#cb12-5"></a>        <span class="at">x =</span> <span class="st">"Yearly Change in Per Capita GDP"</span>,</span>
-<span id="cb12-6"><a href="#cb12-6"></a>        <span class="at">y =</span> <span class="st">"Yearly Change in Life Satisfaction"</span>,</span>
-<span id="cb12-7"><a href="#cb12-7"></a>        <span class="at">title =</span> <span class="st">"Relationship Between Changes in GDP and Life Satisfaction"</span></span>
-<span id="cb12-8"><a href="#cb12-8"></a>    ) <span class="sc">+</span></span>
-<span id="cb12-9"><a href="#cb12-9"></a>    <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> tb, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> gdp_yoy, <span class="at">y =</span> life_satisf_yoy)) <span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>    <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>    <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">color =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a>    <span class="fu">labs</span>(</span>
+<span id="cb17-5"><a href="#cb17-5"></a>        <span class="at">x =</span> <span class="st">"Yearly Change in Per Capita GDP"</span>,</span>
+<span id="cb17-6"><a href="#cb17-6"></a>        <span class="at">y =</span> <span class="st">"Yearly Change in Life Satisfaction"</span>,</span>
+<span id="cb17-7"><a href="#cb17-7"></a>        <span class="at">title =</span> <span class="st">"Relationship Between Changes in GDP and Life Satisfaction"</span></span>
+<span id="cb17-8"><a href="#cb17-8"></a>    ) <span class="sc">+</span></span>
+<span id="cb17-9"><a href="#cb17-9"></a>    <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 6 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 40 rows containing non-finite outside the scale range
 (`stat_smooth()`).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 6 rows containing missing values or values outside the scale range
+<pre><code>Warning: Removed 40 rows containing missing values or values outside the scale range
 (`geom_point()`).</code></pre>
 </div>
 <div class="cell-output-display">
@@ -557,8 +577,8 @@ dbl (3): year, gdp, life_satisf
 <div class="qcard">
 <p><strong>Q7.</strong> Examine and evaluate the following instructions. Then, explain what they do.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>model_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(life_satisf <span class="sc">~</span> gdp, <span class="at">data =</span> tb)</span>
-<span id="cb16-2"><a href="#cb16-2"></a><span class="fu">summary</span>(model_lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>model_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(life_satisf <span class="sc">~</span> gdp, <span class="at">data =</span> tb)</span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="fu">summary</span>(model_lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
@@ -579,19 +599,20 @@ Call:
 lm(formula = life_satisf ~ gdp, data = tb)
 
 Residuals:
-     Min       1Q   Median       3Q      Max 
--0.46838 -0.16505 -0.03234  0.16965  0.62345 
+    Min      1Q  Median      3Q     Max 
+-1.8927 -0.2946  0.1098  0.3622  1.0140 
 
 Coefficients:
              Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) 5.247e+00  9.900e-02   53.00   &lt;2e-16 ***
-gdp         5.120e-05  2.777e-06   18.44   &lt;2e-16 ***
+(Intercept) 6.566e+00  6.162e-02  106.55   &lt;2e-16 ***
+gdp         1.669e-05  1.537e-06   10.86   &lt;2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.2306 on 82 degrees of freedom
-Multiple R-squared:  0.8056,    Adjusted R-squared:  0.8033 
-F-statistic: 339.9 on 1 and 82 DF,  p-value: &lt; 2.2e-16</code></pre>
+Residual standard error: 0.5457 on 226 degrees of freedom
+  (3 observations deleted due to missingness)
+Multiple R-squared:  0.3428,    Adjusted R-squared:  0.3399 
+F-statistic: 117.9 on 1 and 226 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </div>
@@ -599,8 +620,8 @@ F-statistic: 339.9 on 1 and 82 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="qcard">
 <p><strong>Q8.</strong> Examine and evaluate the following instructions. Then, explain what they do.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">library</span>(stargazer)</span>
-<span id="cb18-2"><a href="#cb18-2"></a><span class="fu">stargazer</span>(model_lm, <span class="at">type =</span> <span class="st">"latex"</span>, <span class="at">out =</span> <span class="st">"tables/model_lm.tex"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="fu">stargazer</span>(model_lm, <span class="at">type =</span> <span class="st">"latex"</span>, <span class="at">out =</span> <span class="st">"tables/model_lm.tex"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
@@ -618,7 +639,7 @@ F-statistic: 339.9 on 1 and 82 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 % Table created by stargazer v.5.2.3 by Marek Hlavac, Social Policy Institute. E-mail: marek.hlavac at gmail.com
-% Date and time: Sat, Aug 22, 2026 - 23:47:44
+% Date and time: Thu, Sep 17, 2026 - 08:02:11
 \begin{table}[!htbp] \centering 
   \caption{} 
   \label{} 
@@ -629,18 +650,18 @@ F-statistic: 339.9 on 1 and 82 DF,  p-value: &lt; 2.2e-16</code></pre>
 \cline{2-2} 
 \\[-1.8ex] &amp; life\_satisf \\ 
 \hline \\[-1.8ex] 
- gdp &amp; 0.0001$^{***}$ \\ 
+ gdp &amp; 0.00002$^{***}$ \\ 
   &amp; (0.00000) \\ 
   &amp; \\ 
- Constant &amp; 5.247$^{***}$ \\ 
-  &amp; (0.099) \\ 
+ Constant &amp; 6.566$^{***}$ \\ 
+  &amp; (0.062) \\ 
   &amp; \\ 
 \hline \\[-1.8ex] 
-Observations &amp; 84 \\ 
-R$^{2}$ &amp; 0.806 \\ 
-Adjusted R$^{2}$ &amp; 0.803 \\ 
-Residual Std. Error &amp; 0.231 (df = 82) \\ 
-F Statistic &amp; 339.906$^{***}$ (df = 1; 82) \\ 
+Observations &amp; 228 \\ 
+R$^{2}$ &amp; 0.343 \\ 
+Adjusted R$^{2}$ &amp; 0.340 \\ 
+Residual Std. Error &amp; 0.546 (df = 226) \\ 
+F Statistic &amp; 117.908$^{***}$ (df = 1; 226) \\ 
 \hline 
 \hline \\[-1.8ex] 
 \textit{Note:}  &amp; \multicolumn{1}{r}{$^{*}$p$&lt;$0.1; $^{**}$p$&lt;$0.05; $^{***}$p$&lt;$0.01} \\ 
@@ -655,8 +676,8 @@ F Statistic &amp; 339.906$^{***}$ (df = 1; 82) \\
 <div class="qcard">
 <p><strong>Q9.</strong> Extend the previous regression model by including country fixed effects to account for unobserved, time-invariant differences across countries.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>model_country_fe <span class="ot">&lt;-</span> ...</span>
-<span id="cb20-2"><a href="#cb20-2"></a><span class="fu">summary</span>(model_country_fe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>model_country_fe <span class="ot">&lt;-</span> ...</span>
+<span id="cb25-2"><a href="#cb25-2"></a><span class="fu">summary</span>(model_country_fe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn hint" data-step="1">
@@ -677,8 +698,8 @@ F Statistic &amp; 339.906$^{***}$ (df = 1; 82) \\
 <div class="reveal sol-box" data-reveal="2">
 <p>We append country variables as dummy indices using the <code>factor()</code> wrapper:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>model_country_fe <span class="ot">&lt;-</span> <span class="fu">lm</span>(life_satisf <span class="sc">~</span> gdp <span class="sc">+</span> <span class="fu">factor</span>(country), <span class="at">data =</span> tb)</span>
-<span id="cb21-2"><a href="#cb21-2"></a><span class="fu">summary</span>(model_country_fe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>model_country_fe <span class="ot">&lt;-</span> <span class="fu">lm</span>(life_satisf <span class="sc">~</span> gdp <span class="sc">+</span> <span class="fu">factor</span>(country), <span class="at">data =</span> tb)</span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="fu">summary</span>(model_country_fe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -686,23 +707,53 @@ lm(formula = life_satisf ~ gdp + factor(country), data = tb)
 
 Residuals:
      Min       1Q   Median       3Q      Max 
--0.25079 -0.09356 -0.02203  0.07724  0.36297 
+-0.98823 -0.11981  0.01423  0.14025  0.68751 
 
 Coefficients:
                     Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)        6.111e+00  2.532e-01  24.132  &lt; 2e-16 ***
-gdp                2.847e-05  5.826e-06   4.886 5.47e-06 ***
-factor(country)ES -8.190e-03  1.060e-01  -0.077  0.93860    
-factor(country)FR -1.778e-01  6.509e-02  -2.731  0.00783 ** 
-factor(country)IT -3.878e-01  8.932e-02  -4.342 4.25e-05 ***
-factor(country)NL  4.453e-01  5.763e-02   7.727 3.41e-11 ***
-factor(country)PT -3.484e-01  1.293e-01  -2.695  0.00865 ** 
+(Intercept)        5.662e+00  1.582e-01  35.799  &lt; 2e-16 ***
+gdp                1.386e-05  5.183e-06   2.674 0.008141 ** 
+factor(country)AT  1.528e+00  2.784e-01   5.486 1.28e-07 ***
+factor(country)BE  1.328e+00  2.705e-01   4.911 1.93e-06 ***
+factor(country)BG -1.042e-01  1.882e-01  -0.553 0.580648    
+factor(country)CH  1.124e+00  4.342e-01   2.588 0.010396 *  
+factor(country)CY  1.002e+00  2.190e-01   4.577 8.47e-06 ***
+factor(country)CZ  1.357e+00  2.043e-01   6.641 3.12e-10 ***
+factor(country)DE  7.717e-01  2.748e-01   2.808 0.005494 ** 
+factor(country)DK  1.232e+00  3.233e-01   3.810 0.000187 ***
+factor(country)EE  1.114e+00  2.042e-01   5.456 1.49e-07 ***
+factor(country)EL  7.478e-01  1.976e-01   3.784 0.000206 ***
+factor(country)ES  1.128e+00  2.167e-01   5.204 4.99e-07 ***
+factor(country)FI  1.668e+00  2.713e-01   6.149 4.43e-09 ***
+factor(country)FR  8.954e-01  2.493e-01   3.592 0.000416 ***
+factor(country)HR  9.840e-01  1.935e-01   5.084 8.72e-07 ***
+factor(country)HU  8.995e-01  1.934e-01   4.651 6.15e-06 ***
+factor(country)IE  7.898e-01  4.341e-01   1.820 0.070367 .  
+factor(country)IS  1.612e+00  3.609e-01   4.466 1.36e-05 ***
+factor(country)IT  9.716e-01  2.313e-01   4.201 4.07e-05 ***
+factor(country)LT  1.070e+00  1.984e-01   5.393 2.02e-07 ***
+factor(country)LU  2.534e-01  5.403e-01   0.469 0.639610    
+factor(country)LV  8.855e-01  1.949e-01   4.544 9.74e-06 ***
+factor(country)ME  4.324e-01  1.976e-01   2.188 0.029881 *  
+factor(country)MK  7.026e-02  1.973e-01   0.356 0.722157    
+factor(country)MT  1.282e+00  2.291e-01   5.594 7.55e-08 ***
+factor(country)NL  1.324e+00  2.958e-01   4.475 1.31e-05 ***
+factor(country)NO  1.153e+00  3.613e-01   3.192 0.001649 ** 
+factor(country)PL  1.715e+00  1.933e-01   8.871 5.03e-16 ***
+factor(country)PT  9.763e-01  2.085e-01   4.683 5.33e-06 ***
+factor(country)RO  1.772e+00  1.897e-01   9.338  &lt; 2e-16 ***
+factor(country)RS  2.428e-01  1.869e-01   1.299 0.195356    
+factor(country)SE  1.264e+00  2.883e-01   4.384 1.92e-05 ***
+factor(country)SI  1.492e+00  2.102e-01   7.100 2.36e-11 ***
+factor(country)SK  1.260e+00  1.979e-01   6.366 1.40e-09 ***
+factor(country)TR -1.239e-01  1.915e-01  -0.647 0.518443    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.1363 on 77 degrees of freedom
-Multiple R-squared:  0.9362,    Adjusted R-squared:  0.9313 
-F-statistic: 188.4 on 6 and 77 DF,  p-value: &lt; 2.2e-16</code></pre>
+Residual standard error: 0.27 on 192 degrees of freedom
+  (3 observations deleted due to missingness)
+Multiple R-squared:  0.8633,    Adjusted R-squared:  0.8384 
+F-statistic: 34.64 on 35 and 192 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </div>
@@ -710,8 +761,8 @@ F-statistic: 188.4 on 6 and 77 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="qcard">
 <p><strong>Q10.</strong> Extend the country fixed-effects model by adding year fixed effects to control for common shocks across all countries in a given year.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>model_country_time_fe <span class="ot">&lt;-</span> ...</span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="fu">summary</span>(model_country_time_fe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>model_country_time_fe <span class="ot">&lt;-</span> ...</span>
+<span id="cb28-2"><a href="#cb28-2"></a><span class="fu">summary</span>(model_country_time_fe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn hint" data-step="1">
@@ -731,11 +782,11 @@ F-statistic: 188.4 on 6 and 77 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <div class="reveal sol-box" data-reveal="2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>model_country_time_fe <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb24-2"><a href="#cb24-2"></a>    life_satisf <span class="sc">~</span> gdp <span class="sc">+</span> <span class="fu">factor</span>(country) <span class="sc">+</span> <span class="fu">factor</span>(year), </span>
-<span id="cb24-3"><a href="#cb24-3"></a>    <span class="at">data =</span> tb</span>
-<span id="cb24-4"><a href="#cb24-4"></a>)</span>
-<span id="cb24-5"><a href="#cb24-5"></a><span class="fu">summary</span>(model_country_time_fe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>model_country_time_fe <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb29-2"><a href="#cb29-2"></a>    life_satisf <span class="sc">~</span> gdp <span class="sc">+</span> <span class="fu">factor</span>(country) <span class="sc">+</span> <span class="fu">factor</span>(year), </span>
+<span id="cb29-3"><a href="#cb29-3"></a>    <span class="at">data =</span> tb</span>
+<span id="cb29-4"><a href="#cb29-4"></a>)</span>
+<span id="cb29-5"><a href="#cb29-5"></a><span class="fu">summary</span>(model_country_time_fe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -743,37 +794,60 @@ lm(formula = life_satisf ~ gdp + factor(country) + factor(year),
     data = tb)
 
 Residuals:
-     Min       1Q   Median       3Q      Max 
--0.27734 -0.09213 -0.01137  0.08435  0.37589 
+    Min      1Q  Median      3Q     Max 
+-0.7411 -0.1381  0.0010  0.1385  0.5717 
 
 Coefficients:
                     Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)        6.657e+00  8.959e-01   7.431 3.24e-10 ***
-gdp                1.489e-05  2.281e-05   0.653   0.5161    
-factor(country)ES -2.240e-01  3.664e-01  -0.611   0.5431    
-factor(country)FR -2.705e-01  1.646e-01  -1.643   0.1052    
-factor(country)IT -5.578e-01  2.905e-01  -1.920   0.0593 .  
-factor(country)NL  5.054e-01  1.142e-01   4.424 3.84e-05 ***
-factor(country)PT -6.248e-01  4.673e-01  -1.337   0.1859    
-factor(year)2011   1.275e-02  8.413e-02   0.152   0.8800    
-factor(year)2012   1.966e-02  8.344e-02   0.236   0.8145    
-factor(year)2013   1.365e-02  8.870e-02   0.154   0.8782    
-factor(year)2014   1.481e-02  9.623e-02   0.154   0.8781    
-factor(year)2015   1.129e-02  1.054e-01   0.107   0.9150    
-factor(year)2016  -5.161e-02  1.100e-01  -0.469   0.6404    
-factor(year)2017  -2.623e-02  1.242e-01  -0.211   0.8334    
-factor(year)2018   1.341e-01  1.377e-01   0.974   0.3339    
-factor(year)2019   3.522e-02  1.447e-01   0.243   0.8084    
-factor(year)2020   7.722e-02  1.615e-01   0.478   0.6343    
-factor(year)2021   4.196e-02  1.730e-01   0.242   0.8092    
-factor(year)2022   8.048e-02  1.842e-01   0.437   0.6636    
-factor(year)2023   1.576e-01  1.951e-01   0.808   0.4223    
+(Intercept)        5.511e+00  1.498e-01  36.802  &lt; 2e-16 ***
+gdp               -8.119e-06  5.897e-06  -1.377 0.170211    
+factor(country)AT  2.380e+00  2.910e-01   8.180 4.33e-14 ***
+factor(country)BE  2.135e+00  2.810e-01   7.596 1.44e-12 ***
+factor(country)BG -1.667e-02  1.727e-01  -0.097 0.923212    
+factor(country)CH  2.781e+00  4.791e-01   5.803 2.75e-08 ***
+factor(country)CY  1.465e+00  2.149e-01   6.815 1.27e-10 ***
+factor(country)CZ  1.687e+00  1.953e-01   8.642 2.50e-15 ***
+factor(country)DE  1.578e+00  2.855e-01   5.528 1.08e-07 ***
+factor(country)DK  2.327e+00  3.460e-01   6.726 2.08e-10 ***
+factor(country)EE  1.444e+00  1.952e-01   7.401 4.53e-12 ***
+factor(country)EL  1.002e+00  1.860e-01   5.387 2.15e-07 ***
+factor(country)ES  1.572e+00  2.120e-01   7.418 4.11e-12 ***
+factor(country)FI  2.479e+00  2.820e-01   8.791 9.86e-16 ***
+factor(country)FR  1.573e+00  2.543e-01   6.185 3.85e-09 ***
+factor(country)HR  1.181e+00  1.803e-01   6.549 5.50e-10 ***
+factor(country)HU  1.094e+00  1.801e-01   6.075 6.84e-09 ***
+factor(country)IE  2.427e+00  4.780e-01   5.078 9.23e-07 ***
+factor(country)IS  2.858e+00  3.897e-01   7.335 6.63e-12 ***
+factor(country)IT  1.528e+00  2.312e-01   6.610 3.94e-10 ***
+factor(country)LT  1.334e+00  1.871e-01   7.130 2.15e-11 ***
+factor(country)LU  2.379e+00  6.023e-01   3.950 0.000111 ***
+factor(country)LV  1.103e+00  1.822e-01   6.052 7.73e-09 ***
+factor(country)ME  5.159e-01  1.805e-01   2.859 0.004741 ** 
+factor(country)MK  4.698e-02  1.795e-01   0.262 0.793826    
+factor(country)MT  1.822e+00  2.283e-01   7.981 1.45e-13 ***
+factor(country)NL  2.273e+00  3.125e-01   7.275 9.37e-12 ***
+factor(country)NO  2.441e+00  3.917e-01   6.232 3.02e-09 ***
+factor(country)PL  1.908e+00  1.800e-01  10.601  &lt; 2e-16 ***
+factor(country)PT  1.300e+00  1.994e-01   6.520 6.45e-10 ***
+factor(country)RO  1.898e+00  1.749e-01  10.850  &lt; 2e-16 ***
+factor(country)RS  2.785e-01  1.708e-01   1.630 0.104740    
+factor(country)SE  2.172e+00  3.032e-01   7.164 1.77e-11 ***
+factor(country)SI  1.880e+00  2.032e-01   9.251  &lt; 2e-16 ***
+factor(country)SK  1.518e+00  1.864e-01   8.141 5.50e-14 ***
+factor(country)TR -5.671e-02  1.751e-01  -0.324 0.746409    
+factor(year)2018   2.699e-01  6.316e-02   4.273 3.07e-05 ***
+factor(year)2021   2.511e-01  6.822e-02   3.681 0.000304 ***
+factor(year)2022   2.698e-01  6.933e-02   3.892 0.000138 ***
+factor(year)2023   3.817e-01  6.917e-02   5.519 1.14e-07 ***
+factor(year)2024   3.920e-01  7.074e-02   5.542 1.01e-07 ***
+factor(year)2025   4.545e-01  7.390e-02   6.151 4.60e-09 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 0.141 on 64 degrees of freedom
-Multiple R-squared:  0.9433,    Adjusted R-squared:  0.9265 
-F-statistic: 56.07 on 19 and 64 DF,  p-value: &lt; 2.2e-16</code></pre>
+Residual standard error: 0.2448 on 186 degrees of freedom
+  (3 observations deleted due to missingness)
+Multiple R-squared:  0.8912,    Adjusted R-squared:  0.8672 
+F-statistic: 37.16 on 41 and 186 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </div>
@@ -781,18 +855,18 @@ F-statistic: 56.07 on 19 and 64 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="qcard">
 <p><strong>Q11.</strong> Examine and evaluate the following instructions. Then, explain what they do.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">stargazer</span>(</span>
-<span id="cb26-2"><a href="#cb26-2"></a>    model_lm, model_country_fe, model_country_time_fe,</span>
-<span id="cb26-3"><a href="#cb26-3"></a>    <span class="at">type =</span> <span class="st">"latex"</span>,</span>
-<span id="cb26-4"><a href="#cb26-4"></a>    <span class="at">out =</span> <span class="st">"tables/regression_results.tex"</span>,</span>
-<span id="cb26-5"><a href="#cb26-5"></a>    <span class="at">title =</span> <span class="st">"Correlation between per capita GDP and life satisfaction"</span>,</span>
-<span id="cb26-6"><a href="#cb26-6"></a>    <span class="at">column.labels =</span> <span class="fu">c</span>(<span class="st">"Baseline OLS Reg."</span>, <span class="st">"Country FE"</span>, <span class="st">"Country and Year FE"</span>),</span>
-<span id="cb26-7"><a href="#cb26-7"></a>    <span class="at">covariate.labels =</span> <span class="fu">c</span>(<span class="st">"per capita GDP"</span>),</span>
-<span id="cb26-8"><a href="#cb26-8"></a>    <span class="at">add.lines =</span> <span class="fu">list</span>(</span>
-<span id="cb26-9"><a href="#cb26-9"></a>        <span class="fu">c</span>(<span class="st">'Country FE'</span>, <span class="st">'-'</span>, <span class="st">'Yes'</span>, <span class="st">'Yes'</span>),</span>
-<span id="cb26-10"><a href="#cb26-10"></a>        <span class="fu">c</span>(<span class="st">'Year FE'</span>, <span class="st">'-'</span>, <span class="st">'-'</span>, <span class="st">'Yes'</span>)</span>
-<span id="cb26-11"><a href="#cb26-11"></a>    )</span>
-<span id="cb26-12"><a href="#cb26-12"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="fu">stargazer</span>(</span>
+<span id="cb31-2"><a href="#cb31-2"></a>    model_lm, model_country_fe, model_country_time_fe,</span>
+<span id="cb31-3"><a href="#cb31-3"></a>    <span class="at">type =</span> <span class="st">"latex"</span>,</span>
+<span id="cb31-4"><a href="#cb31-4"></a>    <span class="at">out =</span> <span class="st">"tables/regression_results.tex"</span>,</span>
+<span id="cb31-5"><a href="#cb31-5"></a>    <span class="at">title =</span> <span class="st">"Correlation between per capita GDP and life satisfaction"</span>,</span>
+<span id="cb31-6"><a href="#cb31-6"></a>    <span class="at">column.labels =</span> <span class="fu">c</span>(<span class="st">"Baseline OLS Reg."</span>, <span class="st">"Country FE"</span>, <span class="st">"Country and Year FE"</span>),</span>
+<span id="cb31-7"><a href="#cb31-7"></a>    <span class="at">covariate.labels =</span> <span class="fu">c</span>(<span class="st">"per capita GDP"</span>),</span>
+<span id="cb31-8"><a href="#cb31-8"></a>    <span class="at">add.lines =</span> <span class="fu">list</span>(</span>
+<span id="cb31-9"><a href="#cb31-9"></a>        <span class="fu">c</span>(<span class="st">'Country FE'</span>, <span class="st">'-'</span>, <span class="st">'Yes'</span>, <span class="st">'Yes'</span>),</span>
+<span id="cb31-10"><a href="#cb31-10"></a>        <span class="fu">c</span>(<span class="st">'Year FE'</span>, <span class="st">'-'</span>, <span class="st">'-'</span>, <span class="st">'Yes'</span>)</span>
+<span id="cb31-11"><a href="#cb31-11"></a>    )</span>
+<span id="cb31-12"><a href="#cb31-12"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
@@ -810,7 +884,7 @@ F-statistic: 56.07 on 19 and 64 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 % Table created by stargazer v.5.2.3 by Marek Hlavac, Social Policy Institute. E-mail: marek.hlavac at gmail.com
-% Date and time: Sat, Aug 22, 2026 - 23:47:45
+% Date and time: Thu, Sep 17, 2026 - 08:02:11
 \begin{table}[!htbp] \centering 
   \caption{Correlation between per capita GDP and life satisfaction} 
   \label{} 
@@ -823,74 +897,140 @@ F-statistic: 56.07 on 19 and 64 DF,  p-value: &lt; 2.2e-16</code></pre>
  &amp; Baseline OLS Reg. &amp; Country FE &amp; Country and Year FE \\ 
 \\[-1.8ex] &amp; (1) &amp; (2) &amp; (3)\\ 
 \hline \\[-1.8ex] 
- per capita GDP &amp; 0.0001$^{***}$ &amp; 0.00003$^{***}$ &amp; 0.00001 \\ 
-  &amp; (0.00000) &amp; (0.00001) &amp; (0.00002) \\ 
+ per capita GDP &amp; 0.00002$^{***}$ &amp; 0.00001$^{***}$ &amp; $-$0.00001 \\ 
+  &amp; (0.00000) &amp; (0.00001) &amp; (0.00001) \\ 
   &amp; &amp; &amp; \\ 
- factor(country)ES &amp;  &amp; $-$0.008 &amp; $-$0.224 \\ 
-  &amp;  &amp; (0.106) &amp; (0.366) \\ 
+ factor(country)AT &amp;  &amp; 1.528$^{***}$ &amp; 2.380$^{***}$ \\ 
+  &amp;  &amp; (0.278) &amp; (0.291) \\ 
   &amp; &amp; &amp; \\ 
- factor(country)FR &amp;  &amp; $-$0.178$^{***}$ &amp; $-$0.270 \\ 
-  &amp;  &amp; (0.065) &amp; (0.165) \\ 
+ factor(country)BE &amp;  &amp; 1.328$^{***}$ &amp; 2.135$^{***}$ \\ 
+  &amp;  &amp; (0.270) &amp; (0.281) \\ 
   &amp; &amp; &amp; \\ 
- factor(country)IT &amp;  &amp; $-$0.388$^{***}$ &amp; $-$0.558$^{*}$ \\ 
-  &amp;  &amp; (0.089) &amp; (0.291) \\ 
+ factor(country)BG &amp;  &amp; $-$0.104 &amp; $-$0.017 \\ 
+  &amp;  &amp; (0.188) &amp; (0.173) \\ 
   &amp; &amp; &amp; \\ 
- factor(country)NL &amp;  &amp; 0.445$^{***}$ &amp; 0.505$^{***}$ \\ 
-  &amp;  &amp; (0.058) &amp; (0.114) \\ 
+ factor(country)CH &amp;  &amp; 1.124$^{**}$ &amp; 2.781$^{***}$ \\ 
+  &amp;  &amp; (0.434) &amp; (0.479) \\ 
   &amp; &amp; &amp; \\ 
- factor(country)PT &amp;  &amp; $-$0.348$^{***}$ &amp; $-$0.625 \\ 
-  &amp;  &amp; (0.129) &amp; (0.467) \\ 
+ factor(country)CY &amp;  &amp; 1.002$^{***}$ &amp; 1.465$^{***}$ \\ 
+  &amp;  &amp; (0.219) &amp; (0.215) \\ 
   &amp; &amp; &amp; \\ 
- factor(year)2011 &amp;  &amp;  &amp; 0.013 \\ 
-  &amp;  &amp;  &amp; (0.084) \\ 
+ factor(country)CZ &amp;  &amp; 1.357$^{***}$ &amp; 1.687$^{***}$ \\ 
+  &amp;  &amp; (0.204) &amp; (0.195) \\ 
   &amp; &amp; &amp; \\ 
- factor(year)2012 &amp;  &amp;  &amp; 0.020 \\ 
-  &amp;  &amp;  &amp; (0.083) \\ 
+ factor(country)DE &amp;  &amp; 0.772$^{***}$ &amp; 1.578$^{***}$ \\ 
+  &amp;  &amp; (0.275) &amp; (0.286) \\ 
   &amp; &amp; &amp; \\ 
- factor(year)2013 &amp;  &amp;  &amp; 0.014 \\ 
-  &amp;  &amp;  &amp; (0.089) \\ 
+ factor(country)DK &amp;  &amp; 1.232$^{***}$ &amp; 2.327$^{***}$ \\ 
+  &amp;  &amp; (0.323) &amp; (0.346) \\ 
   &amp; &amp; &amp; \\ 
- factor(year)2014 &amp;  &amp;  &amp; 0.015 \\ 
-  &amp;  &amp;  &amp; (0.096) \\ 
+ factor(country)EE &amp;  &amp; 1.114$^{***}$ &amp; 1.444$^{***}$ \\ 
+  &amp;  &amp; (0.204) &amp; (0.195) \\ 
   &amp; &amp; &amp; \\ 
- factor(year)2015 &amp;  &amp;  &amp; 0.011 \\ 
-  &amp;  &amp;  &amp; (0.105) \\ 
+ factor(country)EL &amp;  &amp; 0.748$^{***}$ &amp; 1.002$^{***}$ \\ 
+  &amp;  &amp; (0.198) &amp; (0.186) \\ 
   &amp; &amp; &amp; \\ 
- factor(year)2016 &amp;  &amp;  &amp; $-$0.052 \\ 
-  &amp;  &amp;  &amp; (0.110) \\ 
+ factor(country)ES &amp;  &amp; 1.128$^{***}$ &amp; 1.572$^{***}$ \\ 
+  &amp;  &amp; (0.217) &amp; (0.212) \\ 
   &amp; &amp; &amp; \\ 
- factor(year)2017 &amp;  &amp;  &amp; $-$0.026 \\ 
-  &amp;  &amp;  &amp; (0.124) \\ 
+ factor(country)FI &amp;  &amp; 1.668$^{***}$ &amp; 2.479$^{***}$ \\ 
+  &amp;  &amp; (0.271) &amp; (0.282) \\ 
   &amp; &amp; &amp; \\ 
- factor(year)2018 &amp;  &amp;  &amp; 0.134 \\ 
-  &amp;  &amp;  &amp; (0.138) \\ 
+ factor(country)FR &amp;  &amp; 0.895$^{***}$ &amp; 1.573$^{***}$ \\ 
+  &amp;  &amp; (0.249) &amp; (0.254) \\ 
   &amp; &amp; &amp; \\ 
- factor(year)2019 &amp;  &amp;  &amp; 0.035 \\ 
-  &amp;  &amp;  &amp; (0.145) \\ 
+ factor(country)HR &amp;  &amp; 0.984$^{***}$ &amp; 1.181$^{***}$ \\ 
+  &amp;  &amp; (0.194) &amp; (0.180) \\ 
   &amp; &amp; &amp; \\ 
- factor(year)2020 &amp;  &amp;  &amp; 0.077 \\ 
-  &amp;  &amp;  &amp; (0.162) \\ 
+ factor(country)HU &amp;  &amp; 0.899$^{***}$ &amp; 1.094$^{***}$ \\ 
+  &amp;  &amp; (0.193) &amp; (0.180) \\ 
   &amp; &amp; &amp; \\ 
- factor(year)2021 &amp;  &amp;  &amp; 0.042 \\ 
-  &amp;  &amp;  &amp; (0.173) \\ 
+ factor(country)IE &amp;  &amp; 0.790$^{*}$ &amp; 2.427$^{***}$ \\ 
+  &amp;  &amp; (0.434) &amp; (0.478) \\ 
   &amp; &amp; &amp; \\ 
- factor(year)2022 &amp;  &amp;  &amp; 0.080 \\ 
-  &amp;  &amp;  &amp; (0.184) \\ 
+ factor(country)IS &amp;  &amp; 1.612$^{***}$ &amp; 2.858$^{***}$ \\ 
+  &amp;  &amp; (0.361) &amp; (0.390) \\ 
   &amp; &amp; &amp; \\ 
- factor(year)2023 &amp;  &amp;  &amp; 0.158 \\ 
-  &amp;  &amp;  &amp; (0.195) \\ 
+ factor(country)IT &amp;  &amp; 0.972$^{***}$ &amp; 1.528$^{***}$ \\ 
+  &amp;  &amp; (0.231) &amp; (0.231) \\ 
   &amp; &amp; &amp; \\ 
- Constant &amp; 5.247$^{***}$ &amp; 6.111$^{***}$ &amp; 6.657$^{***}$ \\ 
-  &amp; (0.099) &amp; (0.253) &amp; (0.896) \\ 
+ factor(country)LT &amp;  &amp; 1.070$^{***}$ &amp; 1.334$^{***}$ \\ 
+  &amp;  &amp; (0.198) &amp; (0.187) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(country)LU &amp;  &amp; 0.253 &amp; 2.379$^{***}$ \\ 
+  &amp;  &amp; (0.540) &amp; (0.602) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(country)LV &amp;  &amp; 0.886$^{***}$ &amp; 1.103$^{***}$ \\ 
+  &amp;  &amp; (0.195) &amp; (0.182) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(country)ME &amp;  &amp; 0.432$^{**}$ &amp; 0.516$^{***}$ \\ 
+  &amp;  &amp; (0.198) &amp; (0.180) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(country)MK &amp;  &amp; 0.070 &amp; 0.047 \\ 
+  &amp;  &amp; (0.197) &amp; (0.179) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(country)MT &amp;  &amp; 1.282$^{***}$ &amp; 1.822$^{***}$ \\ 
+  &amp;  &amp; (0.229) &amp; (0.228) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(country)NL &amp;  &amp; 1.324$^{***}$ &amp; 2.273$^{***}$ \\ 
+  &amp;  &amp; (0.296) &amp; (0.312) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(country)NO &amp;  &amp; 1.153$^{***}$ &amp; 2.441$^{***}$ \\ 
+  &amp;  &amp; (0.361) &amp; (0.392) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(country)PL &amp;  &amp; 1.715$^{***}$ &amp; 1.908$^{***}$ \\ 
+  &amp;  &amp; (0.193) &amp; (0.180) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(country)PT &amp;  &amp; 0.976$^{***}$ &amp; 1.300$^{***}$ \\ 
+  &amp;  &amp; (0.208) &amp; (0.199) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(country)RO &amp;  &amp; 1.772$^{***}$ &amp; 1.898$^{***}$ \\ 
+  &amp;  &amp; (0.190) &amp; (0.175) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(country)RS &amp;  &amp; 0.243 &amp; 0.278 \\ 
+  &amp;  &amp; (0.187) &amp; (0.171) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(country)SE &amp;  &amp; 1.264$^{***}$ &amp; 2.172$^{***}$ \\ 
+  &amp;  &amp; (0.288) &amp; (0.303) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(country)SI &amp;  &amp; 1.492$^{***}$ &amp; 1.880$^{***}$ \\ 
+  &amp;  &amp; (0.210) &amp; (0.203) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(country)SK &amp;  &amp; 1.260$^{***}$ &amp; 1.518$^{***}$ \\ 
+  &amp;  &amp; (0.198) &amp; (0.186) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(country)TR &amp;  &amp; $-$0.124 &amp; $-$0.057 \\ 
+  &amp;  &amp; (0.192) &amp; (0.175) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(year)2018 &amp;  &amp;  &amp; 0.270$^{***}$ \\ 
+  &amp;  &amp;  &amp; (0.063) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(year)2021 &amp;  &amp;  &amp; 0.251$^{***}$ \\ 
+  &amp;  &amp;  &amp; (0.068) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(year)2022 &amp;  &amp;  &amp; 0.270$^{***}$ \\ 
+  &amp;  &amp;  &amp; (0.069) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(year)2023 &amp;  &amp;  &amp; 0.382$^{***}$ \\ 
+  &amp;  &amp;  &amp; (0.069) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(year)2024 &amp;  &amp;  &amp; 0.392$^{***}$ \\ 
+  &amp;  &amp;  &amp; (0.071) \\ 
+  &amp; &amp; &amp; \\ 
+ factor(year)2025 &amp;  &amp;  &amp; 0.455$^{***}$ \\ 
+  &amp;  &amp;  &amp; (0.074) \\ 
+  &amp; &amp; &amp; \\ 
+ Constant &amp; 6.566$^{***}$ &amp; 5.662$^{***}$ &amp; 5.511$^{***}$ \\ 
+  &amp; (0.062) &amp; (0.158) &amp; (0.150) \\ 
   &amp; &amp; &amp; \\ 
 \hline \\[-1.8ex] 
 Country FE &amp; - &amp; Yes &amp; Yes \\ 
 Year FE &amp; - &amp; - &amp; Yes \\ 
-Observations &amp; 84 &amp; 84 &amp; 84 \\ 
-R$^{2}$ &amp; 0.806 &amp; 0.936 &amp; 0.943 \\ 
-Adjusted R$^{2}$ &amp; 0.803 &amp; 0.931 &amp; 0.926 \\ 
-Residual Std. Error &amp; 0.231 (df = 82) &amp; 0.136 (df = 77) &amp; 0.141 (df = 64) \\ 
-F Statistic &amp; 339.906$^{***}$ (df = 1; 82) &amp; 188.449$^{***}$ (df = 6; 77) &amp; 56.065$^{***}$ (df = 19; 64) \\ 
+Observations &amp; 228 &amp; 228 &amp; 228 \\ 
+R$^{2}$ &amp; 0.343 &amp; 0.863 &amp; 0.891 \\ 
+Adjusted R$^{2}$ &amp; 0.340 &amp; 0.838 &amp; 0.867 \\ 
+Residual Std. Error &amp; 0.546 (df = 226) &amp; 0.270 (df = 192) &amp; 0.245 (df = 186) \\ 
+F Statistic &amp; 117.908$^{***}$ (df = 1; 226) &amp; 34.641$^{***}$ (df = 35; 192) &amp; 37.156$^{***}$ (df = 41; 186) \\ 
 \hline 
 \hline \\[-1.8ex] 
 \textit{Note:}  &amp; \multicolumn{3}{r}{$^{*}$p$&lt;$0.1; $^{**}$p$&lt;$0.05; $^{***}$p$&lt;$0.01} \\ 
@@ -908,7 +1048,7 @@ F Statistic &amp; 339.906$^{***}$ (df = 1; 82) &amp; 188.449$^{***}$ (df = 6; 77
 <div class="qcard">
 <p><strong>Q12.</strong> Compute the median of life satisfaction.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>median_life_satisf <span class="ot">&lt;-</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>median_life_satisf <span class="ot">&lt;-</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
@@ -922,10 +1062,10 @@ F Statistic &amp; 339.906$^{***}$ (df = 1; 82) &amp; 188.449$^{***}$ (df = 6; 77
 </div>
 <div class="reveal sol-box" data-reveal="1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>median_life_satisf <span class="ot">&lt;-</span> <span class="fu">median</span>(tb<span class="sc">$</span>life_satisf, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb29-2"><a href="#cb29-2"></a>median_life_satisf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>median_life_satisf <span class="ot">&lt;-</span> <span class="fu">median</span>(tb<span class="sc">$</span>life_satisf, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb34-2"><a href="#cb34-2"></a>median_life_satisf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 6.875</code></pre>
+<pre><code>[1] 7.2</code></pre>
 </div>
 </div>
 </div>
@@ -933,7 +1073,7 @@ F Statistic &amp; 339.906$^{***}$ (df = 1; 82) &amp; 188.449$^{***}$ (df = 6; 77
 <div class="qcard">
 <p><strong>Q13.</strong> In the dataset, create a binary variable named <code>life_satisf_above_med</code>, which takes the value 1 if life satisfaction is above the median and 0 otherwise.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>tb <span class="ot">&lt;-</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>tb <span class="ot">&lt;-</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
@@ -947,31 +1087,30 @@ F Statistic &amp; 339.906$^{***}$ (df = 1; 82) &amp; 188.449$^{***}$ (df = 6; 77
 </div>
 <div class="reveal sol-box" data-reveal="1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>tb <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span></span>
-<span id="cb32-2"><a href="#cb32-2"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb32-3"><a href="#cb32-3"></a>        <span class="at">life_satisf_above_med =</span> <span class="fu">ifelse</span>(</span>
-<span id="cb32-4"><a href="#cb32-4"></a>            life_satisf <span class="sc">&gt;</span> median_life_satisf, </span>
-<span id="cb32-5"><a href="#cb32-5"></a>            <span class="dv">1</span>,</span>
-<span id="cb32-6"><a href="#cb32-6"></a>            <span class="dv">0</span></span>
-<span id="cb32-7"><a href="#cb32-7"></a>        )</span>
-<span id="cb32-8"><a href="#cb32-8"></a>    )</span>
-<span id="cb32-9"><a href="#cb32-9"></a>tb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>tb <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span></span>
+<span id="cb37-2"><a href="#cb37-2"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb37-3"><a href="#cb37-3"></a>        <span class="at">life_satisf_above_med =</span> <span class="fu">ifelse</span>(</span>
+<span id="cb37-4"><a href="#cb37-4"></a>            life_satisf <span class="sc">&gt;</span> median_life_satisf, </span>
+<span id="cb37-5"><a href="#cb37-5"></a>            <span class="dv">1</span>,</span>
+<span id="cb37-6"><a href="#cb37-6"></a>            <span class="dv">0</span></span>
+<span id="cb37-7"><a href="#cb37-7"></a>        )</span>
+<span id="cb37-8"><a href="#cb37-8"></a>    )</span>
+<span id="cb37-9"><a href="#cb37-9"></a>tb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 84 × 7
-   country  year    gdp life_satisf gdp_yoy life_satisf_yoy
-   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;           &lt;dbl&gt;
- 1 DE       2010 38145.        7.17     NA          NA     
- 2 DE       2011 39567.        7.32   1422.          0.150 
- 3 DE       2012 39467.        7.25   -101.         -0.0700
- 4 DE       2013 40157.        7.16    691.         -0.0900
- 5 DE       2014 40937.        7.28    780.          0.120 
- 6 DE       2015 42214         7.22   1277.         -0.0600
- 7 DE       2016 41594.        7.34   -620.          0.120 
- 8 DE       2017 42773.        7.16   1178.         -0.180 
- 9 DE       2018 44209.        7.58   1436.          0.42  
-10 DE       2019 45112.        7.37    903.         -0.21  
-# ℹ 74 more rows
-# ℹ 1 more variable: life_satisf_above_med &lt;dbl&gt;</code></pre>
+<pre><code># A tibble: 231 × 7
+   country  year   gdp life_satisf gdp_yoy life_satisf_yoy life_satisf_above_med
+   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;           &lt;dbl&gt;                 &lt;dbl&gt;
+ 1 AL       2018  4730         5.5      NA         NA                          0
+ 2 AL       2021  5190         5.7     460          0.200                      0
+ 3 AL       2022  5500         6       310          0.300                      0
+ 4 AT       2013 43080         7.8      NA         NA                          1
+ 5 AT       2018 45140         8      2060          0.200                      1
+ 6 AT       2021 44580         8      -560          0                          1
+ 7 AT       2022 46430         7.9    1850         -0.1000                     1
+ 8 AT       2023 45670         7.7    -760         -0.200                      1
+ 9 AT       2024 45140         7.6    -530         -0.100                      1
+10 AT       2025 45390         7.7     250          0.100                      1
+# ℹ 221 more rows</code></pre>
 </div>
 </div>
 </div>
@@ -979,8 +1118,8 @@ F Statistic &amp; 339.906$^{***}$ (df = 1; 82) &amp; 188.449$^{***}$ (df = 6; 77
 <div class="qcard">
 <p><strong>Q14.</strong> Run a <strong>probit</strong> regression of <code>life_satisf_above_med</code> on <code>gdp</code>, and display the summary of the results.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>model_probit <span class="ot">&lt;-</span> ...</span>
-<span id="cb34-2"><a href="#cb34-2"></a><span class="fu">summary</span>(model_probit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>model_probit <span class="ot">&lt;-</span> ...</span>
+<span id="cb39-2"><a href="#cb39-2"></a><span class="fu">summary</span>(model_probit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn hint" data-step="1">
@@ -1001,12 +1140,12 @@ F Statistic &amp; 339.906$^{***}$ (df = 1; 82) &amp; 188.449$^{***}$ (df = 6; 77
 <div class="reveal sol-box" data-reveal="2">
 <p>We utilize generalized linear model modeling via <code>glm()</code> specifying link definitions:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>model_probit <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb35-2"><a href="#cb35-2"></a>    life_satisf_above_med <span class="sc">~</span> gdp, </span>
-<span id="cb35-3"><a href="#cb35-3"></a>    <span class="at">data =</span> tb,</span>
-<span id="cb35-4"><a href="#cb35-4"></a>    <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"probit"</span>)</span>
-<span id="cb35-5"><a href="#cb35-5"></a>)</span>
-<span id="cb35-6"><a href="#cb35-6"></a><span class="fu">summary</span>(model_probit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>model_probit <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb40-2"><a href="#cb40-2"></a>    life_satisf_above_med <span class="sc">~</span> gdp, </span>
+<span id="cb40-3"><a href="#cb40-3"></a>    <span class="at">data =</span> tb,</span>
+<span id="cb40-4"><a href="#cb40-4"></a>    <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"probit"</span>)</span>
+<span id="cb40-5"><a href="#cb40-5"></a>)</span>
+<span id="cb40-6"><a href="#cb40-6"></a><span class="fu">summary</span>(model_probit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1015,18 +1154,19 @@ glm(formula = life_satisf_above_med ~ gdp, family = binomial(link = "probit"),
 
 Coefficients:
               Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept) -6.896e+00  1.288e+00  -5.353 8.65e-08 ***
-gdp          2.061e-04  3.885e-05   5.305 1.13e-07 ***
+(Intercept) -1.221e+00  1.840e-01  -6.636 3.23e-11 ***
+gdp          3.955e-05  5.742e-06   6.888 5.66e-12 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
-    Null deviance: 116.449  on 83  degrees of freedom
-Residual deviance:  47.629  on 82  degrees of freedom
-AIC: 51.629
+    Null deviance: 316.06  on 227  degrees of freedom
+Residual deviance: 236.64  on 226  degrees of freedom
+  (3 observations deleted due to missingness)
+AIC: 240.64
 
-Number of Fisher Scoring iterations: 7</code></pre>
+Number of Fisher Scoring iterations: 6</code></pre>
 </div>
 </div>
 </div>
@@ -1034,8 +1174,8 @@ Number of Fisher Scoring iterations: 7</code></pre>
 <div class="qcard">
 <p><strong>Q15.</strong> Run a <strong>logit</strong> regression of <code>life_satisf_above_med</code> on <code>gdp</code>, and display the summary of the results.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>model_logit <span class="ot">&lt;-</span> ...</span>
-<span id="cb37-2"><a href="#cb37-2"></a><span class="fu">summary</span>(model_logit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>model_logit <span class="ot">&lt;-</span> ...</span>
+<span id="cb42-2"><a href="#cb42-2"></a><span class="fu">summary</span>(model_logit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn hint" data-step="1">
@@ -1055,12 +1195,12 @@ Number of Fisher Scoring iterations: 7</code></pre>
 </div>
 <div class="reveal sol-box" data-reveal="2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>model_logit <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb38-2"><a href="#cb38-2"></a>    life_satisf_above_med <span class="sc">~</span> gdp, </span>
-<span id="cb38-3"><a href="#cb38-3"></a>    <span class="at">data =</span> tb,</span>
-<span id="cb38-4"><a href="#cb38-4"></a>    <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>)</span>
-<span id="cb38-5"><a href="#cb38-5"></a>)</span>
-<span id="cb38-6"><a href="#cb38-6"></a><span class="fu">summary</span>(model_logit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a>model_logit <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
+<span id="cb43-2"><a href="#cb43-2"></a>    life_satisf_above_med <span class="sc">~</span> gdp, </span>
+<span id="cb43-3"><a href="#cb43-3"></a>    <span class="at">data =</span> tb,</span>
+<span id="cb43-4"><a href="#cb43-4"></a>    <span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"logit"</span>)</span>
+<span id="cb43-5"><a href="#cb43-5"></a>)</span>
+<span id="cb43-6"><a href="#cb43-6"></a><span class="fu">summary</span>(model_logit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1069,18 +1209,19 @@ glm(formula = life_satisf_above_med ~ gdp, family = binomial(link = "logit"),
 
 Coefficients:
               Estimate Std. Error z value Pr(&gt;|z|)    
-(Intercept) -1.248e+01  2.641e+00  -4.727 2.28e-06 ***
-gdp          3.704e-04  7.910e-05   4.683 2.83e-06 ***
+(Intercept) -2.342e+00  3.459e-01  -6.771 1.28e-11 ***
+gdp          7.912e-05  1.146e-05   6.903 5.10e-12 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
-    Null deviance: 116.449  on 83  degrees of freedom
-Residual deviance:  47.456  on 82  degrees of freedom
-AIC: 51.456
+    Null deviance: 316.06  on 227  degrees of freedom
+Residual deviance: 229.90  on 226  degrees of freedom
+  (3 observations deleted due to missingness)
+AIC: 233.9
 
-Number of Fisher Scoring iterations: 6</code></pre>
+Number of Fisher Scoring iterations: 5</code></pre>
 </div>
 </div>
 </div>
@@ -1091,7 +1232,7 @@ Number of Fisher Scoring iterations: 6</code></pre>
 <div class="qcard">
 <p><strong>Q16.</strong> Compute the median of per capita GDP.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>median_gdp <span class="ot">&lt;-</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a>median_gdp <span class="ot">&lt;-</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
@@ -1105,10 +1246,10 @@ Number of Fisher Scoring iterations: 6</code></pre>
 </div>
 <div class="reveal sol-box" data-reveal="1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a>median_gdp <span class="ot">&lt;-</span> <span class="fu">median</span>(tb<span class="sc">$</span>gdp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb41-2"><a href="#cb41-2"></a>median_gdp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a>median_gdp <span class="ot">&lt;-</span> <span class="fu">median</span>(tb<span class="sc">$</span>gdp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb46-2"><a href="#cb46-2"></a>median_gdp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 33021.2</code></pre>
+<pre><code>[1] 23310</code></pre>
 </div>
 </div>
 </div>
@@ -1116,7 +1257,7 @@ Number of Fisher Scoring iterations: 6</code></pre>
 <div class="qcard">
 <p><strong>Q17.</strong> In the dataset, create a binary variable named <code>gdp_above_med</code>, which takes the value 1 if per capita GDP is above the median and 0 otherwise.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a>tb <span class="ot">&lt;-</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a>tb <span class="ot">&lt;-</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
@@ -1130,25 +1271,25 @@ Number of Fisher Scoring iterations: 6</code></pre>
 </div>
 <div class="reveal sol-box" data-reveal="1">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a>tb <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span></span>
-<span id="cb44-2"><a href="#cb44-2"></a>    <span class="fu">mutate</span>(<span class="at">gdp_above_med =</span> <span class="fu">ifelse</span>(gdp <span class="sc">&gt;</span> median_gdp, <span class="dv">1</span>, <span class="dv">0</span>))</span>
-<span id="cb44-3"><a href="#cb44-3"></a>tb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a>tb <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span></span>
+<span id="cb49-2"><a href="#cb49-2"></a>    <span class="fu">mutate</span>(<span class="at">gdp_above_med =</span> <span class="fu">ifelse</span>(gdp <span class="sc">&gt;</span> median_gdp, <span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb49-3"><a href="#cb49-3"></a>tb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 84 × 8
-   country  year    gdp life_satisf gdp_yoy life_satisf_yoy
-   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;           &lt;dbl&gt;
- 1 DE       2010 38145.        7.17     NA          NA     
- 2 DE       2011 39567.        7.32   1422.          0.150 
- 3 DE       2012 39467.        7.25   -101.         -0.0700
- 4 DE       2013 40157.        7.16    691.         -0.0900
- 5 DE       2014 40937.        7.28    780.          0.120 
- 6 DE       2015 42214         7.22   1277.         -0.0600
- 7 DE       2016 41594.        7.34   -620.          0.120 
- 8 DE       2017 42773.        7.16   1178.         -0.180 
- 9 DE       2018 44209.        7.58   1436.          0.42  
-10 DE       2019 45112.        7.37    903.         -0.21  
-# ℹ 74 more rows
-# ℹ 2 more variables: life_satisf_above_med &lt;dbl&gt;, gdp_above_med &lt;dbl&gt;</code></pre>
+<pre><code># A tibble: 231 × 8
+   country  year   gdp life_satisf gdp_yoy life_satisf_yoy life_satisf_above_med
+   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;   &lt;dbl&gt;           &lt;dbl&gt;                 &lt;dbl&gt;
+ 1 AL       2018  4730         5.5      NA         NA                          0
+ 2 AL       2021  5190         5.7     460          0.200                      0
+ 3 AL       2022  5500         6       310          0.300                      0
+ 4 AT       2013 43080         7.8      NA         NA                          1
+ 5 AT       2018 45140         8      2060          0.200                      1
+ 6 AT       2021 44580         8      -560          0                          1
+ 7 AT       2022 46430         7.9    1850         -0.1000                     1
+ 8 AT       2023 45670         7.7    -760         -0.200                      1
+ 9 AT       2024 45140         7.6    -530         -0.100                      1
+10 AT       2025 45390         7.7     250          0.100                      1
+# ℹ 221 more rows
+# ℹ 1 more variable: gdp_above_med &lt;dbl&gt;</code></pre>
 </div>
 </div>
 </div>
@@ -1156,13 +1297,13 @@ Number of Fisher Scoring iterations: 6</code></pre>
 <div class="qcard">
 <p><strong>Q18.</strong> Examine and evaluate the following instructions. Then, explain what they do.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a>group1 <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span></span>
-<span id="cb46-2"><a href="#cb46-2"></a>    <span class="fu">filter</span>(gdp_above_med <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
-<span id="cb46-3"><a href="#cb46-3"></a>    <span class="fu">pull</span>(life_satisf)</span>
-<span id="cb46-4"><a href="#cb46-4"></a>    </span>
-<span id="cb46-5"><a href="#cb46-5"></a>group2 <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span></span>
-<span id="cb46-6"><a href="#cb46-6"></a>    <span class="fu">filter</span>(gdp_above_med <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb46-7"><a href="#cb46-7"></a>    <span class="fu">pull</span>(life_satisf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a>group1 <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span></span>
+<span id="cb51-2"><a href="#cb51-2"></a>    <span class="fu">filter</span>(gdp_above_med <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb51-3"><a href="#cb51-3"></a>    <span class="fu">pull</span>(life_satisf)</span>
+<span id="cb51-4"><a href="#cb51-4"></a>    </span>
+<span id="cb51-5"><a href="#cb51-5"></a>group2 <span class="ot">&lt;-</span> tb <span class="sc">|&gt;</span></span>
+<span id="cb51-6"><a href="#cb51-6"></a>    <span class="fu">filter</span>(gdp_above_med <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb51-7"><a href="#cb51-7"></a>    <span class="fu">pull</span>(life_satisf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn sol" data-step="1">
@@ -1181,8 +1322,8 @@ Number of Fisher Scoring iterations: 6</code></pre>
 <div class="qcard">
 <p><strong>Q19.</strong> Perform a Student’s t-test to compare the mean life satisfaction between observations with GDP above the median and those with GDP at or below the median.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a>t_test_result <span class="ot">&lt;-</span> ...</span>
-<span id="cb47-2"><a href="#cb47-2"></a><span class="fu">print</span>(t_test_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1"></a>t_test_result <span class="ot">&lt;-</span> ...</span>
+<span id="cb52-2"><a href="#cb52-2"></a><span class="fu">print</span>(t_test_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn hint" data-step="1">
@@ -1202,20 +1343,20 @@ Number of Fisher Scoring iterations: 6</code></pre>
 </div>
 <div class="reveal sol-box" data-reveal="2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a>t_test_result <span class="ot">&lt;-</span> <span class="fu">t.test</span>(group2, group1, <span class="at">alternative =</span> <span class="st">"two.sided"</span>)</span>
-<span id="cb48-2"><a href="#cb48-2"></a><span class="fu">print</span>(t_test_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>t_test_result <span class="ot">&lt;-</span> <span class="fu">t.test</span>(group2, group1, <span class="at">alternative =</span> <span class="st">"two.sided"</span>)</span>
+<span id="cb53-2"><a href="#cb53-2"></a><span class="fu">print</span>(t_test_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Welch Two Sample t-test
 
 data:  group2 and group1
-t = 9.6692, df = 65.584, p-value = 3.049e-14
+t = 11.183, df = 164.12, p-value &lt; 2.2e-16
 alternative hypothesis: true difference in means is not equal to 0
 95 percent confidence interval:
- 0.5987065 0.9103411
+ 0.6587468 0.9412532
 sample estimates:
 mean of x mean of y 
- 7.390000  6.635476 </code></pre>
+ 7.507895  6.707895 </code></pre>
 </div>
 </div>
 </div>
@@ -1223,8 +1364,8 @@ mean of x mean of y
 <div class="qcard">
 <p><strong>Q20.</strong> Extract the test statistic and the p-value from the results of the t-test.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a>test_statistic <span class="ot">&lt;-</span> ...</span>
-<span id="cb50-2"><a href="#cb50-2"></a>p_value <span class="ot">&lt;-</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a>test_statistic <span class="ot">&lt;-</span> ...</span>
+<span id="cb55-2"><a href="#cb55-2"></a>p_value <span class="ot">&lt;-</span> ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn hint" data-step="1">
@@ -1245,16 +1386,16 @@ mean of x mean of y
 <div class="reveal sol-box" data-reveal="2">
 <p>Using list element indexing on the returned object properties:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a>test_statistic <span class="ot">&lt;-</span> t_test_result<span class="sc">$</span>statistic</span>
-<span id="cb51-2"><a href="#cb51-2"></a>p_value <span class="ot">&lt;-</span> t_test_result<span class="sc">$</span>p.value</span>
-<span id="cb51-3"><a href="#cb51-3"></a>test_statistic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1"></a>test_statistic <span class="ot">&lt;-</span> t_test_result<span class="sc">$</span>statistic</span>
+<span id="cb56-2"><a href="#cb56-2"></a>p_value <span class="ot">&lt;-</span> t_test_result<span class="sc">$</span>p.value</span>
+<span id="cb56-3"><a href="#cb56-3"></a>test_statistic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       t 
-9.669233 </code></pre>
+11.18289 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>p_value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1"></a>p_value</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.048673e-14</code></pre>
+<pre><code>[1] 6.100442e-22</code></pre>
 </div>
 </div>
 </div>
@@ -1262,22 +1403,22 @@ mean of x mean of y
 <div class="qcard">
 <p><strong>Q21.</strong> Examine and evaluate the following instructions. Then, explain what they do.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a>latex_table <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
-<span id="cb55-2"><a href="#cb55-2"></a>    <span class="st">"</span><span class="sc">\\</span><span class="st">begin{tabular}{l c}</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb55-3"><a href="#cb55-3"></a>    <span class="st">"</span><span class="sc">\\</span><span class="st">hline</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb55-4"><a href="#cb55-4"></a>    <span class="st">"&amp; Difference in life satisfaction across groups"</span> , </span>
-<span id="cb55-5"><a href="#cb55-5"></a>    <span class="st">" </span><span class="sc">\\\\</span><span class="st"> </span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb55-6"><a href="#cb55-6"></a>    <span class="st">"Test Statistic &amp; "</span>, </span>
-<span id="cb55-7"><a href="#cb55-7"></a>    <span class="fu">format</span>(test_statistic, <span class="at">digits =</span> <span class="dv">3</span>), </span>
-<span id="cb55-8"><a href="#cb55-8"></a>    <span class="st">" </span><span class="sc">\\\\</span><span class="st"> </span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb55-9"><a href="#cb55-9"></a>    <span class="st">"P-value &amp; "</span>, </span>
-<span id="cb55-10"><a href="#cb55-10"></a>    <span class="fu">format.pval</span>(p_value, <span class="at">digits =</span> <span class="dv">3</span>), </span>
-<span id="cb55-11"><a href="#cb55-11"></a>    <span class="st">" </span><span class="sc">\\\\</span><span class="st"> </span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb55-12"><a href="#cb55-12"></a>    <span class="st">"</span><span class="sc">\\</span><span class="st">hline</span><span class="sc">\n</span><span class="st">"</span>,</span>
-<span id="cb55-13"><a href="#cb55-13"></a>    <span class="st">"</span><span class="sc">\\</span><span class="st">end{tabular}"</span></span>
-<span id="cb55-14"><a href="#cb55-14"></a>)</span>
-<span id="cb55-15"><a href="#cb55-15"></a>file_path <span class="ot">&lt;-</span> <span class="st">"tables/table_results_t_test_1_v1.tex"</span></span>
-<span id="cb55-16"><a href="#cb55-16"></a><span class="fu">writeLines</span>(latex_table, file_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1"></a>latex_table <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
+<span id="cb60-2"><a href="#cb60-2"></a>    <span class="st">"</span><span class="sc">\\</span><span class="st">begin{tabular}{l c}</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb60-3"><a href="#cb60-3"></a>    <span class="st">"</span><span class="sc">\\</span><span class="st">hline</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb60-4"><a href="#cb60-4"></a>    <span class="st">"&amp; Difference in life satisfaction across groups"</span> , </span>
+<span id="cb60-5"><a href="#cb60-5"></a>    <span class="st">" </span><span class="sc">\\\\</span><span class="st"> </span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb60-6"><a href="#cb60-6"></a>    <span class="st">"Test Statistic &amp; "</span>, </span>
+<span id="cb60-7"><a href="#cb60-7"></a>    <span class="fu">format</span>(test_statistic, <span class="at">digits =</span> <span class="dv">3</span>), </span>
+<span id="cb60-8"><a href="#cb60-8"></a>    <span class="st">" </span><span class="sc">\\\\</span><span class="st"> </span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb60-9"><a href="#cb60-9"></a>    <span class="st">"P-value &amp; "</span>, </span>
+<span id="cb60-10"><a href="#cb60-10"></a>    <span class="fu">format.pval</span>(p_value, <span class="at">digits =</span> <span class="dv">3</span>), </span>
+<span id="cb60-11"><a href="#cb60-11"></a>    <span class="st">" </span><span class="sc">\\\\</span><span class="st"> </span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb60-12"><a href="#cb60-12"></a>    <span class="st">"</span><span class="sc">\\</span><span class="st">hline</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb60-13"><a href="#cb60-13"></a>    <span class="st">"</span><span class="sc">\\</span><span class="st">end{tabular}"</span></span>
+<span id="cb60-14"><a href="#cb60-14"></a>)</span>
+<span id="cb60-15"><a href="#cb60-15"></a>file_path <span class="ot">&lt;-</span> <span class="st">"tables/table_results_t_test_1_v1.tex"</span></span>
+<span id="cb60-16"><a href="#cb60-16"></a><span class="fu">writeLines</span>(latex_table, file_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cascade">
 <button class="step-btn hint" data-step="1">
@@ -1302,8 +1443,8 @@ mean of x mean of y
 <pre><code>\begin{tabular}{l c}
 \hline
 &amp; Difference in life satisfaction across groups \\ 
-Test Statistic &amp; 9.67 \\ 
-P-value &amp; 3.05e-14 \\ 
+Test Statistic &amp; 11.2 \\ 
+P-value &amp; &lt;2e-16 \\ 
 \hline
 \end{tabular}</code></pre>
 </div>

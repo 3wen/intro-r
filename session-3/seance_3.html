@@ -839,7 +839,7 @@ Wilkinson, Leland. 2005. <em>The Grammar of Graphics</em>. Springer New York, NY
 <section id="sec-appendix-codes-graph" class="slide level2">
 <h2>Codes for the graph showing the number of deaths in France (1/3)</h2>
 <div class="sourceCode" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="co"># Source: https://www.insee.fr/en/statistiques/serie/000436394</span></span>
-<span id="cb18-2"><a href=""></a>file <span class="ot">&lt;-</span> <span class="st">"data/deces_france_insee/monthly_values.csv"</span></span>
+<span id="cb18-2"><a href=""></a>file <span class="ot">&lt;-</span> <span class="st">"data/raw/deces_france_insee/monthly_values.csv"</span></span>
 <span id="cb18-3"><a href=""></a>deces <span class="ot">&lt;-</span> <span class="fu">read_csv2</span>(</span>
 <span id="cb18-4"><a href=""></a>    file, <span class="at">skip =</span> <span class="dv">4</span>, </span>
 <span id="cb18-5"><a href=""></a>    <span class="at">col_names =</span> <span class="fu">c</span>(<span class="st">"period"</span>, <span class="st">"deaths"</span>, <span class="st">"codes"</span>)</span>

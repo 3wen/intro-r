@@ -337,7 +337,7 @@
 <h2>Set Your RStudio Project</h2>
 <div class="cell">
 <div class="cell-output-display">
-<countdown-timer class="countdown" id="timer_c81a6c8e" minutes="5" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
+<countdown-timer class="countdown" id="timer_53e3d7cd" minutes="5" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
 </div>
 </div>
 <div class="columns">
@@ -375,7 +375,7 @@
 <h2>Exercise</h2>
 <div class="cell">
 <div class="cell-output-display">
-<countdown-timer class="countdown" id="timer_8d9b2b97" minutes="5" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
+<countdown-timer class="countdown" id="timer_8e3eca72" minutes="5" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
 </div>
 </div>
 <ul>
@@ -385,7 +385,7 @@
 <li>use the IPEDS Data Explorer; look for complete data files.</li>
 <li>since we have data from 2018, let us use a survey from the same year.</li>
 </ul></li>
-<li>Once you have downloaded the data, put it in the <code>data/</code> folder of your project for session 2.</li>
+<li>Once you have downloaded the data, put it in the <code>data/raw/</code> folder of your project for session 2.</li>
 </ul>
 </section>
 <section id="solution-link-to-the-desired-dataset" class="slide level2 exercisesol">
@@ -451,24 +451,65 @@
 </section>
 <section id="example" class="slide level2">
 <h2>Example</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="co">#' Addition of two numbers</span></span>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="co">#' Addition of two numbers</span></span>
 <span id="cb3-2"><a href=""></a><span class="co">#' </span></span>
 <span id="cb3-3"><a href=""></a><span class="co">#' @param x First number.</span></span>
 <span id="cb3-4"><a href=""></a><span class="co">#' @param y Second number.</span></span>
 <span id="cb3-5"><a href=""></a><span class="co">#' @returns The sum of x and y.</span></span>
 <span id="cb3-6"><a href=""></a>add_numbers <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
-<span id="cb3-7"><a href=""></a>    sum <span class="ot">&lt;-</span> x <span class="sc">+</span> y</span>
-<span id="cb3-8"><a href=""></a></span>
-<span id="cb3-9"><a href=""></a>    sum</span>
+<span id="cb3-7"><a href=""></a>  sum_of_numbers <span class="ot">&lt;-</span> x <span class="sc">+</span> y</span>
+<span id="cb3-8"><a href=""></a>  </span>
+<span id="cb3-9"><a href=""></a>  sum_of_numbers</span>
 <span id="cb3-10"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="co"># Call the function with arguments:</span></span>
 <span id="cb4-2"><a href=""></a><span class="fu">add_numbers</span>(<span class="at">x =</span> <span class="dv">2</span>, <span class="at">y =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="the-environment-an-analogy" class="slide level2">
+<h2>The Environment: An Analogy</h2>
+<ul>
+<li>Every time <code>R</code> runs, it keeps track of all the objects you have created (data, variables, functions…).</li>
+<li>This is called the <span class="hl-green">Global Environment</span>: think of it as a <span class="hl-purple">classroom</span>.</li>
+<li>Anything you write directly in your script and evaluate (outside of a function) is added to this classroom, and stays there for you to see and use.</li>
+<li>But what happens <strong>inside</strong> a function is a different story…</li>
+</ul>
+</section>
+<section id="your-function-is-a-mixer" class="slide level2">
+<h2>Your Function is a Mixer</h2>
+<ul>
+<li>Imagine your function is a <span class="hl-purple">kitchen mixer</span> sitting on the counter of the classroom.</li>
+</ul>
+<p><br></p>
+<ul>
+<li><span class="hl-green">Arguments</span> → the <strong>ingredients</strong> you pour into the mixer.</li>
+<li><span class="hl-green">Body</span> → the <strong>recipe</strong> the mixer follows (the instructions/operations).</li>
+<li><span class="hl-green">Return Value</span> → the <strong>final product</strong> that comes out of the mixer (a cake, or a smoothie).</li>
+</ul>
+<div class="warning">
+<p><span class="box-title">Local vs Global</span> While it is mixing, the mixer creates its own little <strong>local environment</strong>: a private workspace that only exists while the mixer is running.</p>
+</div>
+</section>
+<section id="what-stays-what-goes-to-the-trash" class="slide level2">
+<h2>What Stays, What Goes to the Trash</h2>
+<ul>
+<li>Everything created <strong>inside</strong> the mixer (intermediate bowls, spoons, half-mixed batter…) only exists while the mixer is running.</li>
+<li>Once the mixer stops, <strong>only the final product (the returned value) leaves the mixer</strong> and enters the classroom (the Global Environment).</li>
+<li><span class="hl-purple">Everything else created inside is thrown in the trashcan</span>: it disappears as soon as the function finishes running.</li>
+</ul>
+<div class="tip">
+<p><span class="box-title">Back to our example</span> In <code>add_numbers()</code>, the object <code>sum_of_numbers</code> is created <em>inside</em> the mixer.</p>
+<ul>
+<li>Does <code>sum</code> exist in your Global Environment after calling <code>add_numbers(x = 2, y = 3)</code>?</li>
+<li>What is the only thing that makes it out of the mixer?</li>
+</ul>
+</div>
 </section>
 <section id="exercise-1" class="slide level2 exercise">
 <h2>Exercise</h2>
 <div class="cell">
 <div class="cell-output-display">
-<countdown-timer class="countdown" id="timer_f3565612" minutes="5" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
+<countdown-timer class="countdown" id="timer_fd18a6b0" minutes="5" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
 </div>
 </div>
 <p>Write a function called <code>pct_change()</code> that takes two arguments, <code>old_value</code> and <code>new_value</code>, and returns the percentage change between them.</p>
@@ -552,33 +593,64 @@
 <span id="cb5-2"><a href=""></a>    <span class="co"># Instruction(s) to execute</span></span>
 <span id="cb5-3"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Example:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="co"># Print the squares of the integers from 1 to 5</span></span>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="co"># Print the squares of the integers from 1 to 5</span></span>
 <span id="cb6-2"><a href=""></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
 <span id="cb6-3"><a href=""></a>    j <span class="ot">&lt;-</span> i<span class="sc">^</span><span class="dv">2</span></span>
 <span id="cb6-4"><a href=""></a>    <span class="fu">print</span>(j)</span>
 <span id="cb6-5"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<p>To store the values through the iterations:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="co"># Initialize empty vector</span></span>
+<span id="cb7-2"><a href=""></a>res <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA</span>, <span class="dv">5</span>)</span>
+<span id="cb7-3"><a href=""></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) {</span>
+<span id="cb7-4"><a href=""></a>    j <span class="ot">&lt;-</span> i<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb7-5"><a href=""></a>    res[i] <span class="ot">&lt;-</span> j <span class="co"># the ith element gets the value j</span></span>
+<span id="cb7-6"><a href=""></a>    <span class="fu">print</span>(j)</span>
+<span id="cb7-7"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
-<section id="while-loop-syntax-and-example" class="slide level2">
+<section id="while-loop-syntax-and-example" class="slide level2 small">
 <h2>while Loop Syntax and Example</h2>
 <p>Syntax:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="cf">while</span> (condition) {</span>
-<span id="cb7-2"><a href=""></a>    <span class="co"># instructions to execute</span></span>
-<span id="cb7-3"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="cf">while</span> (condition) {</span>
+<span id="cb8-2"><a href=""></a>  <span class="co"># instructions to execute</span></span>
+<span id="cb8-3"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>Example:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="co"># Print the squares of the integers until the current integer </span></span>
-<span id="cb8-2"><a href=""></a><span class="co"># is lower or equal to 5</span></span>
-<span id="cb8-3"><a href=""></a>i <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># initialize the counter to 1</span></span>
-<span id="cb8-4"><a href=""></a><span class="cf">while</span> (i <span class="sc">&lt;=</span> <span class="dv">5</span>) {</span>
-<span id="cb8-5"><a href=""></a>    j <span class="ot">&lt;-</span> i<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb8-6"><a href=""></a>    <span class="fu">print</span>(j)</span>
-<span id="cb8-7"><a href=""></a>    i <span class="ot">&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span> <span class="co"># Increment the counter</span></span>
-<span id="cb8-8"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="co"># Print the squares of the integers until the current integer is lower or equal to 5</span></span>
+<span id="cb9-2"><a href=""></a>i <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># initialize the counter to 1</span></span>
+<span id="cb9-3"><a href=""></a><span class="cf">while</span> (i <span class="sc">&lt;=</span> <span class="dv">5</span>) {</span>
+<span id="cb9-4"><a href=""></a>  j <span class="ot">&lt;-</span> i<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb9-5"><a href=""></a>  <span class="fu">print</span>(j)</span>
+<span id="cb9-6"><a href=""></a>  i <span class="ot">&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span> <span class="co"># Increment the counter</span></span>
+<span id="cb9-7"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<p>To store the values of <span class="math inline">\(i^2\)</span> through the iterations:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>res <span class="ot">&lt;-</span> <span class="cn">NULL</span> <span class="co"># initialize object with NULL value</span></span>
+<span id="cb10-2"><a href=""></a>i <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># initialize the counter to 1</span></span>
+<span id="cb10-3"><a href=""></a><span class="cf">while</span> (i <span class="sc">&lt;=</span> <span class="dv">5</span>) {</span>
+<span id="cb10-4"><a href=""></a>    j <span class="ot">&lt;-</span> i<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb10-5"><a href=""></a>    res <span class="ot">&lt;-</span> <span class="fu">c</span>(res, j) <span class="co"># Append j to res</span></span>
+<span id="cb10-6"><a href=""></a>    <span class="fu">print</span>(j)</span>
+<span id="cb10-7"><a href=""></a>    i <span class="ot">&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span> <span class="co"># Increment the counter</span></span>
+<span id="cb10-8"><a href=""></a>    res</span>
+<span id="cb10-9"><a href=""></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
 <section id="exercise-2" class="slide level2 exercise">
 <h2>Exercise</h2>
 <div class="cell">
 <div class="cell-output-display">
-<countdown-timer class="countdown" id="timer_d0651c46" minutes="5" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
+<countdown-timer class="countdown" id="timer_c8690385" minutes="5" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
 </div>
 </div>
 <p>Write a <code>for</code> loop that prints for each integer from 1 to 10, whether it is even or odd.</p>
@@ -594,9 +666,9 @@
 <section id="manage-the-working-directory" class="slide level2">
 <h2>Manage the Working Directory</h2>
 <p>To print the path to the <strong>current</strong> working directory (set by default):</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">getwd</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">getwd</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The working directory can be assigned by the user using the following command:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">setwd</span>(<span class="st">"C:/Users/myName"</span>) <span class="co"># Windows example</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">setwd</span>(<span class="st">"C:/Users/myName"</span>) <span class="co"># Windows example</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -626,15 +698,15 @@
 </section>
 <section id="import-text-files" class="slide level2">
 <h2>Import text files</h2>
-<p>To load text files (e.g., the <a href="data/age_gender.txt" class="btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-download" aria-label="download"></i> age_gender.txt file</a>s stored in your computer, use the function <code>read.table()</code>.</p>
+<p>To load text files (e.g., the <a href="data/raw/age_gender.txt" class="btn btn-light btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-download" aria-label="download"></i> age_gender.txt file</a> stored in your computer, in the <code>data/raw</code> folder, use the function <code>read.table()</code>.</p>
 <p><code>read.table(file, sep, header)</code></p>
 <ul>
 <li><code>file</code>: the name of the file (character)</li>
 <li><code>sep</code>: separator used in file (” ” by default)</li>
 <li><code>header</code>: <code>TRUE</code> if file contains column names, <code>FALSE</code> by default</li>
 </ul>
-<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="at">file =</span> <span class="st">"data/age_gender.txt"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb11-2"><a href=""></a><span class="fu">head</span>(tab, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="at">file =</span> <span class="st">"data/raw/age_gender.txt"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-2"><a href=""></a><span class="fu">head</span>(tab, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -667,10 +739,10 @@
 <li><code>read.fwf()</code>: read fixed-width-formatted files.</li>
 </ul>
 <p>R can read files in specific software formats (Excel, SAS, SPSS, Stata) using the functions from the <code>foreign</code> package.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="co"># Try this</span></span>
-<span id="cb12-2"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"foreign"</span>)</span>
-<span id="cb12-3"><a href=""></a><span class="fu">library</span>(foreign)</span>
-<span id="cb12-4"><a href=""></a>?read.dta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="co"># Try this</span></span>
+<span id="cb14-2"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"foreign"</span>)</span>
+<span id="cb14-3"><a href=""></a><span class="fu">library</span>(foreign)</span>
+<span id="cb14-4"><a href=""></a>?read.dta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="export-text-files" class="slide level2">
 <h2>Export text files</h2>
@@ -682,8 +754,8 @@
 <li><code>append</code>: if <code>TRUE</code>, add to an (eventually existing) file, if <code>FALSE</code>, overwrite the existing file (default).</li>
 <li><code>col.names</code> and <code>row.names</code>: if <code>TRUE</code>, write the columns/rows names.</li>
 </ul>
-<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">write.table</span>(tab, <span class="st">"age_gender.txt"</span>, <span class="at">row.names =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb13-2"><a href=""></a><span class="at">col.names =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">write.table</span>(tab, <span class="st">"age_gender.txt"</span>, <span class="at">row.names =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb15-2"><a href=""></a><span class="at">col.names =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>💡 <code>write()</code> is similar to <code>write.table()</code>, with fewer options.</p>
 </section>
 <section id="saveload-r-objects" class="slide level2">
@@ -695,38 +767,40 @@
 <li><code>save()</code>: save R objects in binary format.</li>
 <li><code>load()</code>: load R objects saved with <code>save()</code>.</li>
 </ul>
-<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="co"># Try this</span></span>
-<span id="cb14-2"><a href=""></a><span class="fu">dump</span>(<span class="fu">ls</span>(), <span class="at">file =</span> <span class="st">"objects.txt"</span>)</span>
-<span id="cb14-3"><a href=""></a><span class="fu">source</span>(<span class="st">"objects.txt"</span>)</span>
-<span id="cb14-4"><a href=""></a></span>
-<span id="cb14-5"><a href=""></a><span class="fu">save</span>(iris, mtcars, <span class="at">file =</span> <span class="st">"iris_and_mtcars.rda"</span>)</span>
-<span id="cb14-6"><a href=""></a><span class="fu">load</span>(<span class="st">"iris_and_mtcars.rda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="co"># Try this</span></span>
+<span id="cb16-2"><a href=""></a><span class="fu">dump</span>(<span class="fu">ls</span>(), <span class="at">file =</span> <span class="st">"objects.txt"</span>)</span>
+<span id="cb16-3"><a href=""></a><span class="fu">source</span>(<span class="st">"objects.txt"</span>)</span>
+<span id="cb16-4"><a href=""></a></span>
+<span id="cb16-5"><a href=""></a><span class="fu">save</span>(iris, mtcars, <span class="at">file =</span> <span class="st">"iris_and_mtcars.rda"</span>)</span>
+<span id="cb16-6"><a href=""></a><span class="fu">load</span>(<span class="st">"iris_and_mtcars.rda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="exercise-import" class="slide level2 exercise">
 <h2>Exercise: Import</h2>
 <div class="cell">
 <div class="cell-output-display">
-<countdown-timer class="countdown" id="timer_f0569c7b" minutes="5" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
+<countdown-timer class="countdown" id="timer_f31eaed1" minutes="5" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
 </div>
 </div>
 <ul>
 <li>Import the <code>HD2018.csv</code> file you downloaded from IPEDS into an object called <code>universities</code>.</li>
 <li>Also import the labor force survey data, available on AMeTICE (Moodle) as <code>US_labor_force_survey.dta</code>, into an object called <code>survey</code>. Use the following instruction:</li>
 </ul>
-<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>  survey <span class="ot">&lt;-</span> haven<span class="sc">::</span><span class="fu">read_dta</span>(<span class="st">"data/US_labor_force_survey.dta"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a>survey <span class="ot">&lt;-</span> haven<span class="sc">::</span><span class="fu">read_dta</span>(<span class="st">"data/raw/US_labor_force_survey.dta"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <ul>
-<li>Put both files in the <code>data/</code> folder of your project for session 2 before importing them.</li>
+<li>Put both files in the <code>data/raw/</code> folder of your project for session 2 before importing them.</li>
 </ul>
 </section>
 <section id="solution-import" class="slide level2 exercisesol">
 <h2>Solution: Import</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb16-2"><a href=""></a><span class="co"># University dataset (CSV)</span></span>
-<span id="cb16-3"><a href=""></a>universities <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/HD2018.csv"</span>)</span>
-<span id="cb16-4"><a href=""></a></span>
-<span id="cb16-5"><a href=""></a><span class="co"># Labor force survey (Stata format)</span></span>
-<span id="cb16-6"><a href=""></a>survey <span class="ot">&lt;-</span> haven<span class="sc">::</span><span class="fu">read_dta</span>(<span class="st">"data/US_labor_force_survey.dta"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb18-2"><a href=""></a><span class="co"># University dataset (CSV)</span></span>
+<span id="cb18-3"><a href=""></a>universities <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/raw/HD2018.csv"</span>)</span>
+<span id="cb18-4"><a href=""></a></span>
+<span id="cb18-5"><a href=""></a><span class="co"># Labor force survey (Stata format)</span></span>
+<span id="cb18-6"><a href=""></a>survey <span class="ot">&lt;-</span> haven<span class="sc">::</span><span class="fu">read_dta</span>(<span class="st">"data/raw/US_labor_force_survey.dta"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li><code>read.csv()</code> (base R) or <code>readr::read_csv()</code> both work for the <code>.csv</code> file; the latter is faster and returns a tibble.</li>
@@ -790,7 +864,7 @@
 <h2>Exercise</h2>
 <div class="cell">
 <div class="cell-output-display">
-<countdown-timer class="countdown" id="timer_c720173c" minutes="1" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
+<countdown-timer class="countdown" id="timer_2e09930d" minutes="1" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
 </div>
 </div>
 <p>What data quality issues do you detect for the <strong>analyzable</strong> indicator?</p>
@@ -831,7 +905,7 @@
 <h2>Exercise</h2>
 <div class="cell">
 <div class="cell-output-display">
-<countdown-timer class="countdown" id="timer_055742ea" minutes="1" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
+<countdown-timer class="countdown" id="timer_3d67e939" minutes="1" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
 </div>
 </div>
 <p>What data quality issues do you detect for the <strong>interpretable</strong> indicator?</p>
@@ -872,7 +946,7 @@
 <h2>Exercise</h2>
 <div class="cell">
 <div class="cell-output-display">
-<countdown-timer class="countdown" id="timer_f4ead3a1" minutes="1" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
+<countdown-timer class="countdown" id="timer_8b0453fd" minutes="1" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
 </div>
 </div>
 <p>What data quality issues do you detect for the <strong>complete</strong> indicator?</p>
@@ -901,7 +975,7 @@
 <h2>Exercise</h2>
 <div class="cell">
 <div class="cell-output-display">
-<countdown-timer class="countdown" id="timer_39e17d78" minutes="1" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
+<countdown-timer class="countdown" id="timer_79b5489d" minutes="1" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
 </div>
 </div>
 <p>What data quality issues do you detect for the <strong>valid</strong> indicator?</p>
@@ -933,7 +1007,7 @@
 <h2>Exercise</h2>
 <div class="cell">
 <div class="cell-output-display">
-<countdown-timer class="countdown" id="timer_366bec2b" minutes="1" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
+<countdown-timer class="countdown" id="timer_2007c902" minutes="1" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
 </div>
 </div>
 <p>What data quality issues do you detect for the <strong>accurate</strong> indicator?</p>
@@ -958,7 +1032,7 @@
 <h2>Exercise</h2>
 <div class="cell">
 <div class="cell-output-display">
-<countdown-timer class="countdown" id="timer_46a023fd" minutes="1" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
+<countdown-timer class="countdown" id="timer_cbbdb39c" minutes="1" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
 </div>
 </div>
 <p>What data quality issues do you detect for the <strong>consistent</strong> indicator?</p>
@@ -1091,13 +1165,13 @@
 <li>We will need the following library:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="a-glimpse-at-the-dataset" class="slide level2">
 <h2>A Glimpse at the Dataset</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">glimpse</span>(universities)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">glimpse</span>(universities)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 6,857
 Columns: 73
@@ -1249,25 +1323,25 @@ $ DFRCUSCG &lt;dbl&gt; 1, 1, 2, 2, 1, -2, 1, 2, 1, 1, 1, 1, 2, -2, 1, 2, 1, 2, 2
 <li><strong>Nested Syntax (Hard to Read):</strong></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="co"># Evaluated inside-out!</span></span>
-<span id="cb20-2"><a href=""></a><span class="fu">summarise</span>(</span>
-<span id="cb20-3"><a href=""></a>  <span class="fu">group_by</span>(</span>
-<span id="cb20-4"><a href=""></a>    <span class="fu">filter</span>(universities, STABBR <span class="sc">==</span> <span class="st">"AL"</span>),</span>
-<span id="cb20-5"><a href=""></a>    COUNTYNM</span>
-<span id="cb20-6"><a href=""></a>  ),</span>
-<span id="cb20-7"><a href=""></a>  <span class="at">n_estab =</span> <span class="fu">n</span>()</span>
-<span id="cb20-8"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="co"># Evaluated inside-out!</span></span>
+<span id="cb22-2"><a href=""></a><span class="fu">summarise</span>(</span>
+<span id="cb22-3"><a href=""></a>  <span class="fu">group_by</span>(</span>
+<span id="cb22-4"><a href=""></a>    <span class="fu">filter</span>(universities, STABBR <span class="sc">==</span> <span class="st">"AL"</span>),</span>
+<span id="cb22-5"><a href=""></a>    COUNTYNM</span>
+<span id="cb22-6"><a href=""></a>  ),</span>
+<span id="cb22-7"><a href=""></a>  <span class="at">n_estab =</span> <span class="fu">n</span>()</span>
+<span id="cb22-8"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:50%;">
 <ul>
 <li><strong>Piped Syntax (Reads Left-to-Right):</strong></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a><span class="co"># Clean, sequential data flow!</span></span>
-<span id="cb21-2"><a href=""></a>universities <span class="sc">|&gt;</span></span>
-<span id="cb21-3"><a href=""></a>  <span class="fu">filter</span>(STABBR <span class="sc">==</span> <span class="st">"AL"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb21-4"><a href=""></a>  <span class="fu">group_by</span>(COUNTYNM) <span class="sc">|&gt;</span></span>
-<span id="cb21-5"><a href=""></a>  <span class="fu">summarise</span>(<span class="at">n_estab =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a><span class="co"># Clean, sequential data flow!</span></span>
+<span id="cb23-2"><a href=""></a>universities <span class="sc">|&gt;</span></span>
+<span id="cb23-3"><a href=""></a>  <span class="fu">filter</span>(STABBR <span class="sc">==</span> <span class="st">"AL"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb23-4"><a href=""></a>  <span class="fu">group_by</span>(COUNTYNM) <span class="sc">|&gt;</span></span>
+<span id="cb23-5"><a href=""></a>  <span class="fu">summarise</span>(<span class="at">n_estab =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div></div>
 <div class="callout callout-tip callout-titled callout-style-default">
@@ -1290,11 +1364,11 @@ $ DFRCUSCG &lt;dbl&gt; 1, 1, 2, 2, 1, -2, 1, 2, 1, 1, 1, 1, 2, -2, 1, 2, 1, 2, 2
 <li><code>select()</code> lets you keep (or drop) specific columns of a dataset.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a>univ <span class="ot">&lt;-</span> universities <span class="sc">|&gt;</span></span>
-<span id="cb22-2"><a href=""></a>  <span class="fu">select</span>(</span>
-<span id="cb22-3"><a href=""></a>    UNITID, INSTNM, STABBR, SECTOR, CONTROL,</span>
-<span id="cb22-4"><a href=""></a>    COUNTYCD, COUNTYNM</span>
-<span id="cb22-5"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>univ <span class="ot">&lt;-</span> universities <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href=""></a>  <span class="fu">select</span>(</span>
+<span id="cb24-3"><a href=""></a>    UNITID, INSTNM, STABBR, SECTOR, CONTROL,</span>
+<span id="cb24-4"><a href=""></a>    COUNTYCD, COUNTYNM</span>
+<span id="cb24-5"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li><code>UNITID</code>: unique institution identifier</li>
@@ -1313,16 +1387,16 @@ $ DFRCUSCG &lt;dbl&gt; 1, 1, 2, 2, 1, -2, 1, 2, 1, 1, 1, 1, 2, -2, 1, 2, 1, 2, 2
 <li><code>mutate()</code> creates new columns, or modifies existing ones.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a>univ <span class="ot">&lt;-</span> univ <span class="sc">|&gt;</span></span>
-<span id="cb23-2"><a href=""></a>  <span class="fu">mutate</span>(</span>
-<span id="cb23-3"><a href=""></a>    <span class="at">is_public =</span> <span class="fu">ifelse</span>(CONTROL <span class="sc">==</span> <span class="dv">1</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
-<span id="cb23-4"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a>univ <span class="ot">&lt;-</span> univ <span class="sc">|&gt;</span></span>
+<span id="cb25-2"><a href=""></a>  <span class="fu">mutate</span>(</span>
+<span id="cb25-3"><a href=""></a>    <span class="at">is_public =</span> <span class="fu">ifelse</span>(CONTROL <span class="sc">==</span> <span class="dv">1</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb25-4"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Here, we create a new logical column <code>is_public</code>, equal to <code>TRUE</code> when the institution is public (<code>CONTROL == 1</code>).</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>univ <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a>univ <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 8
   UNITID INSTNM                STABBR SECTOR CONTROL COUNTYCD COUNTYNM is_public
@@ -1343,12 +1417,12 @@ $ DFRCUSCG &lt;dbl&gt; 1, 1, 2, 2, 1, -2, 1, 2, 1, 1, 1, 1, 2, -2, 1, 2, 1, 2, 2
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26" data-code-line-numbers="1-5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a>univ <span class="sc">|&gt;</span></span>
-<span id="cb26-2"><a href=""></a>  <span class="fu">summarise</span>(</span>
-<span id="cb26-3"><a href=""></a>    <span class="at">n_institutions =</span> <span class="fu">n</span>(),</span>
-<span id="cb26-4"><a href=""></a>    <span class="at">n_states =</span> <span class="fu">n_distinct</span>(STABBR)</span>
-<span id="cb26-5"><a href=""></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb26-6"><a href=""></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28" data-code-line-numbers="1-5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a>univ <span class="sc">|&gt;</span></span>
+<span id="cb28-2"><a href=""></a>  <span class="fu">summarise</span>(</span>
+<span id="cb28-3"><a href=""></a>    <span class="at">n_institutions =</span> <span class="fu">n</span>(),</span>
+<span id="cb28-4"><a href=""></a>    <span class="at">n_states =</span> <span class="fu">n_distinct</span>(STABBR)</span>
+<span id="cb28-5"><a href=""></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb28-6"><a href=""></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell">
@@ -1373,9 +1447,9 @@ $ DFRCUSCG &lt;dbl&gt; 1, 1, 2, 2, 1, -2, 1, 2, 1, 1, 1, 1, 2, -2, 1, 2, 1, 2, 2
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a>univ <span class="sc">|&gt;</span></span>
-<span id="cb28-2"><a href=""></a>  <span class="fu">group_by</span>(STABBR) <span class="sc">|&gt;</span></span>
-<span id="cb28-3"><a href=""></a>  <span class="fu">summarise</span>(<span class="at">n_institutions =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a>univ <span class="sc">|&gt;</span></span>
+<span id="cb30-2"><a href=""></a>  <span class="fu">group_by</span>(STABBR) <span class="sc">|&gt;</span></span>
+<span id="cb30-3"><a href=""></a>  <span class="fu">summarise</span>(<span class="at">n_institutions =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell">
@@ -1412,13 +1486,13 @@ $ DFRCUSCG &lt;dbl&gt; 1, 1, 2, 2, 1, -2, 1, 2, 1, 1, 1, 1, 2, -2, 1, 2, 1, 2, 2
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a>universities <span class="sc">|&gt;</span></span>
-<span id="cb30-2"><a href=""></a>    <span class="fu">count</span>(STABBR)</span>
-<span id="cb30-3"><a href=""></a></span>
-<span id="cb30-4"><a href=""></a><span class="co"># Equivalent to:</span></span>
-<span id="cb30-5"><a href=""></a>universities <span class="sc">|&gt;</span></span>
-<span id="cb30-6"><a href=""></a>    <span class="fu">group_by</span>(STABBR) <span class="sc">|&gt;</span></span>
-<span id="cb30-7"><a href=""></a>    <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a>universities <span class="sc">|&gt;</span></span>
+<span id="cb32-2"><a href=""></a>    <span class="fu">count</span>(STABBR)</span>
+<span id="cb32-3"><a href=""></a></span>
+<span id="cb32-4"><a href=""></a><span class="co"># Equivalent to:</span></span>
+<span id="cb32-5"><a href=""></a>universities <span class="sc">|&gt;</span></span>
+<span id="cb32-6"><a href=""></a>    <span class="fu">group_by</span>(STABBR) <span class="sc">|&gt;</span></span>
+<span id="cb32-7"><a href=""></a>    <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell">
@@ -1450,15 +1524,15 @@ $ DFRCUSCG &lt;dbl&gt; 1, 1, 2, 2, 1, -2, 1, 2, 1, 1, 1, 1, 2, -2, 1, 2, 1, 2, 2
 <li>Before checking anything else, always start by looking at the overall size of your dataset.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="fu">dim</span>(universities)   <span class="co"># number of rows and columns</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a><span class="fu">dim</span>(universities)   <span class="co"># number of rows and columns</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6857   73</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a><span class="fu">nrow</span>(universities)   <span class="co"># number of rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a><span class="fu">nrow</span>(universities)   <span class="co"># number of rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6857</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a><span class="fu">ncol</span>(universities)   <span class="co"># number of columns</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a><span class="fu">ncol</span>(universities)   <span class="co"># number of columns</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 73</code></pre>
 </div>
@@ -1476,8 +1550,8 @@ $ DFRCUSCG &lt;dbl&gt; 1, 1, 2, 2, 1, -2, 1, 2, 1, 1, 1, 1, 2, -2, 1, 2, 1, 2, 2
 <li>Missing values in R are coded as <code>NA</code>.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a><span class="co"># Count the number of missing values per column</span></span>
-<span id="cb38-2"><a href=""></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(universities))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a><span class="co"># Count the number of missing values per column</span></span>
+<span id="cb40-2"><a href=""></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(universities))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  UNITID   INSTNM   IALIAS     ADDR     CITY   STABBR      ZIP     FIPS 
        0        0     4602       11        0        0        0        0 
@@ -1500,8 +1574,8 @@ CARNEGIE LANDGRNT INSTSIZE F1SYSTYP F1SYSNAM F1SYSCOD     CBSA CBSATYPE
 DFRCUSCG 
        0 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a><span class="co"># Total number of missing values in the whole dataset</span></span>
-<span id="cb40-2"><a href=""></a><span class="fu">sum</span>(<span class="fu">is.na</span>(universities))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a><span class="co"># Total number of missing values in the whole dataset</span></span>
+<span id="cb42-2"><a href=""></a><span class="fu">sum</span>(<span class="fu">is.na</span>(universities))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 18523</code></pre>
 </div>
@@ -1519,20 +1593,20 @@ DFRCUSCG
 <li>Duplicate rows (or duplicate identifiers) are a common data quality issue.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a><span class="co"># Are there any fully duplicated rows?</span></span>
-<span id="cb42-2"><a href=""></a><span class="fu">sum</span>(<span class="fu">duplicated</span>(universities))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href=""></a><span class="co"># Are there any fully duplicated rows?</span></span>
+<span id="cb44-2"><a href=""></a><span class="fu">sum</span>(<span class="fu">duplicated</span>(universities))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href=""></a><span class="co"># Are there any duplicated identifiers (there should not be)?</span></span>
-<span id="cb44-2"><a href=""></a><span class="fu">sum</span>(<span class="fu">duplicated</span>(universities<span class="sc">$</span>UNITID))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a><span class="co"># Are there any duplicated identifiers (there should not be)?</span></span>
+<span id="cb46-2"><a href=""></a><span class="fu">sum</span>(<span class="fu">duplicated</span>(universities<span class="sc">$</span>UNITID))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a><span class="co"># Which identifiers are duplicated?</span></span>
-<span id="cb46-2"><a href=""></a>universities <span class="sc">|&gt;</span></span>
-<span id="cb46-3"><a href=""></a>    <span class="fu">count</span>(UNITID) <span class="sc">|&gt;</span></span>
-<span id="cb46-4"><a href=""></a>    <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a><span class="co"># Which identifiers are duplicated?</span></span>
+<span id="cb48-2"><a href=""></a>universities <span class="sc">|&gt;</span></span>
+<span id="cb48-3"><a href=""></a>    <span class="fu">count</span>(UNITID) <span class="sc">|&gt;</span></span>
+<span id="cb48-4"><a href=""></a>    <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 0 × 2
 # ℹ 2 variables: UNITID &lt;dbl&gt;, n &lt;int&gt;</code></pre>
@@ -1548,10 +1622,10 @@ DFRCUSCG
 <li><code>arrange()</code> sorts the rows of a dataset by the values of one (or several) columns.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48" data-code-line-numbers="1-3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a>universities <span class="sc">|&gt;</span></span>
-<span id="cb48-2"><a href=""></a>  <span class="fu">count</span>(STABBR) <span class="sc">|&gt;</span></span>
-<span id="cb48-3"><a href=""></a>  <span class="fu">arrange</span>(n) <span class="sc">|&gt;</span> </span>
-<span id="cb48-4"><a href=""></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50" data-code-line-numbers="1-3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a>universities <span class="sc">|&gt;</span></span>
+<span id="cb50-2"><a href=""></a>  <span class="fu">count</span>(STABBR) <span class="sc">|&gt;</span></span>
+<span id="cb50-3"><a href=""></a>  <span class="fu">arrange</span>(n) <span class="sc">|&gt;</span> </span>
+<span id="cb50-4"><a href=""></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 59 × 2
   STABBR     n
@@ -1574,10 +1648,10 @@ DFRCUSCG
 <li><code>count()</code> is also very useful to check the completeness of your dataset by group.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50" data-code-line-numbers="1-3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a>universities <span class="sc">|&gt;</span></span>
-<span id="cb50-2"><a href=""></a>  <span class="fu">count</span>(STABBR) <span class="sc">|&gt;</span></span>
-<span id="cb50-3"><a href=""></a>  <span class="fu">arrange</span>(n) <span class="sc">|&gt;</span> </span>
-<span id="cb50-4"><a href=""></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52" data-code-line-numbers="1-3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a>universities <span class="sc">|&gt;</span></span>
+<span id="cb52-2"><a href=""></a>  <span class="fu">count</span>(STABBR) <span class="sc">|&gt;</span></span>
+<span id="cb52-3"><a href=""></a>  <span class="fu">arrange</span>(n) <span class="sc">|&gt;</span> </span>
+<span id="cb52-4"><a href=""></a>  <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 59 × 2
   STABBR     n
@@ -1602,13 +1676,13 @@ DFRCUSCG
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a><span class="co"># List the distinct values taken by a categorical variable</span></span>
-<span id="cb52-2"><a href=""></a>universities <span class="sc">|&gt;</span></span>
-<span id="cb52-3"><a href=""></a>    <span class="fu">distinct</span>(SECTOR)</span>
-<span id="cb52-4"><a href=""></a></span>
-<span id="cb52-5"><a href=""></a><span class="co"># Or, with a count:</span></span>
-<span id="cb52-6"><a href=""></a>universities <span class="sc">|&gt;</span></span>
-<span id="cb52-7"><a href=""></a>    <span class="fu">count</span>(SECTOR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a><span class="co"># List the distinct values taken by a categorical variable</span></span>
+<span id="cb54-2"><a href=""></a>universities <span class="sc">|&gt;</span></span>
+<span id="cb54-3"><a href=""></a>    <span class="fu">distinct</span>(SECTOR)</span>
+<span id="cb54-4"><a href=""></a></span>
+<span id="cb54-5"><a href=""></a><span class="co"># Or, with a count:</span></span>
+<span id="cb54-6"><a href=""></a>universities <span class="sc">|&gt;</span></span>
+<span id="cb54-7"><a href=""></a>    <span class="fu">count</span>(SECTOR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell">
@@ -1641,12 +1715,12 @@ DFRCUSCG
 <li>For numeric variables, always check the range of observed values.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a><span class="fu">summary</span>(universities<span class="sc">$</span>LONGITUD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href=""></a><span class="fu">summary</span>(universities<span class="sc">$</span>LONGITUD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 -170.74  -97.49  -86.57  -90.51  -78.93  171.38 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href=""></a><span class="fu">summary</span>(universities<span class="sc">$</span>LATITUDE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href=""></a><span class="fu">summary</span>(universities<span class="sc">$</span>LATITUDE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
  -14.32   33.93   38.66   37.31   41.28   71.32 </code></pre>
@@ -1660,10 +1734,10 @@ DFRCUSCG
 <li>A quick plot can also help spot outliers visually:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href=""></a><span class="fu">boxplot</span>(universities<span class="sc">$</span>LATITUDE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href=""></a><span class="fu">boxplot</span>(universities<span class="sc">$</span>LATITUDE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="seance_2_files/figure-revealjs/unnamed-chunk-36-1.png" width="864" class="r-stretch"></section>
+<img data-src="seance_2_files/figure-revealjs/unnamed-chunk-43-1.png" width="864" class="r-stretch"></section>
 <section id="check-ranges-by-groups" class="slide level2">
 <h2>Check ranges by groups</h2>
 <ul>
@@ -1672,12 +1746,12 @@ DFRCUSCG
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href=""></a>universities <span class="sc">|&gt;</span></span>
-<span id="cb59-2"><a href=""></a>  <span class="fu">group_by</span>(STABBR) <span class="sc">|&gt;</span></span>
-<span id="cb59-3"><a href=""></a>  <span class="fu">summarise</span>(</span>
-<span id="cb59-4"><a href=""></a>    <span class="at">min_lat =</span> <span class="fu">min</span>(LATITUDE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb59-5"><a href=""></a>    <span class="at">max_lat =</span> <span class="fu">max</span>(LATITUDE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb59-6"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href=""></a>universities <span class="sc">|&gt;</span></span>
+<span id="cb61-2"><a href=""></a>  <span class="fu">group_by</span>(STABBR) <span class="sc">|&gt;</span></span>
+<span id="cb61-3"><a href=""></a>  <span class="fu">summarise</span>(</span>
+<span id="cb61-4"><a href=""></a>    <span class="at">min_lat =</span> <span class="fu">min</span>(LATITUDE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb61-5"><a href=""></a>    <span class="at">max_lat =</span> <span class="fu">max</span>(LATITUDE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb61-6"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell">
@@ -1706,17 +1780,17 @@ DFRCUSCG
 <li>Each variable should have the type you expect (e.g., a state code should be a character, a coordinate should be numeric).</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href=""></a><span class="co"># Check the type of a single variable</span></span>
-<span id="cb61-2"><a href=""></a><span class="fu">is.numeric</span>(universities<span class="sc">$</span>LATITUDE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href=""></a><span class="co"># Check the type of a single variable</span></span>
+<span id="cb63-2"><a href=""></a><span class="fu">is.numeric</span>(universities<span class="sc">$</span>LATITUDE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href=""></a><span class="fu">is.character</span>(universities<span class="sc">$</span>STABBR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href=""></a><span class="fu">is.character</span>(universities<span class="sc">$</span>STABBR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href=""></a><span class="co"># Check the type of every column at once</span></span>
-<span id="cb65-2"><a href=""></a><span class="fu">sapply</span>(universities, class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href=""></a><span class="co"># Check the type of every column at once</span></span>
+<span id="cb67-2"><a href=""></a><span class="fu">sapply</span>(universities, class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     UNITID      INSTNM      IALIAS        ADDR        CITY      STABBR 
   "numeric" "character" "character" "character" "character" "character" 
@@ -1761,7 +1835,7 @@ DFRCUSCG
 <h2>Exercise</h2>
 <div class="cell">
 <div class="cell-output-display">
-<countdown-timer class="countdown" id="timer_d5e6a798" minutes="10" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
+<countdown-timer class="countdown" id="timer_130a37fe" minutes="10" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
 </div>
 </div>
 <p>Using the <code>universities</code> dataset, write a pipeline that:</p>
@@ -1774,16 +1848,16 @@ DFRCUSCG
 </section>
 <section id="solution-6" class="slide level2 exercisesol">
 <h2>Solution</h2>
-<div class="sourceCode" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href=""></a>universities <span class="sc">|&gt;</span></span>
-<span id="cb67-2"><a href=""></a>    <span class="fu">mutate</span>(</span>
-<span id="cb67-3"><a href=""></a>        <span class="at">sector_clean =</span> <span class="fu">ifelse</span>(SECTOR <span class="sc">==</span> <span class="dv">99</span>, <span class="cn">NA</span>, SECTOR)</span>
-<span id="cb67-4"><a href=""></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb67-5"><a href=""></a>    <span class="fu">group_by</span>(sector_clean) <span class="sc">|&gt;</span></span>
-<span id="cb67-6"><a href=""></a>    <span class="fu">summarise</span>(</span>
-<span id="cb67-7"><a href=""></a>        <span class="at">n_institutions =</span> <span class="fu">n</span>(),</span>
-<span id="cb67-8"><a href=""></a>        <span class="at">avg_latitude =</span> <span class="fu">mean</span>(LATITUDE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb67-9"><a href=""></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb67-10"><a href=""></a>    <span class="fu">arrange</span>(avg_latitude)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href=""></a>universities <span class="sc">|&gt;</span></span>
+<span id="cb69-2"><a href=""></a>    <span class="fu">mutate</span>(</span>
+<span id="cb69-3"><a href=""></a>        <span class="at">sector_clean =</span> <span class="fu">ifelse</span>(SECTOR <span class="sc">==</span> <span class="dv">99</span>, <span class="cn">NA</span>, SECTOR)</span>
+<span id="cb69-4"><a href=""></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb69-5"><a href=""></a>    <span class="fu">group_by</span>(sector_clean) <span class="sc">|&gt;</span></span>
+<span id="cb69-6"><a href=""></a>    <span class="fu">summarise</span>(</span>
+<span id="cb69-7"><a href=""></a>        <span class="at">n_institutions =</span> <span class="fu">n</span>(),</span>
+<span id="cb69-8"><a href=""></a>        <span class="at">avg_latitude =</span> <span class="fu">mean</span>(LATITUDE, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb69-9"><a href=""></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb69-10"><a href=""></a>    <span class="fu">arrange</span>(avg_latitude)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li><code>mutate()</code>: recodes the placeholder value <code>99</code> as a genuine missing value (<code>NA</code>), so it doesn’t get treated as a real sector.</li>
 <li><code>group_by()</code>: splits the data by <code>sector_clean</code> (institutions with a missing sector form their own <code>NA</code> group).</li>
@@ -1809,8 +1883,8 @@ DFRCUSCG
 <ul>
 <li>We are going to use the <code>{dplyr}</code> package to join datasets.</li>
 </ul>
-<div class="sourceCode" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"dplyr"</span>)</span>
-<span id="cb68-2"><a href=""></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"dplyr"</span>)</span>
+<span id="cb70-2"><a href=""></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="four-types-of-join" class="slide level2">
 <h2>Four types of join</h2>
@@ -1831,26 +1905,26 @@ DFRCUSCG
 <h2>These tables in <code>R</code></h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="sourceCode" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href=""></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb69-2"><a href=""></a>physics_class <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
-<span id="cb69-3"><a href=""></a>  <span class="sc">~</span>Student, <span class="sc">~</span>Physics,</span>
-<span id="cb69-4"><a href=""></a>  <span class="st">"A"</span>, <span class="dv">85</span>,</span>
-<span id="cb69-5"><a href=""></a>  <span class="st">"B"</span>, <span class="dv">80</span>,</span>
-<span id="cb69-6"><a href=""></a>  <span class="st">"C"</span>, <span class="dv">67</span>,</span>
-<span id="cb69-7"><a href=""></a>  <span class="st">"D"</span>, <span class="dv">74</span>,</span>
-<span id="cb69-8"><a href=""></a>  <span class="st">"E"</span>, <span class="dv">92</span>,</span>
-<span id="cb69-9"><a href=""></a>  <span class="st">"F"</span>, <span class="dv">78</span>,</span>
-<span id="cb69-10"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href=""></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb71-2"><a href=""></a>physics_class <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb71-3"><a href=""></a>  <span class="sc">~</span>Student, <span class="sc">~</span>Physics,</span>
+<span id="cb71-4"><a href=""></a>  <span class="st">"A"</span>, <span class="dv">85</span>,</span>
+<span id="cb71-5"><a href=""></a>  <span class="st">"B"</span>, <span class="dv">80</span>,</span>
+<span id="cb71-6"><a href=""></a>  <span class="st">"C"</span>, <span class="dv">67</span>,</span>
+<span id="cb71-7"><a href=""></a>  <span class="st">"D"</span>, <span class="dv">74</span>,</span>
+<span id="cb71-8"><a href=""></a>  <span class="st">"E"</span>, <span class="dv">92</span>,</span>
+<span id="cb71-9"><a href=""></a>  <span class="st">"F"</span>, <span class="dv">78</span>,</span>
+<span id="cb71-10"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column" style="width:50%;">
-<div class="sourceCode" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href=""></a>math_class <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
-<span id="cb70-2"><a href=""></a>  <span class="sc">~</span>Student, <span class="sc">~</span>Maths,</span>
-<span id="cb70-3"><a href=""></a>  <span class="st">"A"</span>, <span class="dv">76</span>,</span>
-<span id="cb70-4"><a href=""></a>  <span class="st">"B"</span>, <span class="dv">84</span>,</span>
-<span id="cb70-5"><a href=""></a>  <span class="st">"C"</span>, <span class="dv">62</span>,</span>
-<span id="cb70-6"><a href=""></a>  <span class="st">"D"</span>, <span class="dv">76</span>,</span>
-<span id="cb70-7"><a href=""></a>  <span class="st">"G"</span>, <span class="dv">88</span>,</span>
-<span id="cb70-8"><a href=""></a>  <span class="st">"H"</span>, <span class="dv">70</span>,</span>
-<span id="cb70-9"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href=""></a>math_class <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb72-2"><a href=""></a>  <span class="sc">~</span>Student, <span class="sc">~</span>Maths,</span>
+<span id="cb72-3"><a href=""></a>  <span class="st">"A"</span>, <span class="dv">76</span>,</span>
+<span id="cb72-4"><a href=""></a>  <span class="st">"B"</span>, <span class="dv">84</span>,</span>
+<span id="cb72-5"><a href=""></a>  <span class="st">"C"</span>, <span class="dv">62</span>,</span>
+<span id="cb72-6"><a href=""></a>  <span class="st">"D"</span>, <span class="dv">76</span>,</span>
+<span id="cb72-7"><a href=""></a>  <span class="st">"G"</span>, <span class="dv">88</span>,</span>
+<span id="cb72-8"><a href=""></a>  <span class="st">"H"</span>, <span class="dv">70</span>,</span>
+<span id="cb72-9"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 </section>
 <section id="requirements" class="slide level2">
@@ -1882,7 +1956,7 @@ DFRCUSCG
 <h2>Exercise: Testing our hypothesis</h2>
 <div class="cell">
 <div class="cell-output-display">
-<countdown-timer class="countdown" id="timer_456e6367" minutes="15" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
+<countdown-timer class="countdown" id="timer_4abaafe5" minutes="15" seconds="0" update-every="1" tabindex="0" style="top:0%;right:5%;--countdown-font-size:1.8em;--countdown-color-border:#0d6efd;--countdown-color-text:#0d6efd;"></countdown-timer>
 </div>
 </div>
 <p>Let us go back to the hypothesis from the beginning of this session:</p>
@@ -1907,42 +1981,44 @@ DFRCUSCG
 <div class="columns">
 <div class="column" style="width:40%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href=""></a>universities <span class="ot">&lt;-</span> universities <span class="sc">|&gt;</span> </span>
-<span id="cb71-2"><a href=""></a>  <span class="fu">mutate</span>(</span>
-<span id="cb71-3"><a href=""></a>    <span class="at">COUNTYNM =</span> <span class="fu">str_to_upper</span>(COUNTYNM)</span>
-<span id="cb71-4"><a href=""></a>  )</span>
-<span id="cb71-5"><a href=""></a></span>
-<span id="cb71-6"><a href=""></a>survey <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span> </span>
-<span id="cb71-7"><a href=""></a>  <span class="fu">mutate</span>(</span>
-<span id="cb71-8"><a href=""></a>    <span class="at">attend_university =</span> <span class="fu">as.integer</span>(educ <span class="sc">&gt;</span> <span class="dv">12</span>),</span>
-<span id="cb71-9"><a href=""></a>    <span class="at">state =</span> <span class="fu">str_to_upper</span>(state)</span>
-<span id="cb71-10"><a href=""></a>  )</span>
-<span id="cb71-11"><a href=""></a></span>
-<span id="cb71-12"><a href=""></a>tb_n_univ_counties <span class="ot">&lt;-</span> universities <span class="sc">|&gt;</span> </span>
-<span id="cb71-13"><a href=""></a>  <span class="fu">count</span>(COUNTYNM, STABBR, <span class="at">name =</span> <span class="st">"n_univ_county"</span>)</span>
-<span id="cb71-14"><a href=""></a></span>
-<span id="cb71-15"><a href=""></a>survey_univ <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span> </span>
-<span id="cb71-16"><a href=""></a>  <span class="fu">left_join</span>(</span>
-<span id="cb71-17"><a href=""></a>    tb_n_univ_counties,</span>
-<span id="cb71-18"><a href=""></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"county"</span> <span class="ot">=</span> <span class="st">"COUNTYNM"</span>, <span class="st">"state"</span> <span class="ot">=</span> <span class="st">"STABBR"</span>)</span>
-<span id="cb71-19"><a href=""></a>  )</span>
-<span id="cb71-20"><a href=""></a></span>
-<span id="cb71-21"><a href=""></a>survey_univ <span class="sc">|&gt;</span> </span>
-<span id="cb71-22"><a href=""></a>  <span class="fu">mutate</span>(</span>
-<span id="cb71-23"><a href=""></a>    <span class="at">univ_county =</span> <span class="sc">!</span><span class="fu">is.na</span>(n_univ_county)</span>
-<span id="cb71-24"><a href=""></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb71-25"><a href=""></a>  <span class="fu">count</span>(univ_county, attend_university) <span class="sc">|&gt;</span> </span>
-<span id="cb71-26"><a href=""></a>  <span class="fu">group_by</span>(univ_county) <span class="sc">|&gt;</span> </span>
-<span id="cb71-27"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">prop =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href=""></a>universities <span class="ot">&lt;-</span> universities <span class="sc">|&gt;</span> </span>
+<span id="cb73-2"><a href=""></a>  <span class="fu">mutate</span>(</span>
+<span id="cb73-3"><a href=""></a>    <span class="at">COUNTYNM =</span> <span class="fu">str_to_upper</span>(COUNTYNM),</span>
+<span id="cb73-4"><a href=""></a>    <span class="co"># Remove the first occurence of " COUNTY" in column COUNTYNM</span></span>
+<span id="cb73-5"><a href=""></a>    <span class="at">COUNTYNM =</span> <span class="fu">str_remove</span>(COUNTYNM, <span class="st">" COUNTY"</span>)</span>
+<span id="cb73-6"><a href=""></a>  )</span>
+<span id="cb73-7"><a href=""></a></span>
+<span id="cb73-8"><a href=""></a>survey <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span> </span>
+<span id="cb73-9"><a href=""></a>  <span class="fu">mutate</span>(</span>
+<span id="cb73-10"><a href=""></a>    <span class="at">attend_university =</span> <span class="fu">as.integer</span>(educ <span class="sc">&gt;</span> <span class="dv">12</span>),</span>
+<span id="cb73-11"><a href=""></a>    <span class="at">state =</span> <span class="fu">str_to_upper</span>(state)</span>
+<span id="cb73-12"><a href=""></a>  )</span>
+<span id="cb73-13"><a href=""></a></span>
+<span id="cb73-14"><a href=""></a>tb_n_univ_counties <span class="ot">&lt;-</span> universities <span class="sc">|&gt;</span> </span>
+<span id="cb73-15"><a href=""></a>  <span class="fu">count</span>(COUNTYNM, STABBR, <span class="at">name =</span> <span class="st">"n_univ_county"</span>)</span>
+<span id="cb73-16"><a href=""></a></span>
+<span id="cb73-17"><a href=""></a>survey_univ <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span> </span>
+<span id="cb73-18"><a href=""></a>  <span class="fu">left_join</span>(</span>
+<span id="cb73-19"><a href=""></a>    tb_n_univ_counties,</span>
+<span id="cb73-20"><a href=""></a>    <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"county"</span> <span class="ot">=</span> <span class="st">"COUNTYNM"</span>, <span class="st">"state"</span> <span class="ot">=</span> <span class="st">"STABBR"</span>)</span>
+<span id="cb73-21"><a href=""></a>  )</span>
+<span id="cb73-22"><a href=""></a></span>
+<span id="cb73-23"><a href=""></a>survey_univ <span class="sc">|&gt;</span> </span>
+<span id="cb73-24"><a href=""></a>  <span class="fu">mutate</span>(</span>
+<span id="cb73-25"><a href=""></a>    <span class="at">univ_county =</span> <span class="sc">!</span><span class="fu">is.na</span>(n_univ_county)</span>
+<span id="cb73-26"><a href=""></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb73-27"><a href=""></a>  <span class="fu">count</span>(univ_county, attend_university) <span class="sc">|&gt;</span> </span>
+<span id="cb73-28"><a href=""></a>  <span class="fu">group_by</span>(univ_county) <span class="sc">|&gt;</span> </span>
+<span id="cb73-29"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">prop =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 4
 # Groups:   univ_county [2]
   univ_county attend_university     n  prop
   &lt;lgl&gt;                   &lt;int&gt; &lt;int&gt; &lt;dbl&gt;
-1 FALSE                       0  1453 0.496
-2 FALSE                       1  1478 0.504
-3 TRUE                        0    36 0.456
-4 TRUE                        1    43 0.544</code></pre>
+1 FALSE                       0   849 0.538
+2 FALSE                       1   729 0.462
+3 TRUE                        0   640 0.447
+4 TRUE                        1   792 0.553</code></pre>
 </div>
 </div>
 </div><div class="column" style="width:60%;">
