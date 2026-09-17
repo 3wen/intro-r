@@ -248,7 +248,7 @@ This exercise introduces a study of the relationship between life satisfaction a
 2. Prepare the data for further analysis in R.
 :::
 
-**Setup.** Prepare a project for the first tutorial. Adopt a `tutorial-1/` root containing `data/{raw,tmp,out}`, `scripts/`, `figs/`, `tables/`, `references/`, a `README.md` and a `project.Rproj`. Working within an RStudio project sets your active working directory to the project's root folder (`tutorial-1/`).
+**Setup.** Prepare a project for the first tutorial (see the [recap if you need a refresher on how to do so](project.html)). Adopt a `tutorial-1/` root containing `data/{raw,tmp,out}`, `scripts/`, `figs/`, `tables/`, `references/`, a `README.md` and a `project.Rproj`. Working within an RStudio project sets your active working directory to the project's root folder (`tutorial-1/`).
 
 ```{r}
 #| include: false
@@ -457,8 +457,53 @@ gdp
 :::
 :::
 
+
 ::: {.qcard}
-**Q9.** In the dataset `gdp`, keep only the rows where the year is 2023. Then, sort these rows so that countries with higher values of per capita GDP appear first (i.e., arrange in descending order).
+**Q9.** If you look closely at the `country` column of `gdp`, you will notice that some values do not correspond to a single country, but rather to a **group of countries** (e.g., the whole European Union, or the Euro area). Identify these aggregated observations, and remove them from `gdp` so that only individual countries remain.
+
+```{r}
+#| eval: false
+gdp |>
+    distinct(country) |>
+    print(n = Inf)
+
+gdp <- gdp |>
+    filter(...)
+```
+
+::: {.cascade}
+<button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
+<button class="step-btn hint" data-step="2" disabled><span class="dot"></span>Hint 2</button>
+<button class="step-btn sol" data-step="3" disabled><span class="dot"></span>Show solution</button>
+<div class="progress-track"><div class="progress-fill"></div></div>
+:::
+
+::: {.reveal .hint-box data-reveal="1"}
+Use `distinct(country)` to list the unique values taken by `country`. Among them, you should spot codes such as `EU27_2020` or `EA20`: these are Eurostat's codes for the European Union (27 members, as of 2020) and the Euro area (20 members), not for individual countries.
+:::
+
+::: {.reveal .hint-box data-reveal="2"}
+Individual countries are always identified by a two-letter ISO code (e.g., `FR`, `DE`, `IT`). Aggregated groups of countries have longer codes. The base R function `nchar()` returns the number of characters in a character string — combine it with `filter()`.
+:::
+
+::: {.reveal .sol-box data-reveal="3"}
+```{r}
+# Inspect the distinct values of country
+gdp |>
+    distinct(country) |>
+    print(n = Inf)
+
+# Individual countries have a 2-character ISO code;
+# groups of countries (e.g. EU27_2020, EA20) have longer codes.
+gdp <- gdp |>
+    filter(nchar(country) == 2)
+gdp
+```
+:::
+:::
+
+::: {.qcard}
+**Q10.** In the dataset `gdp`, keep only the rows where the year is 2023. Then, sort these rows so that countries with higher values of per capita GDP appear first (i.e., arrange in descending order).
 
 ```{r}
 #| eval: false
@@ -487,7 +532,7 @@ gdp |>
 :::
 
 ::: {.qcard}
-**Q10.** In the dataset `gdp`, keep only the rows where the country is France.
+**Q11.** In the dataset `gdp`, keep only the rows where the country is France.
 
 ```{r}
 #| eval: false
@@ -509,7 +554,7 @@ gdp |>
 :::
 
 ::: {.qcard}
-**Q11.** Adapt the following instruction to join the two datasets `gdp` and `lifesat`, using the `inner_join()` function.
+**Q12.** Adapt the following instruction to join the two datasets `gdp` and `lifesat`, using the `inner_join()` function.
 
 ```{r}
 #| eval: false
@@ -535,7 +580,7 @@ combined_data
 :::
 
 ::: {.qcard}
-**Q12.** In the dataset `combined_data`, group the rows by country using `group_by()`. Then, for each country, compute the average per capita GDP and the average life satisfaction using `summarise()` and `mean()`. Lastly, create a new column that is a dummy variable: it should take the value 1 if the country's average per capita GDP is greater than $35,000, and 0 otherwise. Use `mutate()` with `ifelse()` for this step.
+**Q13.** In the dataset `combined_data`, group the rows by country using `group_by()`. Then, for each country, compute the average per capita GDP and the average life satisfaction using `summarise()` and `mean()`. Lastly, create a new column that is a dummy variable: it should take the value 1 if the country's average per capita GDP is greater than $35,000, and 0 otherwise. Use `mutate()` with `ifelse()` for this step.
 
 ```{r}
 #| eval: false
@@ -575,7 +620,7 @@ summary_data
 
 
 ::: {.qcard}
-**Q13.** Export in a CSV file the dataset `combined_data` in your `out` data folder. Name the file `gdp-lifesat.csv`.
+**Q14.** Export in a CSV file the dataset `combined_data` in your `out` data folder. Name the file `gdp-lifesat.csv`.
 
 ```{r}
 #| eval: false
@@ -597,7 +642,7 @@ combined_data |>
 :::
 
 ::: {.qcard}
-**Q14.** If you replace `inner_join()` with `left_join()` in Q11, what would change? Explain the behavior of these two functions.
+**Q15.** If you replace `inner_join()` with `left_join()` in Q11, what would change? Explain the behavior of these two functions.
 
 ::: {.cascade}
 <button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
@@ -615,7 +660,7 @@ An `inner_join()` returns only rows where a matching key is found in both datase
 :::
 
 ::: {.qcard}
-**Q15.** Download an additional dataset from Eurostat. For example, the unemployment rate (ref `teilm020`). Add the values to the `combined_data` frame.
+**Q16.** Download an additional dataset from Eurostat. For example, the unemployment rate (ref `teilm020`). Add the values to the `combined_data` frame.
 
 ::: {.cascade}
 <button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
@@ -722,7 +767,7 @@ tb |> filter(country != "FR" & country != "IT")
 :::
 
 ::: {.qcard}
-**Q16. The vectorized `ifelse()` function.**
+**Q17. The vectorized `ifelse()` function.**
 
 We want to classify observations into two broad categories based on their reported life satisfaction. If the score in the `life_satisf` column is strictly greater than 7, the new row variable should display `"High"`. Otherwise, it should display `"Moderate or Low"`.
 
@@ -762,7 +807,7 @@ tb |> select(country, year, life_satisf, happiness_status)
 :::
 
 ::: {.qcard}
-**Q17. The flow-control `if` / `else` block.**
+**Q18. The flow-control `if` / `else` block.**
 
 Imagine you are writing an automated data pipeline script. You want R to print a warning message directly in the console if the overall mean per capita GDP of your clean sample dataset surpasses a specific baseline threshold (e.g., $40,000).
 
@@ -807,7 +852,7 @@ The secondary fallback instruction path following `else` is completely bypassed.
 :::
 
 ::: {.qcard}
-**Q18. A typical error.**
+**Q19. A typical error.**
 
 A student attempts to alter individual row values inside their data frame using a standard procedural `if` block like this:
 
