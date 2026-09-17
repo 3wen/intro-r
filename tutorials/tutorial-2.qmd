@@ -426,7 +426,7 @@ p
 :::
 
 ::: {.qcard}
-**Q11.** Create an object called `data_filtered` that contains only the rows of the dataset where the year is either 2014 or 2023.
+**Q11.** Create an object called `data_filtered` that contains only the rows of the dataset where the year is either 2013 or 2023.
 
 ```{r}
 #| eval: false
@@ -446,7 +446,7 @@ Use `%in%` with a two-element vector, rather than two chained `==` conditions.
 ::: {.reveal .sol-box data-reveal="2"}
 ```{r}
 data_filtered <- tb |> 
-  filter(year %in% c(2014, 2023))
+  filter(year %in% c(2013, 2023))
 data_filtered
 ```
 :::
@@ -477,11 +477,11 @@ data_filtered |>
 :::
 
 ::: {.qcard}
-**Q13.** Create a barplot ranking countries in decreasing order of GDP, with two panels: the left panel for year 2014, the right panel for year 2023. The plot should have:
+**Q13.** Create a barplot ranking countries in decreasing order of GDP, with two panels: the left panel for year 2013, the right panel for year 2023. The plot should have:
 
 1. the x-axis titled "GDP",
 2. no y-axis title,
-3. the main title "GDP by Country in 2014 and 2023".
+3. the main title "GDP by Country in 2013 and 2023".
 
 ::: {.cascade}
 <button class="step-btn hint" data-step="1"><span class="dot"></span>Hint 1</button>
@@ -502,17 +502,17 @@ ggplot(data = data_filtered, mapping = aes(x = reorder(country, gdp), y = gdp)) 
   labs(
     x = NULL,
     y = "GDP",
-    title = "GDP by Country in 2014 and 2023"
+    title = "GDP by Country in 2013 and 2023"
   ) +
   theme_minimal()
 ```
 :::
 :::
 
-## Rank countries by change in GDP between 2014 and 2023
+## Rank countries by change in GDP between 2013 and 2023
 
 ::: {.qcard}
-**Q14.** Create a new variable called `change_gdp` that measures the within-country change in GDP between 2014 and 2023.
+**Q14.** Create a new variable called `change_gdp` that measures the within-country change in GDP between 2013 and 2023.
 
 ```{r}
 #| eval: false
@@ -531,7 +531,7 @@ This is a within-country comparison across years, so you need one row per countr
 :::
 
 ::: {.reveal .hint-box data-reveal="2"}
-`pivot_wider(names_from = year, values_from = gdp, names_prefix = "gdp_")` gives you columns `gdp_2014` and `gdp_2023`. Then simply subtract them with `mutate()`.
+`pivot_wider(names_from = year, values_from = gdp, names_prefix = "gdp_")` gives you columns `gdp_2013` and `gdp_2023`. Then simply subtract them with `mutate()`.
 :::
 
 ::: {.reveal .sol-box data-reveal="3"}
@@ -539,10 +539,10 @@ To extract delta values properly across years from wide or long frames:
 
 ```{r}
 tb_change <- tb |>
-  filter(year %in% c(2014, 2023)) |>
+  filter(year %in% c(2013, 2023)) |>
   select(country, year, gdp) |>
   pivot_wider(names_from = year, values_from = gdp, names_prefix = "gdp_") |>
-  mutate(change_gdp = gdp_2023 - gdp_2014)
+  mutate(change_gdp = gdp_2023 - gdp_2013)
 tb_change
 ```
 :::
@@ -572,11 +572,11 @@ tb_2023
 :::
 
 ::: {.qcard}
-**Q16.** Create a barplot ranking countries in decreasing order of their change in GDP (between 2014 and 2023). The plot should have:
+**Q16.** Create a barplot ranking countries in decreasing order of their change in GDP (between 2013 and 2023). The plot should have:
 
 - the x-axis titled "Change in GDP",
 - no y-axis title,
-- the main title "Change in GDP by Country between 2014 and 2023".
+- the main title "Change in GDP by Country between 2013 and 2023".
 
 ::: {.cascade}
 <button class="step-btn sol" data-step="1"><span class="dot"></span>Show solution</button>
@@ -591,7 +591,7 @@ ggplot(data = tb_change, mapping = aes(x = reorder(country, change_gdp), y = cha
   labs(
     x = NULL,
     y = "Change in GDP",
-    title = "Change in GDP by Country between 2014 and 2023"
+    title = "Change in GDP by Country between 2013 and 2023"
   ) +
   theme_minimal()
 ```
